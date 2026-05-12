@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Film Club — Know What to Watch. Win Every Debate.</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Oswald:wght@300;400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f0ece4;--bg2:#faf9f7;--bg3:#f4f2ee;--panel:#faf9f7;
+  --border:#ddd6cc;--border2:#c8beb4;
+  --accent:#b06030;--accent2:#c87040;--gold:#9a7830;
+  --text:#1a1610;--text2:#50453a;--text3:#8a7e72;
+  --drama:#2860a8;--comedy:#9a7830;--horror:#a03030;
+  --scifi:#1a7a3a;--action:#a03030;--thriller:#5040a0;--romance:#a03030;--doc:#2860a8;
+  --green:#1a6a2a;--red:#8a2020;
+}
+body{background:var(--bg3);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;font-size:14px;}
+
+nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:46px;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Russo One',sans-serif;font-size:19px;letter-spacing:0.02em;color:var(--text);}
+.nav-logo span{color:var(--accent);}
+.nav-tabs{display:flex;gap:0;}
+.nav-tab{padding:0 18px;height:46px;display:flex;align-items:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;}
+.nav-tab:hover{color:var(--text2);}
+.nav-tab.active{color:var(--text);border-bottom:2px solid var(--accent);}
+.nav-search{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;padding:5px 10px;outline:none;width:200px;}
+.nav-search:focus{border-color:var(--accent2);}
+.nav-search::placeholder{color:var(--text3);}
+
+.ticker{background:var(--accent);padding:4px 20px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--bg2);display:flex;gap:14px;align-items:center;white-space:nowrap;overflow:hidden;}
+.ticker-tag{background:var(--bg2);color:var(--accent);padding:1px 7px;font-size:9px;letter-spacing:0.2em;flex-shrink:0;}
+
+.page{display:none;}
+.page.active{display:block;}
+
+/* DISCOVER */
+.hero{padding:24px 20px 18px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;}
+.hero-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:7px;}
+.hero-title{font-family:'Russo One',sans-serif;font-size:32px;line-height:1.0;color:var(--text);margin-bottom:8px;}
+.hero-title em{color:var(--accent);font-style:normal;}
+.hero-desc{font-size:13px;color:var(--text2);line-height:1.5;max-width:400px;font-weight:300;}
+.hero-stats{display:flex;flex-direction:column;gap:7px;}
+.stat-card{background:var(--panel);border:1px solid var(--border);padding:10px 16px;text-align:right;min-width:130px;}
+.stat-val{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);line-height:1;}
+.stat-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
+
+.genre-bar{display:flex;gap:0;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.genre-btn{padding:8px 16px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;}
+.genre-btn:hover{color:var(--text2);}
+.genre-btn.active{color:var(--text);border-bottom:2px solid var(--accent);}
+
+.section-wrap{padding:18px 20px 0;}
+.section-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.section-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);}
+.section-more{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);cursor:pointer;}
+
+.film-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:24px;}
+.film-card{cursor:pointer;transition:opacity 0.12s;}
+.film-card:hover{opacity:0.82;}
+.film-poster{width:100%;aspect-ratio:2/3;background:var(--panel);border:1px solid var(--border);position:relative;overflow:hidden;}
+.film-poster img{width:100%;height:100%;object-fit:cover;display:block;}
+.film-poster-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.film-score-badge{position:absolute;bottom:5px;right:5px;background:rgba(250,249,247,0.92);font-family:'Russo One',sans-serif;font-size:11px;color:var(--accent);padding:2px 5px;border:1px solid var(--border2);}
+.film-info{padding:5px 0 0;}
+.film-title{font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;color:var(--text);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.film-meta{font-size:10px;color:var(--text3);margin-top:1px;}
+
+/* RANKINGS */
+.rankings-panel{max-width:900px;margin:0 auto;}
+.rank-controls{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);}
+.rank-btn{flex:1;padding:9px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;}
+.rank-btn.active{color:var(--text);border-bottom:2px solid var(--accent);}
+.rank-btn:hover:not(.active){color:var(--text2);}
+.rank-table{width:100%;border-collapse:collapse;}
+.rank-table thead th{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);padding:7px 16px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg2);font-weight:400;}
+.rank-table tbody tr{border-bottom:1px solid rgba(42,47,61,0.5);cursor:pointer;transition:background 0.08s;}
+.rank-table tbody tr:hover{background:var(--panel);}
+.rank-table td{padding:8px 16px;vertical-align:middle;}
+.r-num{font-family:'Oswald',sans-serif;font-size:11px;color:var(--text3);width:30px;}
+.r-poster{width:36px;height:54px;object-fit:cover;border:1px solid var(--border);background:var(--panel);}
+.r-poster-ph{width:36px;height:54px;background:var(--panel);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.r-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--text);}
+.r-meta{font-size:10px;color:var(--text3);margin-top:1px;}
+.r-score{font-family:'Russo One',sans-serif;font-size:14px;color:var(--accent);text-align:right;}
+
+/* PERSON PAGE */
+.person-hero{padding:20px;border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:flex-start;}
+.person-photo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid var(--border2);}
+.person-photo-ph{width:90px;height:90px;border-radius:50%;background:var(--panel);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.person-name{font-family:'Russo One',sans-serif;font-size:22px;color:var(--text);margin-bottom:3px;}
+.person-known{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.person-bio{font-size:12px;color:var(--text2);line-height:1.5;font-weight:300;max-width:500px;}
+.person-stats{display:flex;gap:8px;margin-top:10px;}
+.pstat{background:var(--panel);border:1px solid var(--border);padding:6px 12px;text-align:center;}
+.pstat-val{font-family:'Russo One',sans-serif;font-size:16px;color:var(--accent);}
+.pstat-label{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
+
+/* WATCHLIST */
+.watchlist-empty{padding:60px 20px;text-align:center;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:200;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:32px 16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);max-width:680px;width:100%;position:relative;}
+.modal-close{position:absolute;top:10px;right:12px;font-size:22px;color:var(--text3);cursor:pointer;z-index:10;line-height:1;}
+.modal-close:hover{color:var(--text);}
+.modal-backdrop{width:100%;height:180px;object-fit:cover;display:block;}
+.modal-backdrop-ph{width:100%;height:180px;background:linear-gradient(135deg,var(--bg3),var(--border));display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--text3);}
+.modal-body{padding:16px;}
+.modal-top{display:flex;gap:14px;margin-bottom:14px;}
+.modal-poster{width:80px;height:120px;flex-shrink:0;object-fit:cover;border:1px solid var(--border);}
+.modal-poster-ph{width:80px;height:120px;flex-shrink:0;background:var(--panel);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.modal-title{font-family:'Russo One',sans-serif;font-size:20px;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.modal-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.modal-scores{display:flex;gap:6px;margin-bottom:8px;}
+.mscore{background:var(--bg3);border:1px solid var(--border);padding:5px 10px;text-align:center;}
+.mscore-val{font-family:'Russo One',sans-serif;font-size:16px;color:var(--accent);line-height:1;}
+.mscore-label{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-top:1px;}
+.modal-overview{font-size:12px;color:var(--text2);line-height:1.55;font-weight:300;margin-bottom:12px;}
+.modal-cast-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.modal-cast{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.cast-pill{background:var(--bg3);border:1px solid var(--border);padding:3px 8px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text2);cursor:pointer;transition:all 0.12s;}
+.cast-pill:hover{border-color:var(--accent);color:var(--accent);}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.mact-btn{padding:8px;border:none;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.12s;}
+.mact-btn:hover{opacity:0.8;}
+.btn-seen{background:var(--green);color:#fff;}
+.btn-wl{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);}
+.btn-rate{background:var(--accent);color:var(--bg2);}
+.star-row{display:flex;gap:3px;margin:8px 0 4px;}
+.star{font-size:20px;cursor:pointer;color:var(--text3);transition:color 0.1s;line-height:1;}
+.star.lit,.star:hover{color:var(--gold);}
+
+.loading-box{padding:40px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.no-results{padding:30px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+
+.search-section{padding:20px;}
+.search-title{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
+
+footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
+.footer-logo{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text2);}
+.footer-logo span{color:var(--accent);}
+.footer-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">FILM <span>CLUB</span></div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showPage('discover',this)">Discover</div>
+    <div class="nav-tab" onclick="showPage('rankings',this)">Rankings</div>
+    <div class="nav-tab" onclick="showPage('watchlist',this)">Watchlist</div>
+    <div class="nav-tab" onclick="showPage('people',this)">People</div>
+  </div>
+  <input type="text" class="nav-search" id="nav-search" placeholder="Search films, directors, actors..." oninput="handleSearch(this.value)">
+</nav>
+
+<div class="ticker" id="ticker-bar">
+  <span class="ticker-tag">Now</span>
+  <span id="ticker-text">Loading top films...</span>
+</div>
+
+<!-- DISCOVER -->
+<div class="page active" id="page-discover">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">Film Rankings · TMDB Community · Every Film Ever Made</div>
+      <div class="hero-title">Know Your <em>Taste.</em><br>Win Every Debate.</div>
+      <div class="hero-desc">Rate films, build your ranked list, and follow directors down every rabbit hole. Community scores built on millions of real votes — no algorithm, no nonsense.</div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><div class="stat-val">900k+</div><div class="stat-label">Films & Shows</div></div>
+      <div class="stat-card"><div class="stat-val">∞</div><div class="stat-label">Rabbit Holes</div></div>
+    </div>
+  </div>
+
+  <div class="genre-bar">
+    <div class="genre-btn active" onclick="setGenre('',this)">All</div>
+    <div class="genre-btn" onclick="setGenre('28',this)">Action</div>
+    <div class="genre-btn" onclick="setGenre('35',this)">Comedy</div>
+    <div class="genre-btn" onclick="setGenre('18',this)">Drama</div>
+    <div class="genre-btn" onclick="setGenre('27',this)">Horror</div>
+    <div class="genre-btn" onclick="setGenre('878',this)">Sci-Fi</div>
+    <div class="genre-btn" onclick="setGenre('53',this)">Thriller</div>
+    <div class="genre-btn" onclick="setGenre('10749',this)">Romance</div>
+    <div class="genre-btn" onclick="setGenre('99',this)">Documentary</div>
+    <div class="genre-btn" onclick="setGenre('80',this)">Crime</div>
+  </div>
+
+  <div class="section-wrap">
+    <div class="section-bar"><span class="section-title">Trending This Week</span></div>
+    <div class="film-grid" id="grid-trending"><div class="loading-box">Loading</div></div>
+    <div class="section-bar"><span class="section-title">All-Time Classics</span></div>
+    <div class="film-grid" id="grid-classics"><div class="loading-box">Loading</div></div>
+    <div class="section-bar"><span class="section-title">Hidden Gems — Under the Radar</span></div>
+    <div class="film-grid" id="grid-gems"><div class="loading-box">Loading</div></div>
+  </div>
+</div>
+
+<!-- RANKINGS -->
+<div class="page" id="page-rankings">
+  <div class="rankings-panel">
+    <div class="rank-controls">
+      <button class="rank-btn active" onclick="setRankMode('top_rated',this)">Top Rated</button>
+      <button class="rank-btn" onclick="setRankMode('popular',this)">Most Popular</button>
+      <button class="rank-btn" onclick="setRankMode('2020s',this)">2020s</button>
+      <button class="rank-btn" onclick="setRankMode('2010s',this)">2010s</button>
+      <button class="rank-btn" onclick="setRankMode('2000s',this)">2000s</button>
+      <button class="rank-btn" onclick="setRankMode('90s',this)">90s</button>
+      <button class="rank-btn" onclick="setRankMode('classics',this)">Pre-90s</button>
+    </div>
+    <div id="rank-body"><div class="loading-box">Loading</div></div>
+  </div>
+</div>
+
+<!-- WATCHLIST -->
+<div class="page" id="page-watchlist">
+  <div class="section-wrap">
+    <div class="section-bar" style="margin-top:8px;"><span class="section-title">My Watchlist</span></div>
+    <div id="watchlist-body"></div>
+    <div class="section-bar" style="margin-top:8px;"><span class="section-title">Already Seen</span></div>
+    <div id="seen-body"></div>
+  </div>
+</div>
+
+<!-- PEOPLE -->
+<div class="page" id="page-people">
+  <div style="padding:10px 20px;border-bottom:1px solid var(--border);background:var(--bg2);">
+    <input type="text" id="people-input" placeholder="Search any director or actor..." oninput="searchPeople(this.value)"
+      style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;padding:7px 10px;outline:none;">
+  </div>
+  <div id="people-results"></div>
+  <div id="person-detail" style="display:none;"></div>
+</div>
+
+<!-- SEARCH -->
+<div class="page" id="page-search">
+  <div class="search-section">
+    <div class="search-title" id="search-label">Search Results</div>
+    <div class="film-grid" id="search-grid"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="maybeCloseModal(event)">
+  <div class="modal" id="modal-inner">
+    <span class="modal-close" onclick="closeModal()">×</span>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">FILM <span>CLUB</span></div>
+  <div class="footer-meta">Source: TMDB · 900k+ Titles · Community Scores</div>
+</footer>
+
+<script>
+const KEY='17b640203a83e049f68fbdba95b2be09';
+const BASE='https://api.themoviedb.org/3';
+const IMG='https://image.tmdb.org/t/p/';
+const GENRES={28:'Action',35:'Comedy',18:'Drama',27:'Horror',878:'Sci-Fi',53:'Thriller',10749:'Romance',99:'Documentary',80:'Crime',14:'Fantasy',36:'History',10752:'War',16:'Animation',10751:'Family'};
+
+let currentGenre='';
+let currentRankMode='top_rated';
+let watchlist=JSON.parse(localStorage.getItem('fc_wl')||'[]');
+let seenList=JSON.parse(localStorage.getItem('fc_seen')||'[]');
+let myRatings=JSON.parse(localStorage.getItem('fc_ratings')||'{}');
+
+async function api(path,params={}){
+  const u=new URL(`${BASE}${path}`);
+  u.searchParams.set('api_key',KEY);
+  Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,String(v)));
+  const r=await fetch(u);
+  if(!r.ok) throw new Error('API error');
+  return r.json();
+}
+
+function filmCard(f){
+  const t=f.title||f.name||'Untitled';
+  const yr=(f.release_date||f.first_air_date||'').slice(0,4);
+  const score=f.vote_average?f.vote_average.toFixed(1):'—';
+  const poster=f.poster_path
+    ?`<img src="${IMG}w342${f.poster_path}" alt="${t}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
+    :`<div class="film-poster-ph">🎬</div>`;
+  const mt=f.media_type||'movie';
+  return `<div class="film-card" onclick="openFilm(${f.id},'${mt}')">
+    <div class="film-poster">${poster}<div class="film-score-badge">${score}</div></div>
+    <div class="film-info">
+      <div class="film-title">${t}</div>
+      <div class="film-meta">${yr}${f.vote_count?' · '+(f.vote_count/1000).toFixed(0)+'k':''}</div>
+    </div>
+  </div>`;
+}
+
+function rankRow(f,i){
+  const t=f.title||'Untitled';
+  const yr=(f.release_date||'').slice(0,4);
+  const score=f.vote_average?f.vote_average.toFixed(1):'—';
+  const gnames=(f.genre_ids||[]).map(id=>GENRES[id]).filter(Boolean).slice(0,2).join(' · ');
+  const poster=f.poster_path
+    ?`<img class="r-poster" src="${IMG}w92${f.poster_path}" alt="">`
+    :`<div class="r-poster-ph">🎬</div>`;
+  return `<tr onclick="openFilm(${f.id},'movie')" style="cursor:pointer;">
+    <td class="r-num">${i+1}</td>
+    <td style="width:44px;">${poster}</td>
+    <td><div class="r-name">${t}</div><div class="r-meta">${yr}${gnames?' · '+gnames:''}</div></td>
+    <td class="r-score">${score}</td>
+  </tr>`;
+}
+
+async function loadDiscover(){
+  try{
+    const gp=currentGenre?{with_genres:currentGenre}:{};
+    const [tr,cl,gm]=await Promise.all([
+      api('/trending/movie/week',gp),
+      api('/movie/top_rated',gp),
+      api('/discover/movie',{sort_by:'vote_average.desc',vote_count_lte:5000,vote_count_gte:500,...gp})
+    ]);
+    document.getElementById('grid-trending').innerHTML=tr.results.slice(0,8).map(filmCard).join('')||'<div class="no-results">No results</div>';
+    document.getElementById('grid-classics').innerHTML=cl.results.slice(0,8).map(filmCard).join('')||'<div class="no-results">No results</div>';
+    document.getElementById('grid-gems').innerHTML=gm.results.slice(0,8).map(filmCard).join('')||'<div class="no-results">No results</div>';
+    // ticker
+    const names=tr.results.slice(0,10).map(f=>`${f.title} ${f.vote_average?f.vote_average.toFixed(1):'—'}`).join(' · ');
+    document.getElementById('ticker-text').textContent=names;
+  }catch(e){
+    ['grid-trending','grid-classics','grid-gems'].forEach(id=>{
+      document.getElementById(id).innerHTML='<div class="no-results">Add a valid TMDB API key to load films.</div>';
+    });
+  }
+}
+
+async function loadRankings(){
+  const el=document.getElementById('rank-body');
+  el.innerHTML='<div class="loading-box">Loading</div>';
+  try{
+    let data;
+    const m=currentRankMode;
+    if(m==='top_rated') data=await api('/movie/top_rated');
+    else if(m==='popular') data=await api('/movie/popular');
+    else{
+      const ranges={'2020s':['2020-01-01','2029-12-31'],'2010s':['2010-01-01','2019-12-31'],'2000s':['2000-01-01','2009-12-31'],'90s':['1990-01-01','1999-12-31'],'classics':['1900-01-01','1989-12-31']};
+      const [from,to]=ranges[m];
+      data=await api('/discover/movie',{sort_by:'vote_average.desc','primary_release_date.gte':from,'primary_release_date.lte':to,vote_count_gte:500});
+    }
+    const rows=data.results.slice(0,25).map(rankRow).join('');
+    el.innerHTML=`<table class="rank-table"><thead><tr><th style="width:30px;">#</th><th style="width:44px;"></th><th>Film</th><th style="text-align:right;">Score</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }catch(e){el.innerHTML='<div class="no-results">Failed to load rankings.</div>';}
+}
+
+async function openFilm(id,mt='movie'){
+  const modal=document.getElementById('modal');
+  const content=document.getElementById('modal-content');
+  modal.classList.add('open');
+  content.innerHTML='<div class="loading-box">Loading</div>';
+  try{
+    const [film,credits]=await Promise.all([api(`/${mt}/${id}`),api(`/${mt}/${id}/credits`)]);
+    const t=film.title||film.name||'Untitled';
+    const yr=(film.release_date||film.first_air_date||'').slice(0,4);
+    const rt=film.runtime?`${Math.floor(film.runtime/60)}h ${film.runtime%60}m`:'';
+    const gnames=(film.genres||[]).map(g=>g.name).join(' · ');
+    const dirs=(credits.crew||[]).filter(c=>c.job==='Director').slice(0,2);
+    const cast=(credits.cast||[]).slice(0,8);
+    const isSeen=seenList.includes(id);
+    const isWL=watchlist.includes(id);
+    const myR=myRatings[id]||0;
+    const stars=[1,2,3,4,5].map(n=>`<span class="star${myR>=n?' lit':''}" onclick="rateFilm(${id},${n})" data-n="${n}">★</span>`).join('');
+    const backdrop=film.backdrop_path
+      ?`<img class="modal-backdrop" src="${IMG}w780${film.backdrop_path}" alt="">`
+      :`<div class="modal-backdrop-ph">🎬</div>`;
+    const poster=film.poster_path
+      ?`<img class="modal-poster" src="${IMG}w185${film.poster_path}" alt="">`
+      :`<div class="modal-poster-ph">🎬</div>`;
+    content.innerHTML=`
+      ${backdrop}
+      <div class="modal-body">
+        <div class="modal-top">
+          ${poster}
+          <div style="flex:1;">
+            <div class="modal-title">${t}</div>
+            <div class="modal-meta">${yr}${rt?' · '+rt:''}${gnames?' · '+gnames:''}</div>
+            <div class="modal-scores">
+              <div class="mscore"><div class="mscore-val">${film.vote_average?film.vote_average.toFixed(1):'—'}</div><div class="mscore-label">Score</div></div>
+              <div class="mscore"><div class="mscore-val">${film.vote_count?(film.vote_count/1000).toFixed(0)+'k':'—'}</div><div class="mscore-label">Votes</div></div>
+              ${myR?`<div class="mscore"><div class="mscore-val" style="color:var(--gold);">${'★'.repeat(myR)}</div><div class="mscore-label">Yours</div></div>`:''}
+            </div>
+            <div class="star-row" id="stars-${id}">${stars}</div>
+            ${dirs.length?`<div style="font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;">Directed by</div><div style="display:flex;gap:5px;flex-wrap:wrap;">${dirs.map(d=>`<span class="cast-pill" onclick="openPerson(${d.id})">${d.name}</span>`).join('')}</div>`:''}
+          </div>
+        </div>
+        ${film.overview?`<div class="modal-overview">${film.overview}</div>`:''}
+        ${cast.length?`<div class="modal-cast-label">Cast</div><div class="modal-cast">${cast.map(c=>`<span class="cast-pill" onclick="openPerson(${c.id})">${c.name}</span>`).join('')}</div>`:''}
+        <div class="modal-actions">
+          <button class="mact-btn btn-seen" onclick="toggleSeen(${id})">${isSeen?'✓ Seen':'Mark Seen'}</button>
+          <button class="mact-btn btn-wl" onclick="toggleWL(${id})">${isWL?'✓ Listed':'+ Watchlist'}</button>
+          <button class="mact-btn btn-rate" onclick="openPerson(${dirs[0]?.id||0})">Director →</button>
+        </div>
+      </div>`;
+  }catch(e){content.innerHTML='<div class="loading-box">Failed to load film.</div>';}
+}
+
+function rateFilm(id,n){
+  myRatings[id]=n;
+  localStorage.setItem('fc_ratings',JSON.stringify(myRatings));
+  const row=document.getElementById(`stars-${id}`);
+  if(row) row.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('lit',i<n));
+}
+
+function toggleSeen(id){
+  if(seenList.includes(id)) seenList=seenList.filter(x=>x!==id);
+  else{seenList.push(id);watchlist=watchlist.filter(x=>x!==id);}
+  localStorage.setItem('fc_seen',JSON.stringify(seenList));
+  localStorage.setItem('fc_wl',JSON.stringify(watchlist));
+}
+
+function toggleWL(id){
+  if(watchlist.includes(id)) watchlist=watchlist.filter(x=>x!==id);
+  else if(!seenList.includes(id)) watchlist.push(id);
+  localStorage.setItem('fc_wl',JSON.stringify(watchlist));
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function maybeCloseModal(e){if(e.target===document.getElementById('modal')) closeModal();}
+
+async function openPerson(id){
+  if(!id) return;
+  showPage('people',document.querySelectorAll('.nav-tab')[3]);
+  const detail=document.getElementById('person-detail');
+  document.getElementById('people-results').style.display='none';
+  detail.style.display='block';
+  detail.innerHTML='<div class="loading-box">Loading</div>';
+  closeModal();
+  try{
+    const [p,cr]=await Promise.all([api(`/person/${id}`),api(`/person/${id}/combined_credits`)]);
+    const photo=p.profile_path
+      ?`<img class="person-photo" src="${IMG}w185${p.profile_path}" alt="">`
+      :`<div class="person-photo-ph">👤</div>`;
+    const dept=p.known_for_department||'Acting';
+    const films=[...(cr.cast||[]),(dept==='Directing'?cr.crew||[]:cr.crew||[]).filter(c=>c.job==='Director')]
+      .flat().filter(f=>(f.vote_count||0)>50&&(f.title||f.name))
+      .sort((a,b)=>b.vote_average-a.vote_average)
+      .filter((f,i,arr)=>arr.findIndex(x=>x.id===f.id)===i)
+      .slice(0,16);
+    const avg=films.length?(films.reduce((s,f)=>s+(f.vote_average||0),0)/films.length).toFixed(1):'—';
+    detail.innerHTML=`
+      <div class="person-hero">
+        ${photo}
+        <div>
+          <div class="person-name">${p.name}</div>
+          <div class="person-known">${dept}</div>
+          <div class="person-bio">${(p.biography||'').slice(0,280)}${p.biography&&p.biography.length>280?'…':''}</div>
+          <div class="person-stats">
+            <div class="pstat"><div class="pstat-val">${films.length}</div><div class="pstat-label">Films</div></div>
+            <div class="pstat"><div class="pstat-val">${avg}</div><div class="pstat-label">Avg Score</div></div>
+            ${p.birthday?`<div class="pstat"><div class="pstat-val">${new Date().getFullYear()-parseInt(p.birthday.slice(0,4))}</div><div class="pstat-label">Age</div></div>`:''}
+          </div>
+        </div>
+      </div>
+      <div class="section-wrap">
+        <div class="section-bar"><span class="section-title">Filmography — Ranked by Score</span></div>
+        <div class="film-grid">${films.map(filmCard).join('')}</div>
+      </div>`;
+  }catch(e){detail.innerHTML='<div class="loading-box">Failed to load.</div>';}
+}
+
+async function searchPeople(q){
+  const res=document.getElementById('people-results');
+  document.getElementById('person-detail').style.display='none';
+  res.style.display='';
+  if(!q.trim()){res.innerHTML='';return;}
+  try{
+    const data=await api('/search/person',{query:q});
+    res.innerHTML=data.results.slice(0,10).map(p=>`
+      <div onclick="openPerson(${p.id})" style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;" onmouseover="this.style.background='var(--panel)'" onmouseout="this.style.background=''">
+        ${p.profile_path?`<img src="${IMG}w92${p.profile_path}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;">`:`<div style="width:38px;height:38px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>`}
+        <div>
+          <div style="font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--text);">${p.name}</div>
+          <div style="font-size:10px;color:var(--text3);">${p.known_for_department||'Actor'} · ${(p.known_for||[]).map(f=>f.title||f.name).slice(0,2).join(' · ')}</div>
+        </div>
+      </div>`).join('')||'<div class="no-results">No results</div>';
+  }catch(e){}
+}
+
+let searchTimer;
+function handleSearch(q){
+  clearTimeout(searchTimer);
+  if(!q.trim()){if(document.getElementById('page-search').classList.contains('active')) showPage('discover',document.querySelectorAll('.nav-tab')[0]);return;}
+  searchTimer=setTimeout(async()=>{
+    showPage('search',null);
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('search-label').textContent=`Results for "${q}"`;
+    try{
+      const data=await api('/search/multi',{query:q});
+      const films=data.results.filter(r=>r.media_type==='movie'||r.media_type==='tv');
+      document.getElementById('search-grid').innerHTML=films.map(filmCard).join('')||'<div class="no-results">No results found.</div>';
+    }catch(e){document.getElementById('search-grid').innerHTML='<div class="no-results">Search unavailable.</div>';}
+  },400);
+}
+
+function renderWatchlist(){
+  const wlEl=document.getElementById('watchlist-body');
+  const snEl=document.getElementById('seen-body');
+  if(!watchlist.length) wlEl.innerHTML='<div class="watchlist-empty">Nothing on your watchlist yet · Browse films and add them</div>';
+  else{
+    wlEl.innerHTML='<div class="film-grid" id="wl-grid"><div class="loading-box">Loading</div></div>';
+    Promise.all(watchlist.map(id=>api(`/movie/${id}`))).then(films=>{document.getElementById('wl-grid').innerHTML=films.map(filmCard).join('');}).catch(()=>{});
+  }
+  if(!seenList.length) snEl.innerHTML='<div class="watchlist-empty">Nothing marked as seen yet</div>';
+  else{
+    snEl.innerHTML='<div class="film-grid" id="sn-grid"><div class="loading-box">Loading</div></div>';
+    Promise.all(seenList.slice(0,24).map(id=>api(`/movie/${id}`))).then(films=>{document.getElementById('sn-grid').innerHTML=films.map(filmCard).join('');}).catch(()=>{});
+  }
+}
+
+function setGenre(g,btn){
+  currentGenre=g;
+  document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['grid-trending','grid-classics','grid-gems'].forEach(id=>document.getElementById(id).innerHTML='<div class="loading-box">Loading</div>');
+  loadDiscover();
+}
+
+function setRankMode(m,btn){
+  currentRankMode=m;
+  document.querySelectorAll('.rank-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  loadRankings();
+}
+
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id)?.classList.add('active');
+  if(el) el.classList.add('active');
+  if(id==='watchlist') renderWatchlist();
+  if(id==='rankings') loadRankings();
+  if(id==='people'){document.getElementById('person-detail').style.display='none';document.getElementById('people-results').style.display='';}
+}
+
+loadDiscover();
+</script>
+</body>
+</html>
