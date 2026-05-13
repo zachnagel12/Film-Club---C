@@ -864,6 +864,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .import-go:hover{opacity:0.88;}
 .import-go:disabled{background:var(--border2);cursor:not-allowed;}
 .import-status{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);padding:8px 12px;background:var(--bg3);border:1px solid var(--border);margin-bottom:12px;}
+.import-rescale-notice{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text);padding:9px 12px;background:rgba(244,185,82,0.12);border:1px solid var(--gold);border-left:3px solid var(--gold);margin-bottom:12px;line-height:1.4;}
 .import-progress{height:3px;background:var(--bg3);border:1px solid var(--border);position:relative;overflow:hidden;margin-bottom:12px;}
 .import-progress-fill{height:100%;background:var(--accent);transition:width 0.25s ease-out;}
 .import-results{max-height:300px;overflow-y:auto;border:1px solid var(--border);background:var(--panel);}
@@ -1492,7 +1493,7 @@ function setOfflineMode(){
 }
 
 // Bootstrap once Supabase module finishes loading
-function initSupabase(){
+async function initSupabase(){
   if(window.SUPABASE_READY&&window.supabaseClient){
     sb=window.supabaseClient;
     let inRecovery=false;
@@ -1504,34 +1505,38 @@ function initSupabase(){
         switchAuthTab('reset');
       }
     });
-    // Always show the auth screen on page load — no silent session resume.
-    // If Supabase has a persisted session from a previous visit, sign it out so
-    // the next sign-in is an explicit, deliberate action by the user. We still
-    // pre-fill the email field as a convenience for returning users.
+    // On boot: if Supabase has a valid persisted session, resume into the app.
+    // Only show the auth screen when there's no session. Page refreshes used
+    // to force a re-login (a deliberate earlier design choice for "explicit
+    // sign-in") but the friction wasn't worth it — users expect refresh to
+    // keep them logged in.
     setTimeout(async ()=>{
       if(inRecovery) return;
       try{
         const {data}=await sb.auth.getSession();
-        if(data&&data.session){
-          // Capture the email for pre-fill BEFORE signing out
-          const lastEmail=data.session.user&&data.session.user.email;
-          await sb.auth.signOut();
-          if(lastEmail){
-            try{
-              localStorage.setItem('fc_last_email',lastEmail);
-            }catch(e){}
-          }
+        if(data&&data.session&&data.session.user){
+          // Resume — go straight into the app
+          await handleLoggedIn(data.session.user,{skipLoader:true});
+          return;
         }
-      }catch(e){/* ignore — fall through to auth screen */}
+      }catch(e){/* fall through to auth screen */}
       showAuthScreen();
       prefillLastEmail();
     },50);
   } else {
     setOfflineMode();
-    // Offline mode: always show login. No silent guest-session restore.
-    // Clear the stale guest pointer so a subsequent page load doesn't keep
-    // trying to resume into a session the user never confirmed.
-    try{localStorage.removeItem('fc_guest_session');}catch(e){}
+    // Offline mode: try to restore the guest pointer if we set one previously;
+    // otherwise show the auth screen.
+    try{
+      const guest=localStorage.getItem('fc_guest_session');
+      if(guest){
+        const u=JSON.parse(guest);
+        if(u&&u.id){
+          await handleLoggedIn(u,{skipLoader:true,isGuest:true});
+          return;
+        }
+      }
+    }catch(e){}
     showAuthScreen();
     prefillLastEmail();
   }
@@ -1838,9 +1843,8 @@ async function handleLoggedIn(supabaseUser,opts={}){
   }
   if(!currentUser) return;
 
-  // Remember the email for the next page-load's pre-fill convenience.
-  // (We do NOT auto-resume sessions — see initSupabase. The user must
-  // re-enter their password every visit.)
+  // Remember the email for the next page-load's pre-fill convenience
+  // (used when the session expires and the user has to sign in again).
   try{
     if(currentUser.email) localStorage.setItem('fc_last_email',currentUser.email);
   }catch(e){}
@@ -3846,7 +3850,8 @@ function interpretCSV(rows){
     const r2=ratingIdx>=0?parseRating(r[ratingIdx]):null;
     const rating=r2?r2.snapped:null;
     const originalRating=r2?r2.original:null;
-    out.push({title,year,rating,originalRating,raw:r.join(', ')});
+    const fromBare=r2?!!r2.fromBareNumber:false;
+    out.push({title,year,rating,originalRating,fromBare,raw:r.join(', ')});
   }
   return out;
 }
@@ -3864,13 +3869,13 @@ function parseLines(text){
     // Skip lines that look like headers
     if(/^(rating|score|year|title|name|film|movie|date)s?$/i.test(line)) continue;
 
-    let rating=null,originalRating=null,year=null,title=line;
+    let rating=null,originalRating=null,fromBare=false,year=null,title=line;
 
     // Rating: trailing " - 8.5", " — 8.34", ", 8.5", "\t8.5", " | 8.5" (any decimal precision)
     const ratingMatch=line.match(/\s*[-—–,|\t]\s*(\d{1,2}(?:\.\d+)?|\d?\.\d+)(?:\s*\/\s*\d+)?\s*\*?\s*$/);
     if(ratingMatch){
       const r2=parseRating(ratingMatch[1]);
-      if(r2){rating=r2.snapped;originalRating=r2.original;}
+      if(r2){rating=r2.snapped;originalRating=r2.original;fromBare=!!r2.fromBareNumber;}
       title=line.slice(0,ratingMatch.index).trim();
     } else {
       // Letterboxd-style trailing "★★★★½"
@@ -3882,6 +3887,8 @@ function parseLines(text){
         const v=Math.max(0,Math.min(10,n*2));
         rating=snap01(v);
         originalRating=v;
+        // Stars are already 0-5 doubled to 0-10; not a bare number
+        fromBare=false;
         title=line.slice(0,starMatch.index).trim();
       }
     }
@@ -3899,7 +3906,7 @@ function parseLines(text){
 
     title=title.replace(/^["'\u2018\u201C]+|["'\u2019\u201D]+$/g,'').trim();
     if(title.length<2) continue;
-    out.push({title,year,rating,originalRating,raw});
+    out.push({title,year,rating,originalRating,fromBare,raw});
   }
   return out;
 }
@@ -3911,18 +3918,27 @@ function parseYear(v){
 }
 
 // Accepts a rating string in any of these shapes:
-//   - "8.5" / "8.34" / "7" — bare number, any decimal precision
-//   - "8/10" / "4/5" / "85/100" — explicit fraction
-//   - "★★★★½" — star glyphs with optional half
-// Returns {snapped, original} where:
-//   - snapped: on 0–10, rounded to the nearest 0.5
-//   - original: pre-snap 0–10 value (so callers can detect lost precision)
+//   - "8.5" / "8.34" / "7" — bare number on a 0-10 scale (literal)
+//   - "8/10" / "4/5" / "85/100" — explicit fraction, normalized to 0-10
+//   - "★★★★½" — star glyphs (0-5 scale), doubled to 0-10
+// Returns {snapped, original, fromBareNumber} where:
+//   - snapped: 0-10 rounded to nearest 0.1
+//   - original: pre-snap 0-10 value (so callers can detect lost precision)
+//   - fromBareNumber: true if input was a bare number (caller may apply
+//                     a dataset-level 0-5 → 0-10 rescaling)
 // Returns null if v can't be interpreted.
+//
+// IMPORTANT: bare numbers are NOT silently doubled per-row. An earlier version
+// did `if (n <= 5) n *= 2` which destroyed legitimate 0-10 ratings of 5 or
+// less ("4.5" became 9.0). Now bare numbers are taken literally; if the
+// entire pasted dataset is on a 0-5 scale, the import pipeline rescales it
+// in one pass after parsing (see rescaleIfNeeded).
 function parseRating(v){
   if(v===null||v===undefined) return null;
   const s=String(v).trim();
   if(!s) return null;
   let original=null;
+  let fromBareNumber=false;
   // Fractional form: "8/10", "4/5", "85/100"
   const slash=s.match(/^(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
   if(slash){
@@ -3932,19 +3948,20 @@ function parseRating(v){
   } else if(/[★⭐]/.test(s)){
     let n=(s.match(/[★⭐]/g)||[]).length;
     if(/½/.test(s)) n+=0.5;
-    original=n*2;
+    original=n*2;  // stars are 0-5; double to 0-10
   } else {
     const n=parseFloat(s);
     if(isNaN(n)) return null;
-    // Scale heuristic: a value ≤5 is 0–5 (Letterboxd-style) and gets doubled.
-    // 5< n ≤10 is treated as 0–10. 10< n ≤100 is treated as percentage.
-    if(n>0&&n<=5) original=n*2;
-    else if(n<=10) original=n;
+    // Two clear cases left:
+    //  - 0-10 literal (most common — what the user typed)
+    //  - >10 percentage (divide by 10)
+    // We DO NOT auto-double 0-5 values per-row anymore.
+    if(n>=0&&n<=10) {original=n; fromBareNumber=true;}
     else if(n<=100) original=n/10;
     else return null;
   }
   original=Math.max(0,Math.min(10,original));
-  return {snapped:snap01(original),original};
+  return {snapped:snap01(original),original,fromBareNumber};
 }
 function snap05(n){return Math.max(0,Math.min(10,Math.round(n*2)/2));}
 
@@ -3987,11 +4004,37 @@ async function runImport(items){
   const truncated=items.length>CAP;
   if(truncated) items=items.slice(0,CAP);
 
+  // ---- Dataset-level scale detection ----
+  // If every bare-number rating in the file is ≤5 AND at least one is >0,
+  // the source was almost certainly using a 0–5 scale (Letterboxd-style).
+  // Rescale to 0–10 in one pass. Fractions like "8/10" and star glyphs
+  // already arrive normalized, so they're excluded from this check.
+  const bareValues=items
+    .filter(it=>it.fromBare && it.originalRating!=null && it.originalRating>0)
+    .map(it=>it.originalRating);
+  let rescaled=false;
+  if(bareValues.length>=2){
+    const maxBare=Math.max(...bareValues);
+    if(maxBare<=5){
+      // Treat as 0–5 → double everything. Mark items so the preview can
+      // explain to the user what happened.
+      for(const it of items){
+        if(it.fromBare && it.originalRating!=null){
+          it.originalRating=Math.min(10,it.originalRating*2);
+          it.rating=snap01(it.originalRating);
+          it.rescaled=true;
+        }
+      }
+      rescaled=true;
+    }
+  }
+
   _importRunning=true;
   const preview=document.getElementById('import-preview');
   preview.style.display='';
   preview.innerHTML=`
     <div class="import-status" id="ix-status">Matching ${items.length} title${items.length===1?'':'s'} to TMDB…</div>
+    ${rescaled?'<div class="import-rescale-notice">Detected a 0\u20135 scale in your data \u2014 doubled all ratings to fit Film Club\u2019s 0\u201310 scale.</div>':''}
     <div class="import-progress"><div class="import-progress-fill" id="ix-progress" style="width:0%;"></div></div>
     <div class="import-results" id="ix-results"></div>
   `;
