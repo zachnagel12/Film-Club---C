@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Film Club — Know What to Watch. Win Every Debate.</title>
+<title>Film Club — Know What to Watch.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Oswald:wght@300;400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
@@ -164,46 +164,11 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .r-meta{font-size:10px;color:var(--text3);margin-top:1px;}
 .r-score{font-family:'Russo One',sans-serif;font-size:14px;color:var(--accent);text-align:right;}
 
-/* DEBATE */
-.debate-head{padding:22px 20px 14px;border-bottom:1px solid var(--border);}
-.debate-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
-.debate-title{font-family:'Russo One',sans-serif;font-size:26px;line-height:1.0;color:var(--text);margin-bottom:6px;}
-.debate-sub{font-size:13px;color:var(--text2);font-weight:300;max-width:560px;line-height:1.5;}
-.debate-tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;}
-.debate-tab{flex:1;padding:9px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;min-width:120px;}
-.debate-tab.active{color:var(--text);border-bottom:2px solid var(--accent);}
-.debate-tab:hover:not(.active){color:var(--text2);}
-
-.takes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;padding:18px 20px;}
-.take-card{background:var(--panel);border:1px solid var(--border);padding:14px;cursor:pointer;transition:all 0.12s;border-left:3px solid var(--accent);}
-.take-card:hover{border-left-color:var(--accent2);transform:translateY(-1px);box-shadow:0 2px 8px rgba(26,22,16,0.06);}
-.take-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;font-weight:600;}
-.take-headline{font-family:'Russo One',sans-serif;font-size:16px;color:var(--text);line-height:1.15;margin-bottom:6px;}
-.take-film{font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:8px;}
-.take-stat{display:flex;align-items:baseline;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
-.take-stat-val{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);}
-.take-stat-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
-
-/* COMPARE */
-.compare-wrap{padding:20px;max-width:920px;margin:0 auto;}
-.compare-head{text-align:center;margin-bottom:18px;}
-.compare-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:14px;align-items:stretch;}
-.compare-slot{background:var(--panel);border:1px solid var(--border);padding:14px;min-height:280px;display:flex;flex-direction:column;}
-.compare-empty{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--text3);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;text-align:center;padding:30px;}
-.compare-empty-btn{padding:8px 14px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;}
-.compare-vs{display:flex;align-items:center;justify-content:center;font-family:'Russo One',sans-serif;font-size:24px;color:var(--accent);}
-.compare-poster{width:100%;aspect-ratio:2/3;object-fit:cover;border:1px solid var(--border);margin-bottom:10px;}
-.compare-poster-ph{width:100%;aspect-ratio:2/3;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:36px;}
-.compare-film-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--text);line-height:1.1;margin-bottom:3px;}
-.compare-film-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;}
-.compare-stats{display:flex;flex-direction:column;gap:6px;margin-top:auto;}
-.compare-stat{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:var(--bg3);border:1px solid var(--border);}
-.compare-stat-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
-.compare-stat-val{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);}
-.compare-stat.winner .compare-stat-val{color:var(--accent);}
-.compare-stat.winner{background:rgba(176,96,48,0.08);border-color:var(--accent);}
-.compare-clear{margin-top:8px;padding:5px;background:transparent;border:1px solid var(--border);color:var(--text3);font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;}
-.compare-clear:hover{color:var(--text2);border-color:var(--border2);}
+/* History page subtab strip (Director / Actor / Actress) */
+.hist-subtabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.hist-subtab{flex:1;padding:9px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;min-width:120px;}
+.hist-subtab.active{color:var(--text);border-bottom:2px solid var(--accent);}
+.hist-subtab:hover:not(.active){color:var(--text2);}
 
 /* TASTE */
 .taste-wrap{padding:22px 20px;}
@@ -280,8 +245,6 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .btn-seen.inactive{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
 .btn-wl{background:var(--accent);color:var(--bg2);}
 .btn-wl.inactive{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
-.btn-compare{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);width:100%;margin-bottom:14px;}
-.btn-compare:hover{border-color:var(--accent);color:var(--accent);}
 .star-row{display:flex;gap:3px;margin:8px 0 4px;}
 .star-cell{position:relative;display:inline-block;width:24px;height:24px;font-size:22px;line-height:1;}
 .star-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text3);pointer-events:none;transition:color 0.1s;}
@@ -463,30 +426,30 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 
 /* OSCARS CURTAIN — stage-reveal animation when entering Film History */
 #oscars-curtain{position:fixed;inset:0;z-index:150;pointer-events:none;overflow:hidden;}
-#oscars-curtain .oc-panel{position:absolute;top:0;bottom:0;width:55%;background:
+#oscars-curtain .oc-panel{position:absolute;top:0;bottom:0;width:50%;background:
   /* vertical velvet pleats — subtle striping in the gradient */
   repeating-linear-gradient(90deg,rgba(0,0,0,0.18) 0,rgba(0,0,0,0.18) 1px,transparent 1px,transparent 28px),
   linear-gradient(180deg,#1a1410 0%,#2a201a 35%,#1a1410 80%);
   box-shadow:inset 0 0 60px rgba(0,0,0,0.6);
-  transform:translateX(-110%);
+  transform:translateX(-101%);
   transition:transform 0.48s cubic-bezier(0.7,0.0,0.3,1);
   will-change:transform;}
-#oscars-curtain .oc-left{left:0;border-right:1px solid rgba(244,185,82,0.4);}
-#oscars-curtain .oc-right{right:0;transform:translateX(110%);border-left:1px solid rgba(244,185,82,0.4);}
-/* Soft gold spotlight on the gap between the curtains when they meet */
+#oscars-curtain .oc-left{left:0;}
+#oscars-curtain .oc-right{right:0;transform:translateX(101%);}
+/* Gold seam glow centered between the two closed panels */
 #oscars-curtain .oc-glow{position:absolute;top:0;bottom:0;left:50%;width:0;
-  background:radial-gradient(ellipse 50% 70% at 50% 35%, rgba(244,185,82,0.35), rgba(230,162,58,0.1) 40%, transparent 70%);
+  background:radial-gradient(ellipse 50% 70% at 50% 35%, rgba(244,185,82,0.4), rgba(230,162,58,0.12) 40%, transparent 70%);
   transform:translateX(-50%);
   opacity:0;
-  transition:opacity 0.35s ease-out;
+  transition:opacity 0.35s ease-out, width 0.35s ease-out;
   pointer-events:none;}
-/* Closing phase: panels slide in to meet, glow fades up to peak */
+/* Closing phase: panels meet exactly at 50%, glow blooms */
 #oscars-curtain.oc-closing .oc-left{transform:translateX(0%);}
 #oscars-curtain.oc-closing .oc-right{transform:translateX(0%);}
-#oscars-curtain.oc-closing .oc-glow{opacity:1;width:100%;}
+#oscars-curtain.oc-closing .oc-glow{opacity:1;width:30%;}
 /* Opening phase: panels sweep apart, glow fades */
-#oscars-curtain.oc-opening .oc-left{transform:translateX(-110%);transition:transform 0.52s cubic-bezier(0.4,0.0,0.2,1);}
-#oscars-curtain.oc-opening .oc-right{transform:translateX(110%);transition:transform 0.52s cubic-bezier(0.4,0.0,0.2,1);}
+#oscars-curtain.oc-opening .oc-left{transform:translateX(-101%);transition:transform 0.52s cubic-bezier(0.4,0.0,0.2,1);}
+#oscars-curtain.oc-opening .oc-right{transform:translateX(101%);transition:transform 0.52s cubic-bezier(0.4,0.0,0.2,1);}
 #oscars-curtain.oc-opening .oc-glow{opacity:0;transition:opacity 0.3s ease-in;}
 
 /* CLUBS page */
@@ -603,11 +566,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .history-mode{flex:1;padding:11px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#7a6c54;cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;}
 .history-mode.active{color:#f5e9d4;border-bottom:2px solid #e6a23a;}
 .history-mode:hover:not(.active){color:#a89678;}
-/* Scoped debate-tab restyle (Director/Actor/Actress subtabs) — only inside History */
-#page-history .debate-tabs{background:#221a14;border-bottom:1px solid #2a201a;}
-#page-history .debate-tab{color:#7a6c54;}
-#page-history .debate-tab.active{color:#f5e9d4;border-bottom:2px solid #e6a23a;}
-#page-history .debate-tab:hover:not(.active){color:#a89678;}
+/* Scoped History dark-theme subtab restyle */
+#page-history .hist-subtabs{background:#221a14;border-bottom:1px solid #2a201a;}
+#page-history .hist-subtab{color:#7a6c54;}
+#page-history .hist-subtab.active{color:#f5e9d4;border-bottom:2px solid #e6a23a;}
+#page-history .hist-subtab:hover:not(.active){color:#a89678;}
 /* Leaderboard rows */
 #page-history .lb-row{display:grid;grid-template-columns:40px 1fr auto auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #2a201a;}
 #page-history .lb-rank{font-family:'Russo One',sans-serif;font-size:18px;color:#e6a23a;text-align:right;}
@@ -793,21 +756,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   .r-meta{font-size:9px;}
   .r-score{font-size:13px;}
 
-  /* Debate */
-  .debate-head{padding:16px 14px 12px;}
-  .debate-title{font-size:22px;}
-  .debate-sub{font-size:12px;}
-  .debate-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  .debate-tab{min-width:auto;padding:9px 14px;font-size:9px;letter-spacing:0.1em;}
-  .takes-grid{grid-template-columns:1fr;padding:14px;gap:10px;}
-  .take-card{padding:12px;}
-  .take-headline{font-size:15px;}
-
-  /* Compare */
-  .compare-wrap{padding:14px;}
-  .compare-grid{grid-template-columns:1fr;}
-  .compare-vs{padding:8px 0;font-size:20px;}
-  .compare-slot{min-height:auto;padding:12px;}
+  /* History subtab strip */
+  .hist-subtabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .hist-subtab{min-width:auto;padding:9px 14px;font-size:9px;letter-spacing:0.1em;}
 
   /* Filmography */
   .filmography-head{padding:16px 14px 12px;}
@@ -878,7 +829,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   <div class="auth-bg"></div>
   <div class="auth-card">
     <div class="auth-logo">FILM <span>CLUB</span></div>
-    <div class="auth-tagline">Know What To Watch · Win Every Debate</div>
+    <div class="auth-tagline">Know What To Watch · Built Around Film</div>
 
     <div class="auth-offline-banner" id="auth-offline-banner" style="display:none;">
       <strong>Offline mode</strong> — Supabase not configured. Data stays on this device.
@@ -1041,8 +992,6 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   <div class="nav-tabs">
     <div class="nav-tab active" onclick="showPage('discover',this)">Discover</div>
     <div class="nav-tab" onclick="showPage('rankings',this)">Rankings</div>
-    <div class="nav-tab" onclick="showPage('debate',this)">The Debate</div>
-    <div class="nav-tab" onclick="showPage('compare',this)">Compare</div>
     <div class="nav-tab" onclick="showPage('filmography',this)">My Filmography</div>
     <div class="nav-tab" onclick="showPage('clubs',this)">Clubs</div>
     <div class="nav-tab" onclick="showPage('history',this)">Film History</div>
@@ -1070,11 +1019,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   <div class="hero">
     <div>
       <div class="hero-eyebrow">Film Rankings · Built On Real Votes · No Algorithm</div>
-      <div class="hero-title">Know Your <em>Taste.</em><br>Win Every Debate.</div>
+      <div class="hero-title">Know Your <em>Taste.</em><br>Built Around Film.</div>
       <div class="hero-desc">Rate films, build your ranked list, and follow directors down every rabbit hole. Community scores from millions of votes — no algorithm, no nonsense.</div>
       <div class="hero-cta">
-        <button class="hero-cta-btn hero-cta-primary" onclick="showPage('debate',document.querySelectorAll('.nav-tab')[2])">Today's Debates →</button>
-        <button class="hero-cta-btn hero-cta-secondary" onclick="showPage('rankings',document.querySelectorAll('.nav-tab')[1])">Rankings</button>
+        <button class="hero-cta-btn hero-cta-primary" onclick="showPage('rankings',document.querySelectorAll('.nav-tab')[1])">Rankings →</button>
+        <button class="hero-cta-btn hero-cta-secondary" onclick="showPage('history',document.querySelectorAll('.nav-tab')[4])">Film History</button>
       </div>
     </div>
     <div class="now-showing">
@@ -1130,38 +1079,6 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
       <button class="rank-btn" onclick="setRankMode('classics',this)">30s &amp; earlier</button>
     </div>
     <div id="rank-body"><div class="loading-box">Loading</div></div>
-  </div>
-</div>
-
-<!-- DEBATE -->
-<div class="page" id="page-debate">
-  <div class="debate-head">
-    <div class="debate-eyebrow">The Hot Takes Desk</div>
-    <div class="debate-title">Today's Debates</div>
-    <div class="debate-sub">Films generating arguments right now — overrated darlings, sleeper hits the algorithm forgot, and recent releases dividing the room. Click any take to open the case file.</div>
-  </div>
-  <div class="debate-tabs">
-    <button class="debate-tab active" onclick="setDebateMode('underrated',this)">Underrated</button>
-    <button class="debate-tab" onclick="setDebateMode('overrated',this)">Overrated</button>
-    <button class="debate-tab" onclick="setDebateMode('recent',this)">Recent &amp; Divisive</button>
-    <button class="debate-tab" onclick="setDebateMode('cult',this)">Cult Status</button>
-  </div>
-  <div id="debate-body"><div class="loading-box">Loading</div></div>
-</div>
-
-<!-- COMPARE -->
-<div class="page" id="page-compare">
-  <div class="compare-wrap">
-    <div class="compare-head">
-      <div class="debate-eyebrow">Head To Head</div>
-      <div class="debate-title">Compare Films</div>
-      <div class="debate-sub" style="margin:0 auto;">Pick two films. We line up the numbers and call the winners. Open any film and hit <em>Compare</em> to add it.</div>
-    </div>
-    <div class="compare-grid">
-      <div class="compare-slot" id="compare-a"></div>
-      <div class="compare-vs">VS</div>
-      <div class="compare-slot" id="compare-b"></div>
-    </div>
   </div>
 </div>
 
@@ -1239,10 +1156,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 
   <!-- LEADERBOARDS -->
   <div id="history-leaderboards" class="history-pane">
-    <div class="debate-tabs" style="margin-bottom:0;">
-      <button class="debate-tab active" id="lb-tab-director" onclick="setLeaderboard('director',this)">Directors</button>
-      <button class="debate-tab" id="lb-tab-actor" onclick="setLeaderboard('actor',this)">Actors</button>
-      <button class="debate-tab" id="lb-tab-actress" onclick="setLeaderboard('actress',this)">Actresses</button>
+    <div class="hist-subtabs" style="margin-bottom:0;">
+      <button class="hist-subtab active" id="lb-tab-director" onclick="setLeaderboard('director',this)">Directors</button>
+      <button class="hist-subtab" id="lb-tab-actor" onclick="setLeaderboard('actor',this)">Actors</button>
+      <button class="hist-subtab" id="lb-tab-actress" onclick="setLeaderboard('actress',this)">Actresses</button>
     </div>
     <div id="leaderboard-body" style="padding:18px 20px;"></div>
   </div>
@@ -1349,12 +1266,10 @@ let syncTimer=null;           // Debounce for cloud writes
 // even if Supabase module loads before the rest of this script
 let currentGenre='';
 let currentRankMode='top_rated';
-let currentDebateMode='underrated';
 let currentFgTab='overview';
 let watchlist=[];
 let seenList=[];
 let myRatings={};
-let compareList=[];
 let myOscars={};
 let filmCache={};
 let pickerCategory=null;
@@ -1458,7 +1373,6 @@ function loadUserDataLocal(){
   const {out,changed}=migrateRatings(raw);
   myRatings=out;
   if(changed) localStorage.setItem(userKey('ratings'),JSON.stringify(myRatings));
-  compareList=JSON.parse(localStorage.getItem(userKey('compare'))||'[]');
   myOscars=JSON.parse(localStorage.getItem(userKey('oscars'))||'{}');
 }
 
@@ -1473,18 +1387,16 @@ async function loadUserDataCloud(){
       const m=migrateRatings(data.ratings||{});
       myRatings=m.out;
       if(m.changed) syncToCloud(); // persist migrated values
-      compareList=data.compare||[];
       myOscars=data.oscars||{};
     } else {
       // First-time login — create empty row
-      watchlist=[];seenList=[];myRatings={};compareList=[];myOscars={};
+      watchlist=[];seenList=[];myRatings={};myOscars={};
       await sb.from('user_data').insert({user_id:currentUser.id,display_name:currentUser.displayName});
     }
     // Also mirror to localStorage so the UI is snappy on reload before sync resolves
     localStorage.setItem(userKey('wl'),JSON.stringify(watchlist));
     localStorage.setItem(userKey('seen'),JSON.stringify(seenList));
     localStorage.setItem(userKey('ratings'),JSON.stringify(myRatings));
-    localStorage.setItem(userKey('compare'),JSON.stringify(compareList));
     localStorage.setItem(userKey('oscars'),JSON.stringify(myOscars));
   }catch(e){
     console.error('Cloud load failed, using local cache:',e);
@@ -1506,7 +1418,6 @@ function syncToCloud(){
         ratings:myRatings,
         watchlist:watchlist,
         oscars:myOscars,
-        compare:compareList,
         updated_at:new Date().toISOString()
       });
       if(error) throw error;
@@ -1696,7 +1607,7 @@ async function doLogout(){
     localStorage.removeItem('fc_guest_session');
   }
   currentUser=null;
-  watchlist=[];seenList=[];myRatings={};compareList=[];myOscars={};
+  watchlist=[];seenList=[];myRatings={};myOscars={};
   // Clear form fields
   ['login-email','login-pass','create-name','create-email','create-pass','create-pass2','forgot-email','reset-pass','reset-pass2']
     .forEach(id=>{const el=document.getElementById(id);if(el) el.value='';});
@@ -1794,7 +1705,7 @@ function toggleUserMenu(e){
 document.addEventListener('click',()=>document.getElementById('user-menu').classList.remove('open'));
 function goToFilmography(){
   document.getElementById('user-menu').classList.remove('open');
-  showPage('filmography',document.querySelectorAll('.nav-tab')[4]);
+  showPage('filmography',document.querySelectorAll('.nav-tab')[2]);
 }
 
 // Enter key submits the currently visible auth form
@@ -2069,186 +1980,6 @@ async function loadRankings(){
   }catch(e){el.innerHTML='<div class="no-results">Failed to load rankings.</div>';}
 }
 
-// Pools of headline templates, one per Debate mode. Each is a function of (film) -> string.
-// pickHeadline uses the film id as a deterministic seed so a film keeps the same headline
-// across re-renders (no flicker when switching tabs).
-const HEADLINES={
-  underrated:[
-    f=>`Only ${(f.vote_count/1000).toFixed(1)}k people have seen this`,
-    f=>`The masterpiece hiding behind a thin vote count`,
-    f=>`Quiet score, loud admirers`,
-    f=>`A ${(f.release_date||'').slice(0,4)} gem the algorithm forgot`,
-    f=>`Critics know. Audiences don't.`,
-    f=>`Better than you'd guess from its profile`,
-    f=>`Underseen, overdelivered`,
-    f=>`Word-of-mouth has done all the work`,
-    f=>`Buried by release, kept alive by believers`,
-  ],
-  overrated:[
-    f=>`Everyone watched it. Most weren't impressed.`,
-    f=>`Box office hit, scoreboard miss`,
-    f=>`${Math.round(f.vote_count/1000)}k votes can be wrong`,
-    f=>`A hit that aged like milk`,
-    f=>`Loud release, lukewarm legacy`,
-    f=>`The marketing did more than the movie`,
-    f=>`Topped the charts, not the canon`,
-    f=>`Beloved by no one in particular`,
-    f=>`Numbers say popular, scores say mid`,
-  ],
-  recent:[
-    f=>`${Math.round(f.vote_count/1000)}k votes in. Verdict pending.`,
-    f=>`The argument hasn't settled yet`,
-    f=>`Splitting the room since ${(f.release_date||'').slice(0,4)}`,
-    f=>`Some left raving, others left walking out`,
-    f=>`Loved or loathed — rarely both`,
-    f=>`Discourse hasn't cooled on this one`,
-    f=>`A fresh release still divides`,
-    f=>`Critics one way, audiences the other`,
-    f=>`No consensus in sight`,
-  ],
-  cult:[
-    f=>`The ${(f.release_date||'').slice(0,4)} sleeper its fans still defend`,
-    f=>`A small church, but a devoted one`,
-    f=>`The kind of film people quote forever`,
-    f=>`Word-of-mouth kept this one alive`,
-    f=>`Missed by the masses, kept by the faithful`,
-    f=>`Built a quiet following over decades`,
-    f=>`The cult around this one only grows`,
-    f=>`A ${(f.release_date||'').slice(0,4)} title with a lifetime fandom`,
-    f=>`Never a hit. Always remembered.`,
-  ]
-};
-
-function pickHeadline(mode,film){
-  const pool=HEADLINES[mode]||HEADLINES.underrated;
-  const idx=(film.id||0)%pool.length;
-  return pool[idx](film);
-}
-
-async function loadDebate(){
-  const el=document.getElementById('debate-body');
-  el.innerHTML='<div class="loading-box">Loading</div>';
-  try{
-    const m=currentDebateMode;
-    let cards=[];
-    if(m==='underrated'){
-      const d=await api('/discover/movie',{sort_by:'vote_average.desc','vote_average.gte':7.7,'vote_count.gte':500,'vote_count.lte':5000,'primary_release_date.lte':'2024-12-31'});
-      cards=d.results.slice(0,12).map(f=>({
-        label:'Underrated',
-        headline:pickHeadline('underrated',f),
-        film:f,stat:fmt1(f.vote_average),statLbl:'Score'
-      }));
-    } else if(m==='overrated'){
-      const d=await api('/discover/movie',{sort_by:'popularity.desc','vote_count.gte':5000,'vote_average.lte':6.5});
-      cards=d.results.slice(0,12).map(f=>({
-        label:'Overrated',
-        headline:pickHeadline('overrated',f),
-        film:f,stat:fmt1(f.vote_average),statLbl:'Score'
-      }));
-    } else if(m==='recent'){
-      const yr=new Date().getFullYear();
-      const d=await api('/discover/movie',{sort_by:'vote_count.desc','primary_release_date.gte':`${yr-1}-01-01`,'primary_release_date.lte':`${yr}-12-31`,'vote_count.gte':500});
-      cards=d.results.slice(0,12).map(f=>{
-        const verdict=f.vote_average>=7.5?'Acclaimed':f.vote_average>=6.5?'Divisive':'Polarizing';
-        return {
-          label:verdict,
-          headline:pickHeadline('recent',f),
-          film:f,stat:fmt1(f.vote_average),statLbl:'Score'
-        };
-      });
-    } else if(m==='cult'){
-      const d=await api('/discover/movie',{sort_by:'vote_average.desc','vote_average.gte':7.3,'vote_count.gte':300,'vote_count.lte':3000,'primary_release_date.lte':'2010-12-31'});
-      cards=d.results.slice(0,12).map(f=>({
-        label:'Cult Classic',
-        headline:pickHeadline('cult',f),
-        film:f,stat:fmt1(f.vote_average),statLbl:'Score'
-      }));
-    }
-    el.innerHTML='<div class="takes-grid">'+cards.map(c=>{
-      const t=c.film.title||c.film.name||'Untitled';
-      const yr=(c.film.release_date||'').slice(0,4);
-      return `<div class="take-card" onclick="openFilm(${c.film.id},'movie')">
-        <div class="take-label">${c.label}</div>
-        <div class="take-headline">${c.headline}</div>
-        <div class="take-film">${t} · ${yr}</div>
-        <div class="take-stat">
-          <div class="take-stat-val">${c.stat}</div>
-          <div class="take-stat-lbl">${c.statLbl} · ${c.film.vote_count?(c.film.vote_count/1000).toFixed(1)+'k votes':''}</div>
-        </div>
-      </div>`;
-    }).join('')+'</div>';
-  }catch(e){el.innerHTML='<div class="no-results">Couldn\'t load debates.</div>';}
-}
-
-async function loadCompare(){
-  const slots=['compare-a','compare-b'];
-  for(let i=0;i<2;i++){
-    const el=document.getElementById(slots[i]);
-    const id=compareList[i];
-    if(!id){
-      el.innerHTML=`<div class="compare-empty">
-        <div style="font-size:32px;">🎬</div>
-        <div>Slot ${i+1} empty</div>
-        <button class="compare-empty-btn" onclick="showPage('discover',document.querySelectorAll('.nav-tab')[0])">Browse Films →</button>
-      </div>`;
-      continue;
-    }
-    el.innerHTML='<div class="loading-box">Loading</div>';
-    try{
-      const film=filmCache[id]||await api(`/movie/${id}`);
-      filmCache[id]=film;
-      const t=film.title||'Untitled';
-      const yr=(film.release_date||'').slice(0,4);
-      const poster=film.poster_path?`<img class="compare-poster" src="${IMG}w342${film.poster_path}">`:`<div class="compare-poster-ph">🎬</div>`;
-      el.innerHTML=`${poster}
-        <div class="compare-film-title">${t}</div>
-        <div class="compare-film-meta">${yr} · ${film.runtime||'—'} min · ${(film.genres||[]).map(g=>g.name).slice(0,2).join(' · ')}</div>
-        <div class="compare-stats" id="cs-${i}"></div>
-        <button class="compare-clear" onclick="clearCompareSlot(${i})">Remove</button>`;
-    }catch(e){el.innerHTML='<div class="no-results">Couldn\'t load film.</div>';}
-  }
-  if(compareList[0]&&compareList[1]&&filmCache[compareList[0]]&&filmCache[compareList[1]]){
-    const a=filmCache[compareList[0]],b=filmCache[compareList[1]];
-    const stats=[
-      {lbl:'Score',a:fmt1(a.vote_average),b:fmt1(b.vote_average),aNum:a.vote_average||0,bNum:b.vote_average||0,higher:true},
-      {lbl:'Votes',a:(a.vote_count||0).toLocaleString(),b:(b.vote_count||0).toLocaleString(),aNum:a.vote_count||0,bNum:b.vote_count||0,higher:true},
-      {lbl:'Popularity',a:Math.round(a.popularity||0),b:Math.round(b.popularity||0),aNum:a.popularity||0,bNum:b.popularity||0,higher:true},
-      {lbl:'Runtime',a:(a.runtime||0)+' min',b:(b.runtime||0)+' min',aNum:a.runtime||0,bNum:b.runtime||0,higher:null},
-      {lbl:'Year',a:(a.release_date||'').slice(0,4)||'—',b:(b.release_date||'').slice(0,4)||'—',aNum:0,bNum:0,higher:null},
-      {lbl:'Budget',a:a.budget?'$'+(a.budget/1e6).toFixed(0)+'M':'—',b:b.budget?'$'+(b.budget/1e6).toFixed(0)+'M':'—',aNum:a.budget||0,bNum:b.budget||0,higher:true}
-    ];
-    const renderStats=(idx)=>stats.map(s=>{
-      let isWinner=false;
-      if(s.higher===true&&s.aNum!==s.bNum&&s.aNum>0&&s.bNum>0){
-        isWinner=(idx===0&&s.aNum>s.bNum)||(idx===1&&s.bNum>s.aNum);
-      }
-      return `<div class="compare-stat${isWinner?' winner':''}">
-        <span class="compare-stat-lbl">${s.lbl}</span>
-        <span class="compare-stat-val">${idx===0?s.a:s.b}</span>
-      </div>`;
-    }).join('');
-    document.getElementById('cs-0').innerHTML=renderStats(0);
-    document.getElementById('cs-1').innerHTML=renderStats(1);
-  }
-}
-
-function addToCompare(id){
-  if(compareList.includes(id)){toast('Already in compare');return;}
-  if(compareList.length>=2) compareList=[compareList[1],id];
-  else compareList.push(id);
-  localStorage.setItem(userKey('compare'),JSON.stringify(compareList));
-  syncToCloud();
-  toast(compareList.length===1?'Added — pick one more':'Compare ready');
-  if(document.getElementById('page-compare').classList.contains('active')) loadCompare();
-}
-
-function clearCompareSlot(i){
-  compareList.splice(i,1);
-  localStorage.setItem(userKey('compare'),JSON.stringify(compareList));
-  syncToCloud();
-  loadCompare();
-}
-
 async function openFilm(id,mt='movie'){
   const modal=document.getElementById('modal');
   const content=document.getElementById('modal-content');
@@ -2323,7 +2054,6 @@ async function openFilm(id,mt='movie'){
           <button class="mact-btn ${isSeen?'btn-seen':'btn-seen inactive'}" onclick="toggleSeen(${id})">${isSeen?'✓ Seen':'Mark Seen'}</button>
           <button class="mact-btn ${isWL?'btn-wl':'btn-wl inactive'}" onclick="toggleWL(${id})">${isWL?'✓ On Watchlist':'+ Watchlist'}</button>
         </div>
-        <button class="mact-btn btn-compare" onclick="addToCompare(${id});">⚖ Add to Compare</button>
         <div id="club-post-row-${id}" class="club-post-row" style="display:none;"></div>
         ${simHtml}
       </div>`;
@@ -3052,7 +2782,7 @@ function setHistoryMode(mode,btn){
 
 function setLeaderboard(which,btn){
   currentLeaderboard=which;
-  document.querySelectorAll('#history-leaderboards .debate-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#history-leaderboards .hist-subtab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderLeaderboard();
 }
@@ -3826,13 +3556,6 @@ function setRankMode(m,btn){
   document.querySelectorAll('.rank-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   loadRankings();
-}
-
-function setDebateMode(m,btn){
-  currentDebateMode=m;
-  document.querySelectorAll('.debate-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  loadDebate();
 }
 
 // ============================================================
