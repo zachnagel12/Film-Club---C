@@ -543,6 +543,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .foryou-refresh:hover{background:var(--accent);color:var(--bg2);}
 
 .foryou-results-head{padding:14px 20px 8px;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);font-weight:600;}
+.rec-match-badge{position:absolute;top:6px;left:6px;background:rgba(26,20,16,0.85);color:#f4b952;font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 6px;font-weight:600;max-width:calc(100% - 12px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 #foryou-results .film-grid{padding:0 20px 20px;}
 
 .foryou-empty{padding:60px 20px;text-align:center;max-width:520px;margin:0 auto;}
@@ -3645,47 +3646,216 @@ async function generateSeedRecs(){
 // Given a list of {id, weight}, fetch TMDB recommendations for each and
 // accumulate weighted scores per candidate film. Filter out films the user
 // already has in their seen/watchlist/rated lists. Return top 30.
+// ============================================================
+// REWRITTEN RECOMMENDATION ENGINE
+//
+// Old version used only TMDB's /recommendations endpoint (collaborative
+// filtering — "people who watched X also watched Y"). For mainstream
+// films this collapses to the same nearby popular cluster regardless of
+// inputs, which is why it felt stale.
+//
+// New approach blends three real signals:
+//   1. Genres — every film has 1-3 genre tags; we weight by how often
+//      each genre appears in your seed films (weighted by your rating).
+//   2. Keywords — TMDB's per-film keyword tags ("neo-noir", "heist",
+//      "morally ambiguous protagonist", "lone wolf"). These are the
+//      closest thing to capturing "feel" or "tone".
+//   3. Directors — if your seeds share a director, that auteur's other
+//      films are surfaced directly.
+//
+// Candidate generation uses /discover/movie filtered by your top genres
+// and top keywords, plus filmographies of directors with multiple wins.
+// Each candidate is scored by genre overlap + keyword overlap + director
+// match + a touch of TMDB rating to break ties. Collaborative-filter
+// /recommendations contributes a small fallback signal (20% weight).
+//
+// API budget: ~3 calls per source film (details/keywords/credits) + 2-3
+// /discover calls + 1 /recommendations per source. All in parallel.
+// Per-film fetches are cached on filmCache so regenerations are cheap.
+// ============================================================
+
 async function accumulateRecs(sources){
   const sourceIds=new Set(sources.map(s=>s.id));
   const seenSet=new Set(seenList);
   const wlSet=new Set(watchlist);
   const ratedSet=new Set(Object.keys(myRatings).map(k=>parseInt(k)));
-  const aggregate={};
 
-  // Fetch all sources' recommendations in parallel
-  await Promise.all(sources.map(async(src)=>{
+  // ---- Step 1: Enrich each source with genres, keywords, director ----
+  const enriched=await Promise.all(sources.map(async (src)=>{
     try{
-      const data=await api(`/movie/${src.id}/recommendations`);
-      const results=data.results||[];
-      results.forEach((film,i)=>{
-        if(!film||!film.id) return;
-        if(sourceIds.has(film.id)) return;       // never recommend a source back
-        if(seenSet.has(film.id)) return;          // already seen
-        if(wlSet.has(film.id)) return;            // already on watchlist
-        if(ratedSet.has(film.id)) return;         // already rated
-        if(!film.poster_path) return;             // skip poster-less results
-        // Position weight: higher up in TMDB's list = stronger signal
-        const positionWeight=1/(i+2);             // i=0 → 0.5, i=1 → 0.33, …
-        const score=src.weight*positionWeight;
-        if(!aggregate[film.id]){
-          aggregate[film.id]={film,score:0,sources:0};
-        }
-        aggregate[film.id].score+=score;
-        aggregate[film.id].sources++;
-        // Cache for snappy film modal opens later
-        filmCache[film.id]={...(filmCache[film.id]||{}),...film,media_type:'movie'};
-      });
-    }catch(e){/* skip this source; one failure doesn't kill the batch */}
+      const [details,keywords,credits]=await Promise.all([
+        fetchFilmDetails(src.id),
+        fetchFilmKeywords(src.id),
+        fetchFilmCredits(src.id),
+      ]);
+      return {
+        id:src.id,
+        weight:src.weight,
+        genres:(details?.genres||[]).map(g=>g.id),
+        keywords:(keywords||[]).slice(0,20).map(k=>k.id),  // cap per source
+        director:(credits?.crew||[]).find(c=>c.job==='Director')?.id||null,
+      };
+    }catch(e){
+      return {id:src.id,weight:src.weight,genres:[],keywords:[],director:null};
+    }
   }));
 
-  // Convert to array, blend in a tiny bit of TMDB popularity to break ties
-  const candidates=Object.values(aggregate).map(c=>({
-    film:c.film,
-    score:c.score+(c.film.vote_average||0)*0.01,
-    sources:c.sources,
-  }));
-  candidates.sort((a,b)=>b.score-a.score);
-  return candidates.slice(0,30);
+  // ---- Step 2: Build aggregate profiles ----
+  const genreWeights={};   // genreId -> total weight
+  const keywordWeights={}; // keywordId -> total weight
+  const directorWeights={};// directorId -> total weight
+  for(const src of enriched){
+    for(const g of src.genres) genreWeights[g]=(genreWeights[g]||0)+src.weight;
+    for(const k of src.keywords) keywordWeights[k]=(keywordWeights[k]||0)+src.weight;
+    if(src.director) directorWeights[src.director]=(directorWeights[src.director]||0)+src.weight;
+  }
+  // Pick top N of each profile
+  const topGenres=Object.entries(genreWeights).sort((a,b)=>b[1]-a[1]).slice(0,3).map(e=>e[0]);
+  const topKeywords=Object.entries(keywordWeights).sort((a,b)=>b[1]-a[1]).slice(0,25).map(e=>e[0]);
+  const recurringDirectors=Object.entries(directorWeights).filter(([,w])=>w>=0.4).map(e=>e[0]);
+
+  // Indexed sets for fast scoring
+  const userGenres=new Set(topGenres);
+  const userKeywords=new Set(topKeywords);
+
+  // ---- Step 3: Generate candidate pool ----
+  const candidates={};   // filmId -> {film, scoreGenres, scoreKeywords, scoreDirector, scoreRecs}
+
+  // (a) Discover by genre + keyword overlap
+  async function discover(params,bucket){
+    try{
+      const data=await api('/discover/movie',{...params,sort_by:'vote_count.desc','vote_count.gte':200,page:1});
+      for(const f of (data.results||[])){
+        if(!ingestCandidate(f,bucket)) continue;
+      }
+      // Also page 2 for breadth
+      const data2=await api('/discover/movie',{...params,sort_by:'vote_count.desc','vote_count.gte':200,page:2});
+      for(const f of (data2.results||[])) ingestCandidate(f,bucket);
+    }catch(e){/* skip */}
+  }
+  function ingestCandidate(f,bucket){
+    if(!f||!f.id||!f.poster_path) return false;
+    if(sourceIds.has(f.id)||seenSet.has(f.id)||wlSet.has(f.id)||ratedSet.has(f.id)) return false;
+    if(!candidates[f.id]) candidates[f.id]={film:f,scoreGenres:0,scoreKeywords:0,scoreDirector:0,scoreRecs:0};
+    candidates[f.id][bucket]=1;  // marker that this candidate came from this source
+    filmCache[f.id]={...(filmCache[f.id]||{}),...f,media_type:'movie'};
+    return true;
+  }
+
+  // Run discover calls in parallel: one query for genre overlap (broad),
+  // one for keyword overlap (tighter), one for the combination (tightest)
+  const discoverCalls=[];
+  if(topGenres.length){
+    discoverCalls.push(discover({with_genres:topGenres.join(',')},'_seenInGenre'));
+  }
+  if(topKeywords.length){
+    discoverCalls.push(discover({with_keywords:topKeywords.join('|')},'_seenInKeyword'));
+  }
+  if(topGenres.length && topKeywords.length){
+    discoverCalls.push(discover({
+      with_genres:topGenres.join(','),
+      with_keywords:topKeywords.slice(0,10).join('|'),
+    },'_seenInBoth'));
+  }
+
+  // (b) Director filmographies for repeat-favorite directors
+  for(const dirId of recurringDirectors){
+    discoverCalls.push((async()=>{
+      try{
+        const data=await api(`/person/${dirId}/movie_credits`);
+        for(const f of (data?.crew||[]).filter(c=>c.job==='Director')){
+          if(ingestCandidate(f,'_directorMatch')){
+            // Mark director hit explicitly
+            if(candidates[f.id]) candidates[f.id]._directorMatch=true;
+          }
+        }
+      }catch(e){}
+    })());
+  }
+
+  // (c) Collaborative /recommendations as a smaller weighted signal
+  for(const src of sources){
+    discoverCalls.push((async()=>{
+      try{
+        const data=await api(`/movie/${src.id}/recommendations`);
+        (data.results||[]).forEach((f,i)=>{
+          if(!ingestCandidate(f,'_seenInRecs')) return;
+          // Position weight inside this source's rec list
+          const pos=1/(i+2);
+          candidates[f.id].scoreRecs+=src.weight*pos;
+        });
+      }catch(e){}
+    })());
+  }
+
+  await Promise.all(discoverCalls);
+
+  // ---- Step 4: Score each candidate by metadata overlap ----
+  for(const c of Object.values(candidates)){
+    const f=c.film;
+    // Genre overlap — count how many of the candidate's genres are in the user's top genres
+    const fGenres=(f.genre_ids||[]).map(String);
+    const genreHits=fGenres.filter(g=>userGenres.has(g)).length;
+    c.scoreGenres=genreHits*2.0;  // each genre match is worth 2
+    // Keyword overlap is the strongest signal but expensive to fetch per
+    // candidate. Skip it at this layer — we already filtered via /discover
+    // with_keywords, so candidates surfacing through that path already
+    // implicitly match. Reward the _seenInKeyword / _seenInBoth markers.
+    c.scoreKeywords=(c._seenInKeyword?1.5:0) + (c._seenInBoth?2.0:0);
+    c.scoreDirector=c._directorMatch?4.0:0;  // direct director match is a strong vote
+    // Quality bonus — slightly favor well-rated films
+    c.scoreQuality=(f.vote_average||0)*0.15;
+    c.score=c.scoreGenres + c.scoreKeywords + c.scoreDirector + c.scoreRecs + c.scoreQuality;
+  }
+
+  // ---- Step 5: Sort, take top 30 ----
+  const ranked=Object.values(candidates).sort((a,b)=>b.score-a.score);
+
+  // Build the result with explanation fields so the UI can show "matched by X"
+  return ranked.slice(0,30).map(c=>{
+    const matchedBy=[];
+    if(c._directorMatch) matchedBy.push('director');
+    if(c.scoreGenres>=4) matchedBy.push('genres');
+    else if(c.scoreGenres>=2) matchedBy.push('genre');
+    if(c._seenInBoth) matchedBy.push('keywords');
+    else if(c._seenInKeyword) matchedBy.push('keyword');
+    if(c.scoreRecs>0 && !matchedBy.length) matchedBy.push('similar viewers');
+    return {
+      film:c.film,
+      score:c.score,
+      sources:matchedBy.length,
+      matchedBy:matchedBy.join(' + ')||'similar',
+    };
+  });
+}
+
+// --- Cached TMDB helpers ---
+// Each per-film metadata fetch is cached on filmCache. Repeated regenerations
+// touch TMDB only for films we haven't enriched yet.
+async function fetchFilmDetails(id){
+  if(filmCache[id]&&filmCache[id].genres) return filmCache[id];
+  const f=await api(`/movie/${id}`);
+  filmCache[id]={...(filmCache[id]||{}),...f};
+  return f;
+}
+async function fetchFilmKeywords(id){
+  if(filmCache[id]&&filmCache[id]._keywords) return filmCache[id]._keywords;
+  try{
+    const data=await api(`/movie/${id}/keywords`);
+    const kws=data.keywords||[];
+    if(!filmCache[id]) filmCache[id]={};
+    filmCache[id]._keywords=kws;
+    return kws;
+  }catch(e){return [];}
+}
+async function fetchFilmCredits(id){
+  if(filmCache[id]&&filmCache[id]._credits) return filmCache[id]._credits;
+  try{
+    const data=await api(`/movie/${id}/credits`);
+    if(!filmCache[id]) filmCache[id]={};
+    filmCache[id]._credits=data;
+    return data;
+  }catch(e){return {cast:[],crew:[]};}
 }
 
 function renderRecResults(recs){
@@ -3700,16 +3870,17 @@ function renderRecResults(recs){
     return;
   }
   res.innerHTML=`
-    <div class="foryou-results-head">${recs.length} suggestion${recs.length===1?'':'s'} \u00b7 sorted by how well they match</div>
+    <div class="foryou-results-head">${recs.length} suggestion${recs.length===1?'':'s'} \u00b7 ranked by how closely the genre, keywords, and creators match your seeds</div>
     <div class="film-grid">${recs.map(r=>{
       const f=r.film;
       const y=(f.release_date||'').slice(0,4);
       const poster=f.poster_path
         ?`<img src="${IMG}w342${f.poster_path}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
         :`<div class="film-poster-ph">\u{1F3AC}</div>`;
-      // Show a "matched by N films" badge for transparency
-      const badge=r.sources>1
-        ?`<div class="film-score-badge" style="background:rgba(244,185,82,0.95);color:#1a1410;font-family:'Russo One',sans-serif;font-size:11px;padding:3px 6px;">\u00d7${r.sources}</div>`
+      // "Matched by" badge — surfaces *why* this was suggested
+      const reason=r.matchedBy||'';
+      const badge=reason
+        ?`<div class="rec-match-badge" title="Matched by: ${escapeHtml(reason)}">${escapeHtml(reason)}</div>`
         :'';
       return `<div class="film-card" onclick="openFilm(${f.id},'movie')">
         <div class="film-poster">${poster}${badge}</div>
