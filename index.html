@@ -495,6 +495,20 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .club-action-btn.primary{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
 .club-action-btn.danger:hover{border-color:var(--red);color:var(--red);}
 
+/* Public/Private visibility toggle (create modal) */
+.club-visibility-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.club-vis-opt{background:var(--bg3);border:1px solid var(--border);padding:11px 12px;text-align:left;cursor:pointer;transition:all 0.12s;font-family:inherit;color:var(--text2);}
+.club-vis-opt:hover{border-color:var(--border2);}
+.club-vis-opt.active{background:rgba(176,96,48,0.08);border-color:var(--accent);color:var(--text);}
+.club-vis-title{font-family:'Russo One',sans-serif;font-size:14px;line-height:1;margin-bottom:3px;}
+.club-vis-opt.active .club-vis-title{color:var(--accent);}
+.club-vis-sub{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+
+/* Badge that distinguishes public from private clubs in the detail header */
+.club-badge{display:inline-block;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;padding:2px 7px;margin-left:6px;vertical-align:middle;font-weight:600;border:1px solid;}
+.club-badge.public{color:var(--green);border-color:var(--green);background:rgba(26,106,42,0.08);}
+.club-badge.private{color:var(--text3);border-color:var(--border2);background:var(--bg3);}
+
 .club-rankings{padding:18px 20px;}
 .club-rank-row{display:grid;grid-template-columns:36px 60px 1fr auto auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;}
 .club-rank-row:hover{background:var(--panel);}
@@ -1664,6 +1678,112 @@ async function handleLoggedIn(supabaseUser,opts={}){
     await loadUserDataCloud(); // then refresh from cloud
   } else {
     loadUserDataLocal();
+  }
+
+  // If the user arrived via an invite link (?join=<uuid>), process it now.
+  // We do this last so the user is fully logged in and user_data is loaded.
+  if(_pendingJoinClubId){
+    const clubId=_pendingJoinClubId;
+    _pendingJoinClubId=null;
+    // Strip the ?join= param from the URL so refreshing doesn't re-trigger it
+    try{
+      const u=new URL(location.href);
+      u.searchParams.delete('join');
+      history.replaceState({},'',u.toString());
+    }catch(e){}
+    handleInviteLink(clubId);
+  }
+}
+
+// Captured at page load. Stays null unless the user landed on ?join=<uuid>.
+let _pendingJoinClubId=null;
+(function captureInviteOnBoot(){
+  try{
+    const params=new URLSearchParams(location.search);
+    const joinId=params.get('join');
+    // Light UUID sanity check (8-4-4-4-12 hex). Rejects garbage early.
+    if(joinId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(joinId)){
+      _pendingJoinClubId=joinId;
+    }
+  }catch(e){}
+})();
+
+// Routes a logged-in user who clicked an invite link. Three cases:
+//  1. Already a member → just open the club detail page.
+//  2. Public club → one-tap join via RPC, then open it.
+//  3. Private club → prompt for password (the link doesn't carry it).
+async function handleInviteLink(clubId){
+  if(!sb||isOffline||!currentUser) return;
+  try{
+    // Look up the club to check visibility and membership
+    const [{data:club,error:eClub},{data:existing}]=await Promise.all([
+      sb.from('clubs').select('id,name,is_public').eq('id',clubId).maybeSingle(),
+      sb.from('club_members').select('club_id').eq('club_id',clubId).eq('user_id',currentUser.id).maybeSingle(),
+    ]);
+    if(eClub) throw eClub;
+    if(!club){toast('Invite link is invalid');return;}
+    // Switch to the Clubs tab so the user sees the result of their click
+    showPage('clubs',document.querySelectorAll('.nav-tab')[3]);
+    if(existing){
+      // Already a member — just open it
+      openClub(club.id,club.name);
+      return;
+    }
+    if(club.is_public){
+      // One-tap join for public clubs
+      const {error}=await sb.rpc('join_club_by_id',{
+        p_club_id:club.id,
+        p_password:'',
+        p_display_name:currentUser.displayName||currentUser.email,
+      });
+      if(error) throw error;
+      toast('Joined '+club.name);
+      openClub(club.id,club.name);
+      return;
+    }
+    // Private — ask for password via a dedicated modal
+    openInviteJoinModal(club);
+  }catch(e){
+    toast('Could not open invite: '+((e&&e.message)||''));
+  }
+}
+
+// A focused modal for joining a private club via invite link.
+// We already know the club id and name, so the only thing the user provides
+// is the password.
+function openInviteJoinModal(club){
+  const body=document.getElementById('club-modal-body');
+  body.innerHTML=`
+    <div class="club-modal-title">Join "${escapeHtml(club.name)}"</div>
+    <div class="club-modal-sub">This is a private club. Enter the password your friend shared with you.</div>
+    <div class="club-input-row">
+      <label class="club-input-label">Password</label>
+      <input class="club-input" id="club-invite-pass" type="password" autocomplete="off">
+    </div>
+    <div class="club-modal-error" id="club-modal-error"></div>
+    <button class="club-modal-submit" onclick="submitInviteJoin('${club.id}','${escapeJs(club.name)}')">Join</button>`;
+  document.getElementById('club-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('club-invite-pass')?.focus(),50);
+}
+
+async function submitInviteJoin(clubId,clubName){
+  const pw=document.getElementById('club-invite-pass').value;
+  const err=document.getElementById('club-modal-error');
+  err.textContent='';
+  if(!pw){err.textContent='Enter the password';return;}
+  try{
+    const {error}=await sb.rpc('join_club_by_id',{
+      p_club_id:clubId,
+      p_password:pw,
+      p_display_name:currentUser.displayName||currentUser.email,
+    });
+    if(error) throw error;
+    closeClubModal();
+    toast('Joined '+clubName);
+    await renderClubsHome();
+    openClub(clubId,clubName);
+  }catch(e){
+    err.textContent=(e&&e.message)||'Could not join';
   }
 }
 
@@ -3680,28 +3800,42 @@ function openClubModal(mode){
   if(mode==='create'){
     body.innerHTML=`
       <div class="club-modal-title">Create a club</div>
-      <div class="club-modal-sub">Pick a unique name and a password. Share both with friends to let them in.</div>
+      <div class="club-modal-sub">Public clubs are joinable by anyone with the link. Private clubs need a password.</div>
+      <div class="club-input-row">
+        <label class="club-input-label">Visibility</label>
+        <div class="club-visibility-toggle">
+          <button type="button" class="club-vis-opt active" id="club-vis-private" onclick="setClubVisibility('private')">
+            <div class="club-vis-title">Private</div>
+            <div class="club-vis-sub">Password required</div>
+          </button>
+          <button type="button" class="club-vis-opt" id="club-vis-public" onclick="setClubVisibility('public')">
+            <div class="club-vis-title">Public</div>
+            <div class="club-vis-sub">Anyone with link can join</div>
+          </button>
+        </div>
+      </div>
       <div class="club-input-row">
         <label class="club-input-label">Club name</label>
         <input class="club-input" id="club-create-name" type="text" placeholder="The Tuesday Movie Night" maxlength="60" autocomplete="off">
       </div>
-      <div class="club-input-row">
+      <div class="club-input-row" id="club-create-pass-row">
         <label class="club-input-label">Password</label>
         <input class="club-input" id="club-create-pass" type="password" placeholder="4+ characters" autocomplete="new-password">
       </div>
       <div class="club-modal-error" id="club-modal-error"></div>
       <button class="club-modal-submit" onclick="submitCreateClub()">Create</button>`;
+    _clubCreateIsPublic=false;
     setTimeout(()=>document.getElementById('club-create-name')?.focus(),50);
   } else {
     body.innerHTML=`
       <div class="club-modal-title">Join a club</div>
-      <div class="club-modal-sub">Type the club's exact name and password.</div>
+      <div class="club-modal-sub">Type the club's exact name. Private clubs also need the password.</div>
       <div class="club-input-row">
         <label class="club-input-label">Club name</label>
         <input class="club-input" id="club-join-name" type="text" placeholder="The Tuesday Movie Night" maxlength="60" autocomplete="off">
       </div>
       <div class="club-input-row">
-        <label class="club-input-label">Password</label>
+        <label class="club-input-label">Password <span style="color:var(--text3);font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;">(leave blank for public clubs)</span></label>
         <input class="club-input" id="club-join-pass" type="password" autocomplete="off">
       </div>
       <div class="club-modal-error" id="club-modal-error"></div>
@@ -3710,34 +3844,42 @@ function openClubModal(mode){
   }
   document.getElementById('club-modal').classList.add('open');
 }
+
+// Visibility toggle state — module-level so submitCreateClub can read it
+let _clubCreateIsPublic=false;
+function setClubVisibility(mode){
+  _clubCreateIsPublic = (mode==='public');
+  document.getElementById('club-vis-private').classList.toggle('active',mode==='private');
+  document.getElementById('club-vis-public').classList.toggle('active',mode==='public');
+  // Hide the password row when public is selected
+  const pwRow=document.getElementById('club-create-pass-row');
+  if(pwRow) pwRow.style.display = _clubCreateIsPublic ? 'none' : '';
+}
 function closeClubModal(){document.getElementById('club-modal').classList.remove('open');}
 function maybeCloseClubModal(e){if(e.target===document.getElementById('club-modal')) closeClubModal();}
 
 async function submitCreateClub(){
   const name=document.getElementById('club-create-name').value.trim();
   const pw=document.getElementById('club-create-pass').value;
+  const isPublic=_clubCreateIsPublic;
   const err=document.getElementById('club-modal-error');
   err.textContent='';
   if(!name||name.length<2){err.textContent='Club name must be at least 2 characters';return;}
-  if(pw.length<4){err.textContent='Password must be at least 4 characters';return;}
+  if(!isPublic && pw.length<4){err.textContent='Password must be at least 4 characters';return;}
   try{
     const {data,error}=await sb.rpc('create_club',{
       p_name:name,
-      p_password:pw,
+      p_password:isPublic?null:pw,
       p_display_name:currentUser.displayName||currentUser.email,
+      p_is_public:isPublic,
     });
     if(error) throw error;
-    // Success — clear any stale "pending" entry for this name
     removePendingClub(name);
     closeClubModal();
-    toast('Club created');
+    toast(isPublic?'Public club created':'Club created');
     await renderClubsHome();
-    // Auto-open the new club
     if(data) openClub(data,name);
   } catch(e){
-    // Cache the attempt locally so the user can retry from the home page.
-    // We deliberately do NOT store the password (security). User re-enters
-    // it when they retry — the cache only saves them from re-typing the name.
     savePendingClub(name);
     err.textContent=(e&&e.message)||'Could not create club. We saved the name — retry from the Clubs page once setup is complete.';
   }
@@ -3775,11 +3917,12 @@ async function submitJoinClub(){
   const err=document.getElementById('club-modal-error');
   err.textContent='';
   if(!name){err.textContent='Enter the club name';return;}
-  if(!pw){err.textContent='Enter the password';return;}
+  // Public clubs ignore the password server-side, so empty pw is fine.
+  // For private clubs, the server returns "Wrong password" if missing/wrong.
   try{
     const {data,error}=await sb.rpc('join_club',{
       p_name:name,
-      p_password:pw,
+      p_password:pw||'',
       p_display_name:currentUser.displayName||currentUser.email,
     });
     if(error) throw error;
@@ -3800,7 +3943,7 @@ async function openClub(clubId,clubName){
   try{
     // Pull club info, members, films, and all ratings in parallel
     const [{data:club,error:eClub},{data:members,error:eMem},{data:films,error:eFilms},{data:ratings,error:eRate}]=await Promise.all([
-      sb.from('clubs').select('id,name,created_at,created_by').eq('id',clubId).single(),
+      sb.from('clubs').select('id,name,is_public,created_at,created_by').eq('id',clubId).single(),
       sb.from('club_members').select('user_id,display_name,joined_at').eq('club_id',clubId),
       sb.from('club_films').select('film_id,posted_by_id,posted_by_name,film_title,film_year,film_poster,posted_at').eq('club_id',clubId),
       sb.from('club_ratings').select('film_id,user_id,user_name,rating').eq('club_id',clubId),
@@ -3845,10 +3988,11 @@ function renderClubDetail(){
   document.getElementById('clubs-body').innerHTML=`
     <div class="club-detail-head">
       <div class="club-detail-back" onclick="renderClubsHome()">\u2190 All clubs</div>
-      <div class="club-detail-name">${escapeHtml(club.name)}</div>
+      <div class="club-detail-name">${escapeHtml(club.name)} ${club.is_public?'<span class="club-badge public">Public</span>':'<span class="club-badge private">Private</span>'}</div>
       <div class="club-detail-meta">${members.length} member${members.length===1?'':'s'} \u00b7 ${films.length} film${films.length===1?'':'s'} posted</div>
       <div class="club-detail-actions">
         <button class="club-action-btn primary" onclick="openPostFilmDialog('${club.id}')">+ Post a film</button>
+        <button class="club-action-btn" onclick="shareClubLink('${club.id}','${escapeJs(club.name)}',${club.is_public?'true':'false'})">\u{1F517} Share invite</button>
         <button class="club-action-btn danger" onclick="leaveClub('${club.id}','${escapeJs(club.name)}')">Leave club</button>
       </div>
     </div>
@@ -3860,6 +4004,35 @@ function renderClubDetail(){
       ${ranked.length?ranked.map(clubRankRow).join(''):'<div class="clubs-empty">No films posted yet. Tap "+ Post a film" to start the ranking.</div>'}
     </div>
   `;
+}
+
+// Build the shareable URL for a club. The link encodes the club_id; the
+// password is not in the URL (would be insecure). For private clubs we
+// remind the user to share the password separately.
+function clubInviteLink(clubId){
+  return `${location.origin}${location.pathname}?join=${clubId}`;
+}
+
+async function shareClubLink(clubId,clubName,isPublic){
+  const url=clubInviteLink(clubId);
+  // Prefer the Web Share API on mobile — opens iOS/Android share sheet
+  const shareText=isPublic
+    ? `Join my Film Club: ${clubName}`
+    : `Join my Film Club: ${clubName} (you'll need the password — I'll send it separately)`;
+  if(navigator.share){
+    try{
+      await navigator.share({title:`Join ${clubName}`,text:shareText,url});
+      return;
+    }catch(e){/* user canceled — fall through to copy */}
+  }
+  // Fallback: copy to clipboard
+  try{
+    await navigator.clipboard.writeText(url);
+    toast(isPublic?'Link copied — anyone can join':'Link copied — share the password separately');
+  }catch(e){
+    // Last-resort fallback: show the URL in a prompt for manual copy
+    prompt('Copy this invite link:',url);
+  }
 }
 
 function clubRankRow(f,i){
