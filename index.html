@@ -409,30 +409,34 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .filmography-title{font-family:'Russo One',sans-serif;font-size:28px;line-height:1.0;color:var(--text);margin-bottom:4px;}
 .filmography-sub{font-size:13px;color:var(--text2);font-weight:300;}
 
-/* My Oscars */
-.oscars-wrap{padding:18px 20px;border-bottom:1px solid var(--border);background:
-  linear-gradient(180deg,rgba(154,120,48,0.08),rgba(154,120,48,0.02));
+/* My Oscars — spotlight aesthetic: charcoal-brown with warm gold accents,
+   inspired by the look of an Academy statuette under stage light */
+.oscars-wrap{padding:22px 20px 20px;border-bottom:1px solid #2a201a;
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 0%, rgba(244,185,82,0.22), rgba(230,162,58,0.06) 40%, transparent 70%),
+    linear-gradient(180deg,#1a1410 0%,#221a14 100%);
   position:relative;}
+.oscars-wrap::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(244,185,82,0.6),transparent);pointer-events:none;}
 .oscars-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .oscars-title-block{display:flex;align-items:center;gap:10px;}
-.oscars-trophy{font-size:24px;filter:drop-shadow(0 1px 1px rgba(154,120,48,0.3));}
-.oscars-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);line-height:1;letter-spacing:0.02em;}
-.oscars-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-top:2px;}
-.oscars-edit-btn{padding:6px 12px;background:var(--bg2);border:1px solid var(--gold);color:var(--gold);font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;transition:all 0.12s;}
-.oscars-edit-btn:hover{background:var(--gold);color:var(--bg2);}
-.oscars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
-.oscar-card{background:var(--bg2);border:1px solid var(--gold);position:relative;padding:14px 12px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.18s;min-height:200px;text-align:center;}
-.oscar-card::before{content:'';position:absolute;top:6px;left:6px;right:6px;bottom:6px;border:1px dashed rgba(154,120,48,0.4);pointer-events:none;}
-.oscar-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(154,120,48,0.18);}
-.oscar-category{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:600;position:relative;z-index:1;margin-bottom:2px;}
-.oscar-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);position:relative;z-index:1;}
-.oscar-poster{width:70px;height:105px;object-fit:cover;border:2px solid var(--gold);position:relative;z-index:1;}
-.oscar-img-ph,.oscar-poster-ph{background:var(--bg3);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text3);position:relative;z-index:1;}
+.oscars-trophy{font-size:24px;filter:drop-shadow(0 1px 2px rgba(244,185,82,0.45));}
+.oscars-title{font-family:'Russo One',sans-serif;font-size:18px;color:#f5e9d4;line-height:1;letter-spacing:0.02em;text-shadow:0 1px 4px rgba(0,0,0,0.4);}
+.oscars-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#e6a23a;margin-top:3px;}
+.oscars-edit-btn{padding:6px 12px;background:transparent;border:1px solid #e6a23a;color:#e6a23a;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:all 0.12s;font-weight:600;}
+.oscars-edit-btn:hover{background:#e6a23a;color:#1a1410;}
+.oscars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+.oscar-card{background:linear-gradient(180deg,#2a201a 0%,#1f1812 100%);border:1px solid #6a4f1f;position:relative;padding:16px 12px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.2s;min-height:200px;text-align:center;}
+.oscar-card::before{content:'';position:absolute;top:6px;left:6px;right:6px;bottom:6px;border:1px dashed rgba(230,162,58,0.35);pointer-events:none;}
+.oscar-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(244,185,82,0.22);border-color:#e6a23a;}
+.oscar-category{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:#e6a23a;font-weight:600;position:relative;z-index:1;margin-bottom:2px;}
+.oscar-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #e6a23a;position:relative;z-index:1;box-shadow:0 0 12px rgba(244,185,82,0.18);}
+.oscar-poster{width:70px;height:105px;object-fit:cover;border:2px solid #e6a23a;position:relative;z-index:1;box-shadow:0 0 12px rgba(244,185,82,0.18);}
+.oscar-img-ph,.oscar-poster-ph{background:#1a1410;border:2px dashed rgba(230,162,58,0.5);display:flex;align-items:center;justify-content:center;font-size:28px;color:#8a6f3a;position:relative;z-index:1;}
 .oscar-img-ph{width:80px;height:80px;border-radius:50%;}
 .oscar-poster-ph{width:70px;height:105px;}
-.oscar-winner{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);line-height:1.15;position:relative;z-index:1;padding:0 4px;}
-.oscar-empty-icon{font-size:32px;color:var(--border2);position:relative;z-index:1;margin-top:8px;}
-.oscar-empty-text{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);position:relative;z-index:1;}
+.oscar-winner{font-family:'Russo One',sans-serif;font-size:13px;color:#f5e9d4;line-height:1.15;position:relative;z-index:1;padding:0 4px;}
+.oscar-empty-icon{font-size:32px;color:rgba(230,162,58,0.4);position:relative;z-index:1;margin-top:8px;}
+.oscar-empty-text{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8a7e6c;position:relative;z-index:1;}
 
 /* Oscar picker modal */
 .picker-search{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;padding:8px 11px;outline:none;margin-bottom:12px;}
@@ -479,6 +483,15 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .club-card-stat-val{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);line-height:1;}
 .club-card-stat-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
 .clubs-empty{padding:40px 20px;text-align:center;color:var(--text3);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;}
+.clubs-pending{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg2);}
+.clubs-pending-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;font-weight:600;}
+.clubs-pending-list{display:flex;flex-direction:column;gap:6px;}
+.clubs-pending-item{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--gold);padding:8px 10px;}
+.clubs-pending-name{flex:1;font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);}
+.clubs-pending-retry{padding:5px 10px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-weight:600;}
+.clubs-pending-retry:hover{opacity:0.88;}
+.clubs-pending-dismiss{padding:5px 9px;background:transparent;color:var(--text3);border:1px solid var(--border2);font-size:12px;cursor:pointer;line-height:1;}
+.clubs-pending-dismiss:hover{color:var(--accent);border-color:var(--accent);}
 
 /* Club detail view */
 .club-detail-head{padding:22px 20px 14px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));display:flex;flex-direction:column;gap:6px;}
@@ -548,82 +561,100 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   .club-rank-count{display:none;} /* fold count into the row to save space */
 }
 
-.history-head{padding:22px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
-.history-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
-.history-title{font-family:'Russo One',sans-serif;font-size:28px;line-height:1.0;color:var(--text);margin-bottom:4px;}
-.history-sub{font-size:13px;color:var(--text2);font-weight:300;}
-.history-modes{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);}
-.history-mode{flex:1;padding:10px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;}
-.history-mode.active{color:var(--text);border-bottom:2px solid var(--accent);}
-.history-mode:hover:not(.active){color:var(--text2);}
-.history-pane{}
+/* FILM HISTORY page — spotlight theme: charcoal background, gold accents */
+#page-history{background:#1a1410;color:#e8d8b8;min-height:100vh;}
+.history-head{padding:24px 20px 18px;border-bottom:1px solid #2a201a;
+  background:
+    radial-gradient(ellipse 80% 100% at 50% 0%, rgba(244,185,82,0.18), rgba(230,162,58,0.04) 50%, transparent 75%),
+    linear-gradient(180deg,#1a1410 0%,#221a14 100%);
+  position:relative;}
+.history-head::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(244,185,82,0.5),transparent);pointer-events:none;}
+.history-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:#e6a23a;margin-bottom:6px;font-weight:600;}
+.history-title{font-family:'Russo One',sans-serif;font-size:30px;line-height:1.0;color:#f5e9d4;margin-bottom:6px;text-shadow:0 1px 4px rgba(0,0,0,0.4);}
+.history-sub{font-size:13px;color:#a89678;font-weight:300;}
+.history-modes{display:flex;background:#221a14;border-bottom:1px solid #2a201a;}
+.history-mode{flex:1;padding:11px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#7a6c54;cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;}
+.history-mode.active{color:#f5e9d4;border-bottom:2px solid #e6a23a;}
+.history-mode:hover:not(.active){color:#a89678;}
+/* Scoped debate-tab restyle (Director/Actor/Actress subtabs) — only inside History */
+#page-history .debate-tabs{background:#221a14;border-bottom:1px solid #2a201a;}
+#page-history .debate-tab{color:#7a6c54;}
+#page-history .debate-tab.active{color:#f5e9d4;border-bottom:2px solid #e6a23a;}
+#page-history .debate-tab:hover:not(.active){color:#a89678;}
 /* Leaderboard rows */
-.lb-table{width:100%;border-collapse:collapse;}
-.lb-row{display:grid;grid-template-columns:40px 1fr auto auto;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--border);}
-.lb-rank{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);text-align:right;}
-.lb-rank.small{font-size:14px;color:var(--text3);}
-.lb-name{font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);line-height:1.15;}
-.lb-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
-.lb-count{font-family:'Russo One',sans-serif;font-size:24px;color:var(--gold);text-align:right;}
-.lb-count-lbl{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);}
-.lb-films{font-family:'Oswald',sans-serif;font-size:11px;color:var(--text2);grid-column:2;}
-.lb-films a{color:var(--accent);cursor:pointer;}
-.lb-films a:hover{color:var(--accent2);text-decoration:underline;}
+#page-history .lb-row{display:grid;grid-template-columns:40px 1fr auto auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #2a201a;}
+#page-history .lb-rank{font-family:'Russo One',sans-serif;font-size:18px;color:#e6a23a;text-align:right;}
+#page-history .lb-rank.small{font-size:14px;color:#7a6c54;}
+#page-history .lb-name{font-family:'Russo One',sans-serif;font-size:14px;color:#f5e9d4;line-height:1.15;}
+#page-history .lb-name .person-link:hover{color:#f4b952;border-bottom-color:#f4b952;}
+#page-history .lb-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#7a6c54;margin-top:2px;}
+#page-history .lb-count{font-family:'Russo One',sans-serif;font-size:24px;color:#f4b952;text-align:right;}
+#page-history .lb-count-lbl{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:#7a6c54;}
+#page-history .lb-films{font-family:'Oswald',sans-serif;font-size:11px;color:#a89678;grid-column:2;}
+#page-history .lb-films a{color:#e6a23a;cursor:pointer;}
+#page-history .lb-films a:hover{color:#f4b952;text-decoration:underline;}
 /* Year selector bar */
-.year-bar{display:flex;gap:0;overflow-x:auto;background:var(--bg2);border-bottom:1px solid var(--border);padding:0;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+.year-bar{display:flex;gap:0;overflow-x:auto;background:#221a14;border-bottom:1px solid #2a201a;padding:0;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
 .year-bar::-webkit-scrollbar{height:6px;}
-.year-bar::-webkit-scrollbar-thumb{background:var(--border2);}
-.year-btn{flex-shrink:0;padding:11px 14px;font-family:'Russo One',sans-serif;font-size:13px;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.12s;white-space:nowrap;}
-.year-btn:hover{color:var(--text2);}
-.year-btn.active{color:var(--text);border-bottom:2px solid var(--accent);background:var(--bg3);}
+.year-bar::-webkit-scrollbar-thumb{background:#3a2e22;}
+.year-btn{flex-shrink:0;padding:11px 14px;font-family:'Russo One',sans-serif;font-size:13px;color:#7a6c54;cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.12s;white-space:nowrap;}
+.year-btn:hover{color:#a89678;}
+.year-btn.active{color:#f5e9d4;border-bottom:2px solid #e6a23a;background:#2a201a;}
 /* Year recap content */
-.recap-wrap{padding:24px 20px;max-width:920px;margin:0 auto;}
-.recap-year-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:18px;}
-.recap-year-num{font-family:'Russo One',sans-serif;font-size:42px;color:var(--text);line-height:1;}
-.recap-year-num em{color:var(--accent);font-style:normal;}
-.recap-year-cer{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);}
+.recap-wrap{padding:26px 20px;max-width:920px;margin:0 auto;}
+.recap-year-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid #2a201a;padding-bottom:12px;margin-bottom:20px;}
+.recap-year-num{font-family:'Russo One',sans-serif;font-size:42px;color:#f5e9d4;line-height:1;text-shadow:0 1px 4px rgba(0,0,0,0.4);}
+.recap-year-num em{color:#e6a23a;font-style:normal;}
+.recap-year-cer{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#a89678;}
 .recap-awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:30px;}
-.recap-award{background:var(--bg2);border:1px solid var(--gold);padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;}
-.recap-award-cat{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:600;}
+.recap-award{background:linear-gradient(180deg,#2a201a 0%,#221a14 100%);border:1px solid #6a4f1f;padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;}
+.recap-award-cat{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:#e6a23a;font-weight:600;}
 .recap-award-row{display:flex;gap:12px;align-items:center;cursor:pointer;transition:opacity 0.12s;}
 .recap-award-row:hover{opacity:0.85;}
 .recap-award-row.no-link{cursor:default;}
 .recap-award-row.no-link:hover{opacity:1;}
-.recap-award-poster{width:48px;height:72px;object-fit:cover;border:1px solid var(--border);background:var(--bg3);flex-shrink:0;}
-.recap-award-poster-ph{width:48px;height:72px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.recap-award-name{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);line-height:1.2;}
-.recap-award-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;color:var(--text3);margin-top:3px;}
-/* New: recap-categories block — all 24 categories listed for a given year */
+.recap-award-poster{width:48px;height:72px;object-fit:cover;border:1px solid #6a4f1f;background:#1a1410;flex-shrink:0;}
+.recap-award-poster-ph{width:48px;height:72px;background:#1a1410;border:1px dashed rgba(230,162,58,0.4);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#8a6f3a;}
+.recap-award-name{font-family:'Russo One',sans-serif;font-size:13px;color:#f5e9d4;line-height:1.2;}
+.recap-award-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;color:#a89678;margin-top:3px;}
+/* Categories block — all categories for a year */
 .recap-categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:30px;}
-.recap-cat{background:var(--bg2);border:1px solid var(--border);padding:14px;}
-.recap-cat-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;border-bottom:1px solid var(--border);padding-bottom:6px;}
-.recap-cat-winner{padding:6px 8px;background:rgba(154,120,48,0.10);border-left:3px solid var(--gold);margin-bottom:6px;}
+.recap-cat{background:linear-gradient(180deg,#221a14 0%,#1f1812 100%);border:1px solid #3a2e22;padding:14px;}
+.recap-cat-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#e6a23a;font-weight:600;margin-bottom:10px;border-bottom:1px solid #3a2e22;padding-bottom:6px;}
+.recap-cat-winner{padding:7px 9px;background:rgba(244,185,82,0.10);border-left:3px solid #e6a23a;margin-bottom:6px;}
 .recap-cat-winner.tappable{cursor:pointer;transition:background 0.12s;}
-.recap-cat-winner.tappable:hover{background:rgba(154,120,48,0.18);}
-.recap-winner-name{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);line-height:1.2;}
-.recap-winner-film{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.04em;color:var(--text2);margin-top:2px;font-style:italic;}
+.recap-cat-winner.tappable:hover{background:rgba(244,185,82,0.18);}
+.recap-winner-name{font-family:'Russo One',sans-serif;font-size:13px;color:#f5e9d4;line-height:1.2;}
+.recap-winner-film{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.04em;color:#c8b58a;margin-top:2px;font-style:italic;}
 .recap-nominees{display:flex;flex-direction:column;gap:3px;margin-top:6px;}
-.recap-nominee{padding:3px 8px;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text2);line-height:1.35;}
+.recap-nominee{padding:3px 9px;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:#a89678;line-height:1.4;}
 .recap-nominee.tappable{cursor:pointer;border-radius:0;transition:background 0.08s;}
-.recap-nominee.tappable:hover{background:var(--bg3);color:var(--accent);}
-.rn-name{font-weight:600;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.02em;color:var(--text);}
-.rn-film{color:var(--text3);font-style:italic;font-size:11px;}
-.recap-film-link{cursor:pointer;border-bottom:1px dotted transparent;transition:color 0.1s,border-color 0.1s;}
-.recap-film-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
-.recap-section-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);margin-bottom:10px;}
-.recap-section-sub{font-size:11px;color:var(--text3);font-style:italic;margin-top:-6px;margin-bottom:14px;}
+.recap-nominee.tappable:hover{background:rgba(244,185,82,0.08);color:#f4b952;}
+.rn-name{font-weight:600;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.02em;color:#e8d8b8;}
+.rn-film{color:#8a7a5c;font-style:italic;font-size:11px;}
+#page-history .recap-film-link{cursor:pointer;border-bottom:1px dotted transparent;transition:color 0.1s,border-color 0.1s;}
+#page-history .recap-film-link:hover{color:#f4b952;border-bottom-color:#f4b952;}
+#page-history .person-link:hover{color:#f4b952;border-bottom-color:#f4b952;}
+.recap-section-title{font-family:'Russo One',sans-serif;font-size:18px;color:#f5e9d4;margin-bottom:10px;}
+.recap-section-sub{font-size:11px;color:#7a6c54;font-style:italic;margin-top:-6px;margin-bottom:14px;}
 .recap-notable-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:24px;}
-.recap-empty{padding:30px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.recap-empty{padding:30px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7a6c54;}
+
+/* Notable films grid inside History uses film-card components; nudge their backdrop to fit the dark theme */
+#page-history .film-card{background:#221a14;border:1px solid #3a2e22;}
+#page-history .film-card:hover{border-color:#e6a23a;}
+#page-history .film-title{color:#f5e9d4;}
+#page-history .film-meta{color:#a89678;}
 
 @media (max-width:740px){
-  .history-head{padding:16px 14px 12px;}
-  .history-title{font-size:22px;}
-  .history-mode{font-size:10px;letter-spacing:0.12em;padding:9px 4px;}
-  .lb-row{grid-template-columns:30px 1fr auto;gap:10px;padding:10px 0;}
-  .lb-rank{font-size:15px;}
-  .lb-name{font-size:13px;}
-  .lb-count{font-size:20px;}
-  .lb-films{grid-column:2/4;font-size:10px;}
+  .history-head{padding:18px 14px 14px;}
+  .history-title{font-size:24px;}
+  .history-mode{font-size:10px;letter-spacing:0.12em;padding:10px 4px;}
+  #page-history .lb-row{grid-template-columns:30px 1fr auto;gap:10px;padding:10px 0;}
+  #page-history .lb-rank{font-size:15px;}
+  #page-history .lb-name{font-size:13px;}
+  #page-history .lb-count{font-size:20px;}
+  #page-history .lb-films{grid-column:2/4;font-size:10px;}
   .year-btn{padding:9px 12px;font-size:12px;}
   .recap-wrap{padding:16px 14px;}
   .recap-year-num{font-size:32px;}
@@ -3795,8 +3826,26 @@ async function renderClubsHome(){
       .select('club_id, joined_at, clubs(id,name,created_at)')
       .eq('user_id',currentUser.id);
     if(e1) throw e1;
+
+    // Locally cached create attempts the user can retry
+    const pending=loadPendingClubs();
+    const pendingStrip=pending.length?`
+      <div class="clubs-pending">
+        <div class="clubs-pending-label">Saved attempts \u2014 retry to finish creating</div>
+        <div class="clubs-pending-list">
+          ${pending.map(n=>`
+            <div class="clubs-pending-item">
+              <span class="clubs-pending-name">${escapeHtml(n)}</span>
+              <button class="clubs-pending-retry" onclick="retryPendingClub('${escapeJs(n)}')">Retry create</button>
+              <button class="clubs-pending-dismiss" onclick="dismissPendingClub('${escapeJs(n)}')" title="Dismiss">\u00d7</button>
+            </div>
+          `).join('')}
+        </div>
+      </div>`:'';
+
     if(!members||!members.length){
       body.innerHTML=`
+        ${pendingStrip}
         <div class="clubs-empty">
           You haven't joined any clubs yet.<br><br>
           <span style="text-transform:none;letter-spacing:0;font-size:13px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;">Create one to start sharing films, or join an existing one with the name and password.</span>
@@ -3822,7 +3871,7 @@ async function renderClubsHome(){
       film_count:filmCounts[m.club_id]||0,
     })).sort((a,b)=>new Date(b.joined_at)-new Date(a.joined_at));
 
-    body.innerHTML=`<div class="clubs-grid">${_myClubs.map(clubCard).join('')}</div>`;
+    body.innerHTML=`${pendingStrip}<div class="clubs-grid">${_myClubs.map(clubCard).join('')}</div>`;
   } catch(e){
     console.error('clubs home error',e);
     if(e&&e.message&&/relation .* does not exist/i.test(e.message)){
@@ -3916,14 +3965,46 @@ async function submitCreateClub(){
       p_display_name:currentUser.displayName||currentUser.email,
     });
     if(error) throw error;
+    // Success — clear any stale "pending" entry for this name
+    removePendingClub(name);
     closeClubModal();
     toast('Club created');
     await renderClubsHome();
     // Auto-open the new club
     if(data) openClub(data,name);
   } catch(e){
-    err.textContent=(e&&e.message)||'Could not create club';
+    // Cache the attempt locally so the user can retry from the home page.
+    // We deliberately do NOT store the password (security). User re-enters
+    // it when they retry — the cache only saves them from re-typing the name.
+    savePendingClub(name);
+    err.textContent=(e&&e.message)||'Could not create club. We saved the name — retry from the Clubs page once setup is complete.';
   }
+}
+
+// --- Pending clubs (locally cached for retry after a failed create) ---
+function pendingClubsKey(){return `fc_${currentUser?.id||'guest'}_pending_clubs`;}
+function loadPendingClubs(){
+  try{return JSON.parse(localStorage.getItem(pendingClubsKey())||'[]');}catch(e){return [];}
+}
+function savePendingClub(name){
+  const list=loadPendingClubs().filter(n=>n!==name);
+  list.unshift(name);
+  try{localStorage.setItem(pendingClubsKey(),JSON.stringify(list.slice(0,5)));}catch(e){}
+}
+function removePendingClub(name){
+  const list=loadPendingClubs().filter(n=>n!==name);
+  try{localStorage.setItem(pendingClubsKey(),JSON.stringify(list));}catch(e){}
+}
+function retryPendingClub(name){
+  openClubModal('create');
+  setTimeout(()=>{
+    const inp=document.getElementById('club-create-name');
+    if(inp){inp.value=name;document.getElementById('club-create-pass')?.focus();}
+  },80);
+}
+function dismissPendingClub(name){
+  removePendingClub(name);
+  renderClubsHome();
 }
 
 async function submitJoinClub(){
