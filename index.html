@@ -3007,14 +3007,16 @@ function maybeClosePicker(e){if(e.target===document.getElementById('picker-modal
 let _oscarData=null;       // [[year, category, name, film, won01], ...]
 let _oscarLoading=false;
 let currentHistoryMode='leaderboards';
-let currentLeaderboard='Director';
+let currentLeaderboard='director';
 let currentRecapYear=null; // set after data loads
 
-// Map our display name -> the category string used in the data.
+// Map UI subtab key (lowercase) -> the category string(s) used in the data.
+// The Oscar JSON stores categories with title-case names ("Director", "Actor",
+// "Actress"); UI buttons use lowercase. Normalize here.
 const LB_CATEGORY={
-  Director:['Director'],
-  Actor:['Actor'],
-  Actress:['Actress'],
+  director:['Director'],
+  actor:['Actor'],
+  actress:['Actress'],
 };
 
 async function ensureOscarData(){
@@ -3062,21 +3064,31 @@ async function renderLeaderboard(){
   if(!data.length){body.innerHTML='<div class="recap-empty">Could not load Oscar data.</div>';return;}
 
   const targets=LB_CATEGORY[currentLeaderboard]||[currentLeaderboard];
-  // Tally each individual name (split on " & " or " and ") across all winning rows in target categories
+  // Tally each individual name (split on " & " or " and ") across all winning
+  // rows in target categories. Names get a normalized key (lowercase, no
+  // punctuation) so "Daniel Day Lewis" and "Daniel Day-Lewis" — both real
+  // spellings in the source data — count as the same person. We display the
+  // most recent spelling (newer entries tend to use canonical names).
+  const normKey=s=>String(s||'').toLowerCase().replace(/[^\w\s]/g,' ').replace(/\s+/g,' ').trim();
   const tally={};
-  for(const [yr,cat,name,film,won] of data){
+  // Iterate from oldest to newest so the last seen spelling is the most recent
+  const rows=[...data].sort((a,b)=>a[0]-b[0]);
+  for(const [yr,cat,name,film,won] of rows){
     if(!won) continue;
     if(!targets.includes(cat)) continue;
     const names=String(name||'').split(/\s+(?:&|and)\s+/);
     for(const raw of names){
       const n=raw.trim();
       if(!n) continue;
-      if(!tally[n]) tally[n]={count:0,films:[]};
-      tally[n].count++;
-      tally[n].films.push({title:film,year:yr});
+      const k=normKey(n);
+      if(!k) continue;
+      if(!tally[k]) tally[k]={count:0,films:[],name:n};
+      tally[k].count++;
+      tally[k].films.push({title:film,year:yr});
+      tally[k].name=n; // overwrite to latest spelling
     }
   }
-  const ranked=Object.entries(tally).map(([name,v])=>({name,...v}))
+  const ranked=Object.values(tally)
     .filter(r=>r.count>=2)
     .sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name));
 
@@ -3094,7 +3106,7 @@ async function renderLeaderboard(){
         <div class="lb-rank ${visibleRank>10?'small':''}">${visibleRank}</div>
         <div>
           <div class="lb-name"><span class="person-link" onclick="openPersonByName('${escapeJs(r.name)}')">${escapeHtml(r.name)}</span></div>
-          <div class="lb-meta">Best ${currentLeaderboard} winner</div>
+          <div class="lb-meta">Best ${currentLeaderboard.charAt(0).toUpperCase()+currentLeaderboard.slice(1)} winner</div>
         </div>
         <div>
           <div class="lb-count">${r.count}</div>
