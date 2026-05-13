@@ -461,7 +461,34 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .fg-tab.active .fg-tab-count{background:var(--accent);color:var(--bg2);}
 .fg-body{padding:18px 20px;}
 
-/* FILM HISTORY page */
+/* OSCARS CURTAIN — stage-reveal animation when entering Film History */
+#oscars-curtain{position:fixed;inset:0;z-index:150;pointer-events:none;overflow:hidden;}
+#oscars-curtain .oc-panel{position:absolute;top:0;bottom:0;width:55%;background:
+  /* vertical velvet pleats — subtle striping in the gradient */
+  repeating-linear-gradient(90deg,rgba(0,0,0,0.18) 0,rgba(0,0,0,0.18) 1px,transparent 1px,transparent 28px),
+  linear-gradient(180deg,#1a1410 0%,#2a201a 35%,#1a1410 80%);
+  box-shadow:inset 0 0 60px rgba(0,0,0,0.6);
+  transform:translateX(-110%);
+  transition:transform 0.48s cubic-bezier(0.7,0.0,0.3,1);
+  will-change:transform;}
+#oscars-curtain .oc-left{left:0;border-right:1px solid rgba(244,185,82,0.4);}
+#oscars-curtain .oc-right{right:0;transform:translateX(110%);border-left:1px solid rgba(244,185,82,0.4);}
+/* Soft gold spotlight on the gap between the curtains when they meet */
+#oscars-curtain .oc-glow{position:absolute;top:0;bottom:0;left:50%;width:0;
+  background:radial-gradient(ellipse 50% 70% at 50% 35%, rgba(244,185,82,0.35), rgba(230,162,58,0.1) 40%, transparent 70%);
+  transform:translateX(-50%);
+  opacity:0;
+  transition:opacity 0.35s ease-out;
+  pointer-events:none;}
+/* Closing phase: panels slide in to meet, glow fades up to peak */
+#oscars-curtain.oc-closing .oc-left{transform:translateX(0%);}
+#oscars-curtain.oc-closing .oc-right{transform:translateX(0%);}
+#oscars-curtain.oc-closing .oc-glow{opacity:1;width:100%;}
+/* Opening phase: panels sweep apart, glow fades */
+#oscars-curtain.oc-opening .oc-left{transform:translateX(-110%);transition:transform 0.52s cubic-bezier(0.4,0.0,0.2,1);}
+#oscars-curtain.oc-opening .oc-right{transform:translateX(110%);transition:transform 0.52s cubic-bezier(0.4,0.0,0.2,1);}
+#oscars-curtain.oc-opening .oc-glow{opacity:0;transition:opacity 0.3s ease-in;}
+
 /* CLUBS page */
 .clubs-head{padding:22px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
 .clubs-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
@@ -4294,21 +4321,83 @@ async function quickPostFilm(clubId,filmId,pillEl){
 }
 
 
-function showPage(id,el){
+function _doPageSwap(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+id)?.classList.add('active');
   if(el) el.classList.add('active');
   if(id==='filmography') renderFilmography();
   if(id==='rankings') loadRankings();
-  if(id==='debate') loadDebate();
-  if(id==='compare') loadCompare();
   if(id==='clubs') renderClubsHome();
   if(id==='history'){
     if(currentHistoryMode==='leaderboards') renderLeaderboard();
     else {renderYearBar();renderYearRecap(currentRecapYear);}
   }
   window.scrollTo(0,0);
+}
+
+// Track which page we're currently showing so we know when a History tap
+// is actually an *entry* (curtain) vs a no-op re-tap on the same tab.
+let _currentPageId='discover';
+let _curtainBusy=false;
+let _pendingNav=null; // {id, el} — most recent tap during a curtain
+
+function showPage(id,el){
+  // If a curtain is currently running, just remember where the user wants to go.
+  // The midpoint callback will honor the latest pending request rather than
+  // the original History destination.
+  if(_curtainBusy){
+    _pendingNav={id,el};
+    return;
+  }
+  // Entering Film History from another page → Oscars reveal curtain animation.
+  // Re-tapping the History tab while already there → no animation.
+  if(id==='history' && _currentPageId!=='history'){
+    _pendingNav={id,el};
+    runOscarsCurtain(()=>{
+      const target=_pendingNav||{id,el};
+      _pendingNav=null;
+      _doPageSwap(target.id,target.el);
+      _currentPageId=target.id;
+    });
+    return;
+  }
+  _doPageSwap(id,el);
+  _currentPageId=id;
+}
+
+// Build (once) and animate two stage curtains that sweep in from left and right,
+// meet in the middle, then part. During the brief closed phase, the underlying
+// page swap happens — so the visual effect is "curtains open onto Film History."
+function _buildCurtain(){
+  if(document.getElementById('oscars-curtain')) return;
+  const wrap=document.createElement('div');
+  wrap.id='oscars-curtain';
+  wrap.innerHTML='<div class="oc-panel oc-left"></div><div class="oc-panel oc-right"></div><div class="oc-glow"></div>';
+  document.body.appendChild(wrap);
+}
+
+function runOscarsCurtain(midCallback){
+  _buildCurtain();
+  _curtainBusy=true;
+  const wrap=document.getElementById('oscars-curtain');
+  wrap.classList.remove('oc-open','oc-closed');
+  wrap.style.pointerEvents='auto';
+  // Force a reflow so the transition starts from the off-screen state
+  // (transitions don't fire when starting and ending values are set in the same frame)
+  void wrap.offsetWidth;
+  wrap.classList.add('oc-closing');
+  // After the close animation completes, swap content under cover, then open
+  setTimeout(()=>{
+    if(midCallback) midCallback();
+    wrap.classList.remove('oc-closing');
+    wrap.classList.add('oc-opening');
+    setTimeout(()=>{
+      wrap.classList.remove('oc-opening');
+      wrap.style.pointerEvents='none';
+      _curtainBusy=false;
+    },520);
+  },480);
 }
 
 // ===== BOOT =====
