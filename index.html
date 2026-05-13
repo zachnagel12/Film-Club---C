@@ -275,11 +275,21 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .btn-compare{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);width:100%;margin-bottom:14px;}
 .btn-compare:hover{border-color:var(--accent);color:var(--accent);}
 .star-row{display:flex;gap:3px;margin:8px 0 4px;}
-.star{font-size:22px;cursor:pointer;color:var(--text3);transition:color 0.1s;line-height:1;}
-.star.lit{color:var(--gold);}
-.star:hover,.star:hover~.star{color:var(--text3);}
-.star-row:hover .star{color:var(--gold);}
-.star-row .star:hover~.star{color:var(--text3);}
+.star-cell{position:relative;display:inline-block;width:24px;height:24px;font-size:22px;line-height:1;}
+.star-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text3);pointer-events:none;transition:color 0.1s;}
+.star-half{position:absolute;top:0;width:50%;height:100%;cursor:pointer;z-index:2;}
+.star-half.left{left:0;}
+.star-half.right{right:0;}
+.star-cell.lit-full .star-glyph{color:var(--gold);}
+.star-cell.lit-half .star-glyph{
+  background:linear-gradient(to right,var(--gold) 50%,var(--text3) 50%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.star-cell:hover .star-glyph{color:var(--gold);}
+.star-cell:has(.left:hover) .star-glyph{
+  background:linear-gradient(to right,var(--gold) 50%,var(--text3) 50%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
 .modal-similar{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;}
 .sim-card{cursor:pointer;}
 .sim-card:hover{opacity:0.8;}
@@ -993,10 +1003,31 @@ if(window.SUPABASE_READY===undefined){
   initSupabase();
 }
 
+// One-time migration: old ratings stored as 1-5 stars, new system uses 0-10 in 0.5 steps.
+// Any value ≤5 is doubled. Values >5 are assumed already migrated.
+function migrateRatings(r){
+  if(!r) return {};
+  let changed=false;
+  const out={};
+  for(const k in r){
+    const v=Number(r[k]);
+    if(v>0&&v<=5&&Number.isInteger(v)){
+      out[k]=v*2;
+      changed=true;
+    } else {
+      out[k]=v;
+    }
+  }
+  return {out,changed};
+}
+
 function loadUserDataLocal(){
   watchlist=JSON.parse(localStorage.getItem(userKey('wl'))||'[]');
   seenList=JSON.parse(localStorage.getItem(userKey('seen'))||'[]');
-  myRatings=JSON.parse(localStorage.getItem(userKey('ratings'))||'{}');
+  const raw=JSON.parse(localStorage.getItem(userKey('ratings'))||'{}');
+  const {out,changed}=migrateRatings(raw);
+  myRatings=out;
+  if(changed) localStorage.setItem(userKey('ratings'),JSON.stringify(myRatings));
   compareList=JSON.parse(localStorage.getItem(userKey('compare'))||'[]');
   myOscars=JSON.parse(localStorage.getItem(userKey('oscars'))||'{}');
 }
@@ -1009,7 +1040,9 @@ async function loadUserDataCloud(){
     if(data){
       watchlist=data.watchlist||[];
       seenList=data.seen||[];
-      myRatings=data.ratings||{};
+      const m=migrateRatings(data.ratings||{});
+      myRatings=m.out;
+      if(m.changed) syncToCloud(); // persist migrated values
       compareList=data.compare||[];
       myOscars=data.oscars||{};
     } else {
@@ -1352,9 +1385,16 @@ async function api(path,params={}){
 }
 
 // Snap a 0-10 score to the nearest 0.5 and format as a single-decimal string.
+// Use this ONLY for grids meant to be on a 0.5 scale (e.g. a user's per-film rating).
 function fmt05(n){
   if(n===null||n===undefined||isNaN(n)) return '—';
   return (Math.round(Number(n)*2)/2).toFixed(1);
+}
+
+// Round any continuous score (0-10) to the nearest 0.1. Use this for averages.
+function fmt1(n){
+  if(n===null||n===undefined||isNaN(n)) return '—';
+  return (Math.round(Number(n)*10)/10).toFixed(1);
 }
 
 // Bayesian weighted score: WR = (v/(v+m))*R + (m/(v+m))*C
@@ -1438,7 +1478,7 @@ function toast(msg){
 function filmCard(f){
   const t=f.title||f.name||'Untitled';
   const yr=(f.release_date||f.first_air_date||'').slice(0,4);
-  const score=fmt05(f.vote_average);
+  const score=fmt1(f.vote_average);
   const poster=f.poster_path
     ?`<img src="${IMG}w342${f.poster_path}" alt="${t}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
     :`<div class="film-poster-ph">🎬</div>`;
@@ -1455,7 +1495,7 @@ function filmCard(f){
 function rankRow(f,i){
   const t=f.title||'Untitled';
   const yr=(f.release_date||'').slice(0,4);
-  const score=fmt05(f.vote_average);
+  const score=fmt1(f.vote_average);
   const gnames=(f.genre_ids||[]).map(id=>GENRES[id]).filter(Boolean).slice(0,2).join(' · ');
   const poster=f.poster_path
     ?`<img class="r-poster" src="${IMG}w92${f.poster_path}" alt="">`
@@ -1471,7 +1511,7 @@ function rankRow(f,i){
 function nowShowingRow(f,i){
   const t=f.title||f.name||'Untitled';
   const yr=(f.release_date||f.first_air_date||'').slice(0,4);
-  const score=fmt05(f.vote_average);
+  const score=fmt1(f.vote_average);
   const isTop=i===0;
   const trend=f.popularity>200?'up':'flat';
   const trendTxt=trend==='up'?'▲':'▬';
@@ -1520,7 +1560,7 @@ async function loadDiscover(){
 
     const tickerItems=tr.results.slice(0,15).map(f=>{
       const t=f.title||f.name;
-      const s=fmt05(f.vote_average);
+      const s=fmt1(f.vote_average);
       return `<span class="ticker-item">${t}<span class="tk-score">${s}</span></span>`;
     }).join('<span class="tk-sep">·</span>');
     const tickerEl=document.getElementById('ticker-track');
@@ -1587,14 +1627,14 @@ async function loadDebate(){
       cards=d.results.slice(0,12).map(f=>({
         label:'Underrated',
         headline:`Only ${(f.vote_count/1000).toFixed(1)}k people have rated this`,
-        film:f,stat:fmt05(f.vote_average),statLbl:'Score'
+        film:f,stat:fmt1(f.vote_average),statLbl:'Score'
       }));
     } else if(m==='overrated'){
       const d=await api('/discover/movie',{sort_by:'popularity.desc','vote_count.gte':5000,'vote_average.lte':6.5});
       cards=d.results.slice(0,12).map(f=>({
         label:'Overrated',
         headline:`Everyone watched it. Most weren't impressed.`,
-        film:f,stat:fmt05(f.vote_average),statLbl:'Score'
+        film:f,stat:fmt1(f.vote_average),statLbl:'Score'
       }));
     } else if(m==='recent'){
       const yr=new Date().getFullYear();
@@ -1604,7 +1644,7 @@ async function loadDebate(){
         return {
           label:verdict,
           headline:`${(f.vote_count/1000).toFixed(0)}k votes in. The verdict is in.`,
-          film:f,stat:fmt05(f.vote_average),statLbl:'Score'
+          film:f,stat:fmt1(f.vote_average),statLbl:'Score'
         };
       });
     } else if(m==='cult'){
@@ -1612,7 +1652,7 @@ async function loadDebate(){
       cards=d.results.slice(0,12).map(f=>({
         label:'Cult Classic',
         headline:`The ${(f.release_date||'').slice(0,4)} sleeper still defended by its fans`,
-        film:f,stat:fmt05(f.vote_average),statLbl:'Score'
+        film:f,stat:fmt1(f.vote_average),statLbl:'Score'
       }));
     }
     el.innerHTML='<div class="takes-grid">'+cards.map(c=>{
@@ -1661,7 +1701,7 @@ async function loadCompare(){
   if(compareList[0]&&compareList[1]&&filmCache[compareList[0]]&&filmCache[compareList[1]]){
     const a=filmCache[compareList[0]],b=filmCache[compareList[1]];
     const stats=[
-      {lbl:'Score',a:fmt05(a.vote_average),b:fmt05(b.vote_average),aNum:a.vote_average||0,bNum:b.vote_average||0,higher:true},
+      {lbl:'Score',a:fmt1(a.vote_average),b:fmt1(b.vote_average),aNum:a.vote_average||0,bNum:b.vote_average||0,higher:true},
       {lbl:'Votes',a:(a.vote_count||0).toLocaleString(),b:(b.vote_count||0).toLocaleString(),aNum:a.vote_count||0,bNum:b.vote_count||0,higher:true},
       {lbl:'Popularity',a:Math.round(a.popularity||0),b:Math.round(b.popularity||0),aNum:a.popularity||0,bNum:b.popularity||0,higher:true},
       {lbl:'Runtime',a:(a.runtime||0)+' min',b:(b.runtime||0)+' min',aNum:a.runtime||0,bNum:b.runtime||0,higher:null},
@@ -1721,7 +1761,20 @@ async function openFilm(id,mt='movie'){
     const isSeen=seenList.includes(id);
     const isWL=watchlist.includes(id);
     const myR=myRatings[id]||0;
-    const stars=[1,2,3,4,5].map(n=>`<span class="star${myR>=n?' lit':''}" onclick="rateFilm(${id},${n})" data-n="${n}">★</span>`).join('');
+    // 0-10 half-step. Each "star" represents 2 units. Left half = +1, right half = +2.
+    // Tap a half to set the rating to that half's value; tap the same half again to clear.
+    const stars=[1,2,3,4,5].map(n=>{
+      const leftVal=(n-1)*2+1;   // 1,3,5,7,9  (half-star: 0.5,1.5,…,4.5 on /5; ½,1½,…,4½ on /10 divided by 2)
+      const rightVal=n*2;        // 2,4,6,8,10 (full star)
+      let cellCls='star-cell';
+      if(myR>=rightVal) cellCls+=' lit-full';
+      else if(myR>=leftVal) cellCls+=' lit-half';
+      return `<span class="${cellCls}" data-cell="${n}">
+        <span class="star-half left" onclick="rateFilm(${id},${leftVal})" title="${leftVal/2} / 10"></span>
+        <span class="star-half right" onclick="rateFilm(${id},${rightVal})" title="${rightVal/2} / 10"></span>
+        <span class="star-glyph">★</span>
+      </span>`;
+    }).join('');
     const backdrop=film.backdrop_path
       ?`<img class="modal-backdrop" src="${IMG}w780${film.backdrop_path}" alt="">`
       :`<div class="modal-backdrop-ph">🎬</div>`;
@@ -1746,9 +1799,9 @@ async function openFilm(id,mt='movie'){
             <div class="modal-title">${t}</div>
             <div class="modal-meta">${yr}${rt?' · '+rt:''}${gnames?' · '+gnames:''}</div>
             <div class="modal-scores">
-              <div class="mscore"><div class="mscore-val">${fmt05(film.vote_average)}</div><div class="mscore-label">Score</div></div>
+              <div class="mscore"><div class="mscore-val">${fmt1(film.vote_average)}</div><div class="mscore-label">Score</div></div>
               <div class="mscore"><div class="mscore-val">${film.vote_count?(film.vote_count/1000).toFixed(0)+'k':'—'}</div><div class="mscore-label">Votes</div></div>
-              ${myR?`<div class="mscore"><div class="mscore-val" style="color:var(--gold);">${myR}★</div><div class="mscore-label">Yours</div></div>`:''}
+              ${myR?`<div class="mscore"><div class="mscore-val" style="color:var(--gold);">${fmt05(myR)}</div><div class="mscore-label">Yours</div></div>`:''}
             </div>
             <div class="star-row" id="stars-${id}">${stars}</div>
             ${dirs.length?`<div class="modal-section-label" style="margin-top:8px;">Directed by</div><div style="display:flex;gap:5px;flex-wrap:wrap;">${dirs.map(d=>`<span class="cast-pill">${d.name}</span>`).join('')}</div>`:''}
@@ -1767,6 +1820,8 @@ async function openFilm(id,mt='movie'){
 }
 
 function rateFilm(id,n){
+  // n arrives as a 0-10 half-step value (1, 2, 3, ... 10).
+  // Tapping the same half again clears.
   if(myRatings[id]===n){delete myRatings[id];n=0;}
   else myRatings[id]=n;
   if(n>0&&!seenList.includes(id)){
@@ -1777,9 +1832,22 @@ function rateFilm(id,n){
   }
   localStorage.setItem(userKey('ratings'),JSON.stringify(myRatings));
   syncToCloud();
+  // Repaint the star cells
   const row=document.getElementById(`stars-${id}`);
-  if(row) row.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('lit',i<n));
-  toast(n?`Rated ${fmt05(n*2)} / 10`:'Rating cleared');
+  if(row){
+    row.querySelectorAll('.star-cell').forEach(cell=>{
+      const idx=parseInt(cell.dataset.cell);
+      const leftVal=(idx-1)*2+1;
+      const rightVal=idx*2;
+      cell.classList.remove('lit-full','lit-half');
+      if(n>=rightVal) cell.classList.add('lit-full');
+      else if(n>=leftVal) cell.classList.add('lit-half');
+    });
+  }
+  // Update the "Yours" mscore in this same modal if visible
+  const yoursEl=document.querySelector('#modal-content .mscore-val[style*="--gold"]');
+  if(yoursEl) yoursEl.textContent=n?fmt05(n):'';
+  toast(n?`Rated ${fmt05(n)} / 10`:'Rating cleared');
 }
 
 function toggleSeen(id){
@@ -1840,7 +1908,7 @@ async function openPerson(id){
     const chrono=[...films].filter(f=>f.release_date||f.first_air_date)
       .sort((a,b)=>(a.release_date||a.first_air_date||'').localeCompare(b.release_date||b.first_air_date||''));
 
-    const avg=films.length?fmt05(films.reduce((s,f)=>s+(f.vote_average||0),0)/films.length):'—';
+    const avg=films.length?fmt1(films.reduce((s,f)=>s+(f.vote_average||0),0)/films.length):'—';
     const best=films.length?films[0]:null;
 
     let arcSvg='';
@@ -1854,7 +1922,7 @@ async function openPerson(id){
         const yr=(f.release_date||f.first_air_date||'').slice(0,4);
         const isHigh=(f.vote_average||0)>=7.5;
         return `<circle cx="${x.toFixed(1)}" cy="${ys[i].toFixed(1)}" r="${isHigh?4:3}" fill="${isHigh?'#b06030':'#8a7e72'}" stroke="#faf9f7" stroke-width="1.5" style="cursor:pointer;" onclick="openFilm(${f.id},'${f.media_type||'movie'}')">
-          <title>${(f.title||f.name||'').replace(/"/g,'')} (${yr}) — ${fmt05(f.vote_average||0)}</title></circle>`;
+          <title>${(f.title||f.name||'').replace(/"/g,'')} (${yr}) — ${fmt1(f.vote_average||0)}</title></circle>`;
       }).join('');
       const refY=H-P-0.7*(H-P*2);
       arcSvg=`<div class="career-arc">
@@ -1878,7 +1946,7 @@ async function openPerson(id){
           <div class="person-stats">
             <div class="pstat"><div class="pstat-val">${films.length}</div><div class="pstat-label">Films</div></div>
             <div class="pstat"><div class="pstat-val">${avg}</div><div class="pstat-label">Avg Score</div></div>
-            ${best?`<div class="pstat"><div class="pstat-val">${fmt05(best.vote_average||0)}</div><div class="pstat-label">Best</div></div>`:''}
+            ${best?`<div class="pstat"><div class="pstat-val">${fmt1(best.vote_average||0)}</div><div class="pstat-label">Best</div></div>`:''}
             ${p.birthday?`<div class="pstat"><div class="pstat-val">${new Date().getFullYear()-parseInt(p.birthday.slice(0,4))}</div><div class="pstat-label">Age</div></div>`:''}
           </div>
         </div>
@@ -2190,9 +2258,9 @@ async function renderFgTabContent(){
       const topDecades=Object.entries(decadeCount).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
       const maxD=Math.max(...Object.values(decadeCount),1);
 
-      const avgScore=valid.length?fmt05(valid.reduce((s,f)=>s+(f.vote_average||0),0)/valid.length):'—';
+      const avgScore=valid.length?fmt1(valid.reduce((s,f)=>s+(f.vote_average||0),0)/valid.length):'—';
       const ratedFilms=Object.values(myRatings);
-      const myAvg=ratedFilms.length?fmt05((ratedFilms.reduce((a,b)=>a+b,0)/ratedFilms.length)*2):'—';
+      const myAvg=ratedFilms.length?fmt1(ratedFilms.reduce((a,b)=>a+b,0)/ratedFilms.length):'—';
       const myFavs=Object.entries(myRatings).sort((a,b)=>b[1]-a[1]).slice(0,1);
       const favFilm=myFavs.length?valid.find(f=>f.id===parseInt(myFavs[0][0])):null;
 
@@ -2245,7 +2313,7 @@ async function renderFgTabContent(){
 
 function getMyAvgRating(){
   const r=Object.values(myRatings);
-  return r.length?fmt05((r.reduce((a,b)=>a+b,0)/r.length)*2):'—';
+  return r.length?fmt1(r.reduce((a,b)=>a+b,0)/r.length):'—';
 }
 
 function countOscars(){
@@ -2343,7 +2411,7 @@ function renderPickerFilms(films){
     const poster=f.poster_path?`<img class="picker-poster-thumb" src="${IMG}w92${f.poster_path}">`:`<div class="picker-row-ph" style="width:34px;height:50px;border-radius:0;">🎬</div>`;
     return `<div class="picker-row" onclick='setOscar(${JSON.stringify({id:f.id,title:t,poster_path:f.poster_path||null,release_date:f.release_date||""}).replace(/'/g,"&apos;")})'>
       ${poster}
-      <div><div class="picker-row-name">${t}</div><div class="picker-row-meta">${yr}${f.vote_average?' · '+fmt05(f.vote_average):''}</div></div>
+      <div><div class="picker-row-name">${t}</div><div class="picker-row-meta">${yr}${f.vote_average?' · '+fmt1(f.vote_average):''}</div></div>
     </div>`;
   }).join(''):'<div class="no-results" style="padding:14px;">No results</div>';
 }
