@@ -245,22 +245,22 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .btn-seen.inactive{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
 .btn-wl{background:var(--accent);color:var(--bg2);}
 .btn-wl.inactive{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
-.star-row{display:flex;gap:3px;margin:8px 0 4px;}
-.star-cell{position:relative;display:inline-block;width:24px;height:24px;font-size:22px;line-height:1;}
-.star-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text3);pointer-events:none;transition:color 0.1s;}
-.star-half{position:absolute;top:0;width:50%;height:100%;cursor:pointer;z-index:2;}
-.star-half.left{left:0;}
-.star-half.right{right:0;}
-.star-cell.lit-full .star-glyph{color:var(--gold);}
-.star-cell.lit-half .star-glyph{
-  background:linear-gradient(to right,var(--gold) 50%,var(--text3) 50%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.star-cell:hover .star-glyph{color:var(--gold);}
-.star-cell:has(.left:hover) .star-glyph{
-  background:linear-gradient(to right,var(--gold) 50%,var(--text3) 50%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
+/* Typed rating input — 0.0 to 10.0 in 0.1 steps. Replaces the old star row.
+   Visual cue: warm gold accents matching the spotlight palette to make the
+   active field obvious against the cream background. */
+.rate-row{margin:10px 0 6px;}
+.rate-label{display:block;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text2);margin-bottom:6px;font-weight:600;}
+.rate-input-wrap{display:flex;align-items:center;gap:0;border:2px solid var(--border2);background:var(--bg2);transition:border-color 0.12s, box-shadow 0.12s;max-width:230px;}
+.rate-input-wrap:focus-within{border-color:#f4b952;box-shadow:0 0 0 3px rgba(244,185,82,0.18);}
+.rate-input{flex:1;border:none;background:transparent;padding:10px 12px;font-family:'Russo One',sans-serif;font-size:22px;color:#b06030;outline:none;min-width:0;width:100%;text-align:center;letter-spacing:0.02em;}
+.rate-input::-webkit-outer-spin-button,
+.rate-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.rate-input[type=number]{-moz-appearance:textfield;}
+.rate-input::placeholder{color:#c8beb4;font-size:14px;letter-spacing:0.1em;}
+.rate-input-suffix{padding:0 12px 0 0;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);font-weight:600;}
+.rate-clear-btn{background:transparent;border:none;border-left:1px solid var(--border);padding:9px 12px;color:var(--text3);font-size:16px;cursor:pointer;font-family:'Oswald',sans-serif;line-height:1;transition:color 0.12s;}
+.rate-clear-btn:hover{color:var(--red);}
+.rate-hint{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text3);font-style:italic;margin-top:6px;font-weight:300;line-height:1.4;}
 .modal-similar{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;}
 .sim-card{cursor:pointer;}
 .sim-card:hover{opacity:0.8;}
@@ -504,12 +504,181 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .club-vis-opt.active .club-vis-title{color:var(--accent);}
 .club-vis-sub{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
 
+/* Member-permission section in create modal */
+.club-perm-hint{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text3);font-style:italic;margin-bottom:8px;line-height:1.45;font-weight:300;}
+.club-perm-list{display:flex;flex-direction:column;gap:6px;}
+.club-perm-row{display:grid;grid-template-columns:18px 1fr;column-gap:10px;row-gap:0;align-items:start;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);cursor:pointer;transition:border-color 0.12s;}
+.club-perm-row:hover{border-color:var(--border2);}
+.club-perm-row input[type=checkbox]{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--border2);background:var(--bg2);cursor:pointer;position:relative;margin:1px 0 0;transition:all 0.12s;grid-row:span 2;align-self:start;}
+.club-perm-row input[type=checkbox]:checked{background:var(--accent);border-color:var(--accent);}
+.club-perm-row input[type=checkbox]:checked::after{content:'\2713';position:absolute;top:-2px;left:2px;color:var(--bg2);font-size:14px;font-weight:bold;font-family:sans-serif;}
+.club-perm-name{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;}
+.club-perm-desc{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text2);font-weight:300;line-height:1.35;grid-column:2;}
+
+/* Inline restriction badge in club detail header */
+.club-perm-tag{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+
 /* Badge that distinguishes public from private clubs in the detail header */
 .club-badge{display:inline-block;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;padding:2px 7px;margin-left:6px;vertical-align:middle;font-weight:600;border:1px solid;}
 .club-badge.public{color:var(--green);border-color:var(--green);background:rgba(26,106,42,0.08);}
 .club-badge.private{color:var(--text3);border-color:var(--border2);background:var(--bg3);}
 
 .club-rankings{padding:18px 20px;}
+
+/* FOR YOU page — personal recommendation generator */
+.foryou-head{padding:22px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
+.foryou-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.foryou-title{font-family:'Russo One',sans-serif;font-size:28px;line-height:1.0;color:var(--text);margin-bottom:4px;}
+.foryou-sub{font-size:13px;color:var(--text2);font-weight:300;max-width:640px;line-height:1.45;}
+.foryou-modes{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);}
+.foryou-mode{flex:1;padding:11px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;font-weight:600;}
+.foryou-mode.active{color:var(--text);border-bottom:2px solid var(--accent);}
+.foryou-mode:hover:not(.active){color:var(--text2);}
+
+.foryou-intro{padding:16px 20px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.foryou-intro-text{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text2);font-weight:300;line-height:1.5;max-width:640px;}
+.foryou-intro-text b{color:var(--accent);font-weight:600;}
+.foryou-intro-text em{color:var(--text);font-style:italic;}
+.foryou-refresh{padding:8px 14px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all 0.12s;}
+.foryou-refresh:hover{background:var(--accent);color:var(--bg2);}
+
+.foryou-results-head{padding:14px 20px 8px;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);font-weight:600;}
+#foryou-results .film-grid{padding:0 20px 20px;}
+
+.foryou-empty{padding:60px 20px;text-align:center;max-width:520px;margin:0 auto;}
+.foryou-empty-icon{font-size:48px;margin-bottom:14px;opacity:0.6;}
+.foryou-empty-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--text);margin-bottom:8px;}
+.foryou-empty-sub{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text2);line-height:1.55;font-weight:300;margin-bottom:18px;}
+.foryou-empty-btn{padding:10px 18px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;cursor:pointer;}
+.foryou-empty-btn:hover{opacity:0.88;}
+
+/* SEED PICKER */
+.seed-picker{padding:18px 20px;border-bottom:1px solid var(--border);}
+.seed-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.seed-slot{position:relative;background:var(--bg2);border:1px solid var(--border);padding:8px;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:160px;}
+.seed-slot.empty{border:1px dashed var(--border2);background:transparent;justify-content:center;}
+.seed-slot.filled img{width:80px;height:120px;object-fit:cover;border:1px solid var(--border);}
+.seed-slot-ph{width:80px;height:120px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:30px;border:1px solid var(--border);}
+.seed-slot-info{text-align:center;}
+.seed-slot-title{font-family:'Russo One',sans-serif;font-size:11px;color:var(--text);line-height:1.15;}
+.seed-slot-year{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.08em;color:var(--text3);margin-top:2px;}
+.seed-slot-num{font-family:'Russo One',sans-serif;font-size:30px;color:var(--border2);}
+.seed-slot-empty-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);}
+.seed-slot-remove{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);color:#fff;border:none;width:20px;height:20px;font-size:13px;cursor:pointer;line-height:1;font-family:sans-serif;}
+.seed-slot-remove:hover{background:var(--red);}
+
+.seed-search-wrap{position:relative;margin-bottom:12px;}
+.seed-search-input{width:100%;background:var(--bg2);border:1px solid var(--border);padding:10px 12px;font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--text);outline:none;transition:border-color 0.12s;}
+.seed-search-input:focus{border-color:var(--accent);}
+.seed-search-results{max-height:280px;overflow-y:auto;background:var(--bg2);border:1px solid var(--border);border-top:none;}
+.seed-search-results:empty{display:none;border:none;}
+.seed-search-result{display:flex;gap:10px;padding:8px;border-bottom:1px solid var(--border);cursor:pointer;align-items:center;transition:background 0.08s;}
+.seed-search-result:hover:not(.disabled){background:var(--panel);}
+.seed-search-result.disabled{opacity:0.4;cursor:not-allowed;}
+.seed-search-result img,.seed-search-poster-ph{width:36px;height:54px;object-fit:cover;background:var(--bg3);border:1px solid var(--border);flex-shrink:0;}
+.seed-search-info{flex:1;min-width:0;}
+.seed-search-title{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);line-height:1.15;}
+.seed-search-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text3);margin-top:2px;}
+.seed-search-loading{padding:14px;text-align:center;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+
+.foryou-generate{width:100%;padding:12px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all 0.12s;}
+.foryou-generate:hover:not(:disabled){opacity:0.88;}
+.foryou-generate:disabled{background:var(--border2);cursor:not-allowed;}
+
+@media (max-width:740px){
+  .foryou-head{padding:16px 14px 12px;}
+  .foryou-title{font-size:22px;}
+  .foryou-mode{font-size:10px;letter-spacing:0.1em;padding:10px 4px;}
+  .foryou-intro{padding:12px 14px;}
+  #foryou-results .film-grid{padding:0 14px 16px;}
+  .seed-picker{padding:14px;}
+  .seed-slots{grid-template-columns:repeat(3,1fr);gap:6px;}
+  .seed-slot{padding:6px;min-height:auto;}
+  .seed-slot.filled img,.seed-slot-ph{width:100%;height:auto;aspect-ratio:2/3;}
+  .seed-slot-title{font-size:10px;}
+  .seed-slot-num{font-size:24px;}
+}
+
+/* WEEKLY DEBATE page */
+.weekly-head{padding:22px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
+.weekly-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.weekly-title{font-family:'Russo One',sans-serif;font-size:26px;line-height:1.0;color:var(--text);margin-bottom:4px;}
+.weekly-sub{font-size:13px;color:var(--text2);font-weight:300;}
+.weekly-film-card{display:grid;grid-template-columns:180px 1fr;gap:18px;padding:20px;border-bottom:1px solid var(--border);background:var(--bg2);}
+.weekly-poster{width:180px;height:270px;object-fit:cover;border:1px solid var(--border);background:var(--bg3);}
+.weekly-poster-ph{width:180px;height:270px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:40px;}
+.weekly-film-info{display:flex;flex-direction:column;justify-content:flex-start;gap:6px;}
+.weekly-film-title{font-family:'Russo One',sans-serif;font-size:24px;color:var(--text);line-height:1.1;}
+.weekly-film-meta{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.weekly-prompt{font-family:'Barlow Condensed',sans-serif;font-size:16px;line-height:1.55;color:var(--text);font-weight:300;font-style:italic;border-left:3px solid var(--accent);padding-left:12px;margin:6px 0 4px;}
+.weekly-cta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-top:6px;font-weight:600;}
+.weekly-chat-feed{max-height:480px;}
+#weekly-chat-wrap{max-width:920px;margin:0 auto;}
+
+@media (max-width:740px){
+  .weekly-head{padding:16px 14px 12px;}
+  .weekly-title{font-size:22px;}
+  .weekly-film-card{grid-template-columns:1fr;padding:14px;gap:12px;}
+  .weekly-poster,.weekly-poster-ph{width:100%;max-width:240px;height:auto;aspect-ratio:2/3;margin:0 auto;}
+  .weekly-film-info{align-items:center;text-align:center;}
+  .weekly-prompt{font-size:14px;text-align:left;}
+}
+
+
+
+/* CLUB SECTION TABS (Rankings / Discussion) */
+.club-section-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg2);}
+.club-section-tab{flex:1;padding:11px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;font-weight:600;}
+.club-section-tab.active{color:var(--text);border-bottom:2px solid var(--accent);}
+.club-section-tab:hover:not(.active){color:var(--text2);}
+
+/* CHAT FEED */
+.club-chat-feed{padding:14px 16px;max-height:520px;overflow-y:auto;background:var(--bg2);display:flex;flex-direction:column;gap:10px;}
+.club-chat-empty{padding:40px 20px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.chat-msg{display:flex;gap:8px;align-items:flex-start;}
+.chat-msg.mine{flex-direction:row-reverse;}
+.chat-avatar{flex-shrink:0;width:32px;height:32px;background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:12px;display:flex;align-items:center;justify-content:center;letter-spacing:0.02em;}
+.chat-msg.mine .chat-avatar{background:var(--gold);}
+.chat-bubble{max-width:78%;background:var(--bg3);border:1px solid var(--border);padding:8px 11px 9px;min-width:0;}
+.chat-msg.mine .chat-bubble{background:#f5e9d4;border-color:var(--gold);}
+.chat-meta{display:flex;align-items:baseline;gap:8px;margin-bottom:3px;}
+.chat-name{font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.06em;color:var(--text);text-transform:uppercase;}
+.chat-time{font-family:'Oswald',sans-serif;font-size:9px;color:var(--text3);letter-spacing:0.04em;}
+.chat-delete{margin-left:auto;background:transparent;border:none;color:var(--text3);font-size:14px;cursor:pointer;padding:0 4px;line-height:1;font-family:sans-serif;opacity:0.6;}
+.chat-delete:hover{color:var(--red);opacity:1;}
+.chat-body{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text);line-height:1.4;word-wrap:break-word;}
+
+/* POLL BLOCK inside a chat message */
+.chat-poll{margin-top:8px;display:flex;flex-direction:column;gap:5px;}
+.chat-poll-opt{position:relative;background:var(--bg2);border:1px solid var(--border);padding:7px 10px;cursor:pointer;transition:border-color 0.12s;overflow:hidden;}
+.chat-poll-opt:hover{border-color:var(--accent);}
+.chat-poll-opt.voted{border-color:var(--accent);background:rgba(176,96,48,0.08);}
+.chat-poll-opt-fill{position:absolute;top:0;bottom:0;left:0;background:rgba(176,96,48,0.18);transition:width 0.3s;}
+.chat-poll-opt.voted .chat-poll-opt-fill{background:rgba(244,185,82,0.25);}
+.chat-poll-opt-row{position:relative;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.chat-poll-opt-text{font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;color:var(--text);}
+.chat-poll-opt-stats{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text2);font-weight:600;}
+.chat-poll-total{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-top:3px;}
+
+/* COMPOSER */
+.club-chat-composer{padding:10px 14px 14px;background:var(--bg2);border-top:1px solid var(--border);}
+.club-chat-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:9px 11px;font-family:'Barlow Condensed',sans-serif;font-size:15px;line-height:1.4;outline:none;resize:vertical;min-height:42px;transition:border-color 0.12s;}
+.club-chat-input:focus{border-color:var(--accent);}
+.club-chat-composer-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:6px;align-items:center;}
+.club-chat-btn-poll,.club-chat-btn-send{padding:7px 12px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;border:none;font-weight:600;}
+.club-chat-btn-poll{background:transparent;color:var(--text2);border:1px solid var(--border2);}
+.club-chat-btn-poll:hover{border-color:var(--accent);color:var(--accent);}
+.club-chat-btn-send{background:var(--accent);color:var(--bg2);}
+.club-chat-btn-send:hover{opacity:0.88;}
+.club-chat-btn-send:disabled{background:var(--border2);cursor:not-allowed;}
+.club-chat-locked{padding:24px 20px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);background:var(--bg2);border-top:1px solid var(--border);}
+
+@media (max-width:740px){
+  .club-chat-feed{padding:10px 12px;max-height:60vh;}
+  .chat-bubble{max-width:84%;padding:7px 9px 8px;}
+  .chat-body{font-size:13px;}
+}
+
 .club-rank-row{display:grid;grid-template-columns:36px 60px 1fr auto auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;}
 .club-rank-row:hover{background:var(--panel);}
 .club-rank-num{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);text-align:right;}
@@ -1006,8 +1175,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   <div class="nav-tabs">
     <div class="nav-tab active" onclick="showPage('discover',this)">Discover</div>
     <div class="nav-tab" onclick="showPage('rankings',this)">Rankings</div>
+    <div class="nav-tab" onclick="showPage('foryou',this)">For You</div>
     <div class="nav-tab" onclick="showPage('filmography',this)">My Filmography</div>
     <div class="nav-tab" onclick="showPage('clubs',this)">Clubs</div>
+    <div class="nav-tab" onclick="showPage('weekly',this)">Weekly Debate</div>
     <div class="nav-tab" onclick="showPage('history',this)">Film History</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
@@ -1037,7 +1208,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
       <div class="hero-desc">Rate films, build your ranked list, and follow directors down every rabbit hole. Community scores from millions of votes — no algorithm, no nonsense.</div>
       <div class="hero-cta">
         <button class="hero-cta-btn hero-cta-primary" onclick="showPage('rankings',document.querySelectorAll('.nav-tab')[1])">Rankings →</button>
-        <button class="hero-cta-btn hero-cta-secondary" onclick="showPage('history',document.querySelectorAll('.nav-tab')[4])">Film History</button>
+        <button class="hero-cta-btn hero-cta-secondary" onclick="showPage('history',document.querySelectorAll('.nav-tab')[6])">Film History</button>
       </div>
     </div>
     <div class="now-showing">
@@ -1094,6 +1265,20 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     </div>
     <div id="rank-body"><div class="loading-box">Loading</div></div>
   </div>
+</div>
+
+<!-- FOR YOU -->
+<div class="page" id="page-foryou">
+  <div class="foryou-head">
+    <div class="foryou-eyebrow">Recommendations Built From Your Ratings</div>
+    <div class="foryou-title">For You</div>
+    <div class="foryou-sub">Two ways to find your next watch. Tell us what you love, or tell us what you're in the mood for.</div>
+  </div>
+  <div class="foryou-modes">
+    <button class="foryou-mode active" id="fy-mode-taste" onclick="setForYouMode('taste',this)">Based on your taste</button>
+    <button class="foryou-mode" id="fy-mode-seed" onclick="setForYouMode('seed',this)">From specific films</button>
+  </div>
+  <div id="foryou-body"></div>
 </div>
 
 <!-- MY FILMOGRAPHY (merges Watchlist + Taste + My Oscars) -->
@@ -1154,6 +1339,16 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <span class="modal-close" onclick="closeClubModal()">×</span>
     <div class="modal-body" id="club-modal-body"></div>
   </div>
+</div>
+
+<!-- WEEKLY DEBATE -->
+<div class="page" id="page-weekly">
+  <div class="weekly-head">
+    <div class="weekly-eyebrow">This Week\u2019s Debate</div>
+    <div class="weekly-title" id="weekly-title">Loading\u2026</div>
+    <div class="weekly-sub" id="weekly-sub"></div>
+  </div>
+  <div id="weekly-body"><div class="loading-box">Loading the week\u2019s film\u2026</div></div>
 </div>
 
 <!-- FILM HISTORY -->
@@ -1717,13 +1912,13 @@ async function handleInviteLink(clubId){
   try{
     // Look up the club to check visibility and membership
     const [{data:club,error:eClub},{data:existing}]=await Promise.all([
-      sb.from('clubs').select('id,name,is_public').eq('id',clubId).maybeSingle(),
+      sb.from('clubs').select('id,name,is_public,members_can_post,members_can_rate,members_can_chat').eq('id',clubId).maybeSingle(),
       sb.from('club_members').select('club_id').eq('club_id',clubId).eq('user_id',currentUser.id).maybeSingle(),
     ]);
     if(eClub) throw eClub;
     if(!club){toast('Invite link is invalid');return;}
     // Switch to the Clubs tab so the user sees the result of their click
-    showPage('clubs',document.querySelectorAll('.nav-tab')[3]);
+    showPage('clubs',document.querySelectorAll('.nav-tab')[4]);
     if(existing){
       // Already a member — just open it
       openClub(club.id,club.name);
@@ -1825,7 +2020,7 @@ function toggleUserMenu(e){
 document.addEventListener('click',()=>document.getElementById('user-menu').classList.remove('open'));
 function goToFilmography(){
   document.getElementById('user-menu').classList.remove('open');
-  showPage('filmography',document.querySelectorAll('.nav-tab')[2]);
+  showPage('filmography',document.querySelectorAll('.nav-tab')[3]);
 }
 
 // Enter key submits the currently visible auth form
@@ -2122,20 +2317,7 @@ async function openFilm(id,mt='movie'){
     const isSeen=seenList.includes(id);
     const isWL=watchlist.includes(id);
     const myR=myRatings[id]||0;
-    // 0-10 half-step. Each "star" represents 2 units. Left half = +1, right half = +2.
-    // Tap a half to set the rating to that half's value; tap the same half again to clear.
-    const stars=[1,2,3,4,5].map(n=>{
-      const leftVal=(n-1)*2+1;   // 1,3,5,7,9  (half-star: 0.5,1.5,…,4.5 on /5; ½,1½,…,4½ on /10 divided by 2)
-      const rightVal=n*2;        // 2,4,6,8,10 (full star)
-      let cellCls='star-cell';
-      if(myR>=rightVal) cellCls+=' lit-full';
-      else if(myR>=leftVal) cellCls+=' lit-half';
-      return `<span class="${cellCls}" data-cell="${n}">
-        <span class="star-half left" onclick="rateFilm(${id},${leftVal})" title="${leftVal/2} / 10"></span>
-        <span class="star-half right" onclick="rateFilm(${id},${rightVal})" title="${rightVal/2} / 10"></span>
-        <span class="star-glyph">★</span>
-      </span>`;
-    }).join('');
+    const ratingInput=buildRatingInput(id,myR);
     const backdrop=film.backdrop_path
       ?`<img class="modal-backdrop" src="${IMG}w780${film.backdrop_path}" alt="">`
       :`<div class="modal-backdrop-ph">🎬</div>`;
@@ -2162,9 +2344,9 @@ async function openFilm(id,mt='movie'){
             <div class="modal-scores">
               <div class="mscore"><div class="mscore-val">${fmt1(film.vote_average)}</div><div class="mscore-label">Score</div></div>
               <div class="mscore"><div class="mscore-val">${film.vote_count?(film.vote_count/1000).toFixed(0)+'k':'—'}</div><div class="mscore-label">Votes</div></div>
-              ${myR?`<div class="mscore"><div class="mscore-val" style="color:var(--gold);">${fmt05(myR)}</div><div class="mscore-label">Yours</div></div>`:''}
+              ${myR?`<div class="mscore"><div class="mscore-val" style="color:var(--gold);">${fmt1(myR)}</div><div class="mscore-label">Yours</div></div>`:''}
             </div>
-            <div class="star-row" id="stars-${id}">${stars}</div>
+            <div id="rate-row-${id}">${ratingInput}</div>
             ${dirs.length?`<div class="modal-section-label" style="margin-top:8px;">Directed by</div><div style="display:flex;gap:5px;flex-wrap:wrap;">${dirs.map(d=>`<span class="cast-pill person-link" onclick="event.stopPropagation();openPerson(${d.id})">${escapeHtml(d.name)}</span>`).join('')}</div>`:''}
           </div>
         </div>
@@ -2182,11 +2364,39 @@ async function openFilm(id,mt='movie'){
   }catch(e){content.innerHTML='<div class="loading-box">Failed to load film.</div>';}
 }
 
-function rateFilm(id,n){
-  // n arrives as a 0-10 half-step value (1, 2, 3, ... 10).
-  // Tapping the same half again clears.
-  if(myRatings[id]===n){delete myRatings[id];n=0;}
-  else myRatings[id]=n;
+// Snap a rating to the nearest 0.1 — the precision the user types in.
+function snap01(n){return Math.max(0,Math.min(10,Math.round(Number(n)*10)/10));}
+
+// Submit a rating typed into the modal input. `raw` is whatever's in the field
+// (possibly empty, possibly garbage). We coerce, snap to 0.1, and persist.
+// Empty input → clear the rating.
+function submitTypedRating(id,raw){
+  raw=String(raw==null?'':raw).trim();
+  let n=0;
+  if(raw!==''){
+    const parsed=parseFloat(raw);
+    if(isNaN(parsed)){
+      // Bad input — restore the visible value to what's in storage so the
+      // field doesn't get stuck with junk text
+      const inp=document.getElementById(`rate-input-${id}`);
+      if(inp) inp.value=myRatings[id]?fmt1(myRatings[id]):'';
+      toast('Enter a number from 0.0 to 10.0');
+      return;
+    }
+    n=snap01(parsed);
+  }
+  applyRating(id,n);
+}
+
+// Shared rating-write path. Called by submitTypedRating and by the import
+// pipeline. Updates state, syncs to cloud, mirrors to clubs, marks seen.
+function applyRating(id,n){
+  const prev=myRatings[id]||0;
+  if(n>0) myRatings[id]=n;
+  else delete myRatings[id];
+  // Rating a film marks it as seen automatically (you watched it to rate it).
+  // Clearing a rating does NOT un-mark seen — you still watched it; you just
+  // no longer have an opinion.
   if(n>0&&!seenList.includes(id)){
     seenList.push(id);
     watchlist=watchlist.filter(x=>x!==id);
@@ -2195,33 +2405,54 @@ function rateFilm(id,n){
   }
   localStorage.setItem(userKey('ratings'),JSON.stringify(myRatings));
   syncToCloud();
-  // Repaint the star cells
-  const row=document.getElementById(`stars-${id}`);
-  if(row){
-    row.querySelectorAll('.star-cell').forEach(cell=>{
-      const idx=parseInt(cell.dataset.cell);
-      const leftVal=(idx-1)*2+1;
-      const rightVal=idx*2;
-      cell.classList.remove('lit-full','lit-half');
-      if(n>=rightVal) cell.classList.add('lit-full');
-      else if(n>=leftVal) cell.classList.add('lit-half');
-    });
+  // Refresh the input + "Yours" badge in the open modal so the user sees
+  // the snapped value reflected back
+  const inp=document.getElementById(`rate-input-${id}`);
+  if(inp){
+    inp.value=n>0?fmt1(n):'';
+    // Toggle the X clear button by re-rendering the row
+    const row=document.getElementById(`rate-row-${id}`);
+    if(row){
+      const ratingInput=buildRatingInput(id,n);
+      row.innerHTML=ratingInput;
+    }
   }
-  // Update the "Yours" mscore in this same modal if visible
   const yoursEl=document.querySelector('#modal-content .mscore-val[style*="--gold"]');
-  if(yoursEl) yoursEl.textContent=n?fmt05(n):'';
-  toast(n?`Rated ${fmt05(n)} / 10`:'Rating cleared');
-  // If this film exists in any of my clubs, mirror the rating there too.
-  // (No-op when offline or when clubs schema isn't set up — fails silently.)
+  if(yoursEl) yoursEl.textContent=n?fmt1(n):'';
+  if(n!==prev){
+    toast(n>0?`Rated ${fmt1(n)} / 10`:'Rating cleared');
+  }
+  // Mirror to clubs as before
   if(typeof pushRatingToClubs==='function'){
     if(n>0) pushRatingToClubs(id,n);
     else if(sb&&!isOffline&&currentUser){
-      // Rating cleared — remove our row from club_ratings for this film
       sb.from('club_ratings').delete()
         .eq('film_id',id).eq('user_id',currentUser.id).then(()=>{},()=>{});
     }
   }
 }
+
+// Reused by both the initial render and the post-submit refresh.
+function buildRatingInput(id,myR){
+  return `
+    <div class="rate-row">
+      <label class="rate-label">Your rating</label>
+      <div class="rate-input-wrap">
+        <input class="rate-input" id="rate-input-${id}" type="number" min="0" max="10" step="0.1"
+               placeholder="0.0 \u2013 10.0"
+               value="${myR?fmt1(myR):''}"
+               inputmode="decimal" autocomplete="off"
+               onkeydown="if(event.key==='Enter'){event.target.blur();}"
+               onblur="submitTypedRating(${id},this.value)">
+        <span class="rate-input-suffix">/ 10</span>
+        ${myR?`<button class="rate-clear-btn" onclick="submitTypedRating(${id},'')" title="Clear rating">\u00d7</button>`:''}
+      </div>
+      <div class="rate-hint">Type any number from 0.0 to 10.0. Rating a film marks it as seen.</div>
+    </div>`;
+}
+
+// Backward-compatible shim — anything still calling rateFilm(id,n) keeps working
+function rateFilm(id,n){applyRating(id,snap01(n));}
 
 function toggleSeen(id){
   const wasSeen=seenList.includes(id);
@@ -2678,7 +2909,7 @@ async function renderFgTabContent(){
       const yr=(f.release_date||'').slice(0,4);
       const poster=f.poster_path?`<img src="${IMG}w342${f.poster_path}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`:`<div class="film-poster-ph">🎬</div>`;
       return `<div class="film-card" onclick="openFilm(${f.id},'movie')">
-        <div class="film-poster">${poster}<div class="film-score-badge" style="background:rgba(154,120,48,0.95);color:var(--bg2);">${'★'.repeat(r)}</div></div>
+        <div class="film-poster">${poster}<div class="film-score-badge" style="background:rgba(244,185,82,0.95);color:#1a1410;font-family:'Russo One',sans-serif;">${fmt1(r)}</div></div>
         <div class="film-info"><div class="film-title">${t}</div><div class="film-meta">${yr}</div></div>
       </div>`;
     }).join('');
@@ -2752,7 +2983,7 @@ async function renderFgTabContent(){
           ${favFilm?`<div class="taste-card" style="cursor:pointer;" onclick="openFilm(${favFilm.id},'movie')">
             <div class="taste-card-head">Your Top Rated</div>
             <div class="taste-big" style="font-size:18px;">${favFilm.title}</div>
-            <div class="taste-big-sub">${'★'.repeat(myFavs[0][1])} · ${(favFilm.release_date||'').slice(0,4)}</div>
+            <div class="taste-big-sub">${fmt1(myFavs[0][1])} / 10 · ${(favFilm.release_date||'').slice(0,4)}</div>
           </div>`:''}
         </div>
         <div class="taste-grid">
@@ -3199,6 +3430,292 @@ function personPills(name,opts){
 
 
 // ============================================================
+// FOR YOU — recommendations generator
+//
+// Two modes:
+//   taste — uses every film the user has rated, weighted by rating.
+//           Pulls TMDB /recommendations for each, scores candidate films
+//           by combined weight, filters out anything already in seen /
+//           watchlist / rated, returns top 30 fresh suggestions.
+//   seed  — user picks 1-3 specific films. Same algorithm but the only
+//           sources are those picks. No history factored in.
+// ============================================================
+
+let _foryouMode='taste';
+let _seedPicks=[];        // array of up to 3 film objects from TMDB picker
+let _foryouCache={};      // memoize results per-mode per-session
+
+function setForYouMode(mode,btn){
+  _foryouMode=mode;
+  document.querySelectorAll('.foryou-mode').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderForYou();
+}
+
+function renderForYou(){
+  const body=document.getElementById('foryou-body');
+  if(_foryouMode==='taste'){
+    renderTasteMode(body);
+  } else {
+    renderSeedMode(body);
+  }
+}
+
+// --- TASTE MODE ---
+async function renderTasteMode(body){
+  const ratedIds=Object.keys(myRatings).filter(id=>myRatings[id]>0);
+  if(!ratedIds.length){
+    body.innerHTML=`
+      <div class="foryou-empty">
+        <div class="foryou-empty-icon">\u{1F3AF}</div>
+        <div class="foryou-empty-title">Rate some films first</div>
+        <div class="foryou-empty-sub">Your taste profile builds itself from the films you rate. Once you've scored a few, we can generate recommendations from that signal.</div>
+        <button class="foryou-empty-btn" onclick="showPage('discover',document.querySelectorAll('.nav-tab')[0])">Browse films \u2192</button>
+      </div>`;
+    return;
+  }
+  body.innerHTML=`
+    <div class="foryou-intro">
+      <div class="foryou-intro-text">Built from your <b>${ratedIds.length}</b> rated film${ratedIds.length===1?'':'s'}, weighted toward what you scored highest. Anything you've already seen or have on your watchlist is filtered out.</div>
+      <button class="foryou-refresh" onclick="generateTasteRecs(true)">\u21BB Regenerate</button>
+    </div>
+    <div id="foryou-results"><div class="loading-box">Building recommendations\u2026</div></div>`;
+  // Use cached results if we have them and the user isn't forcing a refresh
+  if(_foryouCache.taste){
+    renderRecResults(_foryouCache.taste);
+  } else {
+    generateTasteRecs();
+  }
+}
+
+async function generateTasteRecs(force){
+  if(force){
+    _foryouCache.taste=null;
+    const res=document.getElementById('foryou-results');
+    if(res) res.innerHTML='<div class="loading-box">Building recommendations\u2026</div>';
+  }
+  // Take top 8 rated films by rating (descending)
+  const ratedSorted=Object.entries(myRatings)
+    .filter(([,r])=>r>0)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,8);
+  if(!ratedSorted.length){return;}
+  const sources=ratedSorted.map(([id,rating])=>({id:parseInt(id),weight:rating/10}));
+  const recs=await accumulateRecs(sources);
+  _foryouCache.taste=recs;
+  renderRecResults(recs);
+}
+
+// --- SEED MODE ---
+function renderSeedMode(body){
+  body.innerHTML=`
+    <div class="foryou-intro">
+      <div class="foryou-intro-text">Pick up to <b>three films</b>. We'll generate recommendations based <em>solely</em> on these picks \u2014 your rated history isn't factored in. Useful when you want something for a specific mood.</div>
+    </div>
+    <div class="seed-picker">
+      <div class="seed-slots" id="seed-slots">${renderSeedSlots()}</div>
+      <div class="seed-search-wrap">
+        <input class="seed-search-input" id="seed-search" type="text" placeholder="Search a film to add\u2026"
+          oninput="seedSearchDebounced(this.value)" autocomplete="off">
+        <div class="seed-search-results" id="seed-search-results"></div>
+      </div>
+      <button class="foryou-generate" id="seed-generate-btn" onclick="generateSeedRecs()" ${_seedPicks.length===0?'disabled':''}>
+        Generate from ${_seedPicks.length||'these'} film${_seedPicks.length===1?'':'s'}
+      </button>
+    </div>
+    <div id="foryou-results"></div>`;
+  // If we already had results, show them
+  if(_foryouCache.seed) renderRecResults(_foryouCache.seed);
+}
+
+function renderSeedSlots(){
+  let html='';
+  for(let i=0;i<3;i++){
+    const pick=_seedPicks[i];
+    if(pick){
+      const poster=pick.poster_path
+        ? `<img src="${IMG}w185${pick.poster_path}" alt="">`
+        : `<div class="seed-slot-ph">\u{1F3AC}</div>`;
+      html+=`<div class="seed-slot filled">
+        ${poster}
+        <div class="seed-slot-info">
+          <div class="seed-slot-title">${escapeHtml(pick.title||'')}</div>
+          <div class="seed-slot-year">${(pick.release_date||'').slice(0,4)}</div>
+        </div>
+        <button class="seed-slot-remove" onclick="removeSeedPick(${i})" title="Remove">\u00d7</button>
+      </div>`;
+    } else {
+      html+=`<div class="seed-slot empty">
+        <div class="seed-slot-num">${i+1}</div>
+        <div class="seed-slot-empty-label">Empty slot</div>
+      </div>`;
+    }
+  }
+  return html;
+}
+
+let _seedSearchTimer=null;
+function seedSearchDebounced(q){
+  clearTimeout(_seedSearchTimer);
+  const results=document.getElementById('seed-search-results');
+  if(!q||!q.trim()){if(results) results.innerHTML='';return;}
+  _seedSearchTimer=setTimeout(()=>doSeedSearch(q),250);
+}
+
+async function doSeedSearch(q){
+  const results=document.getElementById('seed-search-results');
+  if(!results) return;
+  results.innerHTML='<div class="seed-search-loading">Searching\u2026</div>';
+  try{
+    const data=await api('/search/movie',{query:q});
+    const items=(data.results||[]).slice(0,8);
+    if(!items.length){results.innerHTML='<div class="seed-search-loading">No matches</div>';return;}
+    results.innerHTML=items.map(f=>{
+      const y=(f.release_date||'').slice(0,4);
+      const already=_seedPicks.some(p=>p.id===f.id);
+      const full=_seedPicks.length>=3;
+      const disabled=already||full;
+      const poster=f.poster_path
+        ? `<img src="${IMG}w92${f.poster_path}">`
+        : `<div class="seed-search-poster-ph"></div>`;
+      return `<div class="seed-search-result ${disabled?'disabled':''}" ${disabled?'':`onclick="addSeedPick(${f.id})"`}>
+        ${poster}
+        <div class="seed-search-info">
+          <div class="seed-search-title">${escapeHtml(f.title||'')}</div>
+          <div class="seed-search-meta">${y} \u00b7 ${fmt1(f.vote_average||0)} avg${already?' \u00b7 already picked':full?' \u00b7 slots full':''}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    results.innerHTML='<div class="seed-search-loading">Search failed</div>';
+  }
+}
+
+async function addSeedPick(filmId){
+  if(_seedPicks.length>=3) return;
+  if(_seedPicks.some(p=>p.id===filmId)) return;
+  try{
+    const film=filmCache[filmId]||await api(`/movie/${filmId}`);
+    filmCache[filmId]=film;
+    _seedPicks.push(film);
+    document.getElementById('seed-slots').innerHTML=renderSeedSlots();
+    // Clear search and update generate button
+    document.getElementById('seed-search').value='';
+    document.getElementById('seed-search-results').innerHTML='';
+    const btn=document.getElementById('seed-generate-btn');
+    if(btn){
+      btn.disabled=false;
+      btn.textContent=`Generate from ${_seedPicks.length} film${_seedPicks.length===1?'':'s'}`;
+    }
+  }catch(e){
+    toast('Could not add film');
+  }
+}
+
+function removeSeedPick(idx){
+  _seedPicks.splice(idx,1);
+  document.getElementById('seed-slots').innerHTML=renderSeedSlots();
+  const btn=document.getElementById('seed-generate-btn');
+  if(btn){
+    btn.disabled=_seedPicks.length===0;
+    btn.textContent=`Generate from ${_seedPicks.length||'these'} film${_seedPicks.length===1?'':'s'}`;
+  }
+  // Clear cached seed results since the seed set changed
+  _foryouCache.seed=null;
+  const results=document.getElementById('foryou-results');
+  if(results) results.innerHTML='';
+}
+
+async function generateSeedRecs(){
+  if(!_seedPicks.length) return;
+  const res=document.getElementById('foryou-results');
+  if(res) res.innerHTML='<div class="loading-box">Building recommendations\u2026</div>';
+  // Equal weight for each pick (no rating context in seed mode)
+  const sources=_seedPicks.map(p=>({id:p.id,weight:1.0}));
+  const recs=await accumulateRecs(sources);
+  _foryouCache.seed=recs;
+  renderRecResults(recs);
+}
+
+// --- SHARED RECOMMENDATION ENGINE ---
+// Given a list of {id, weight}, fetch TMDB recommendations for each and
+// accumulate weighted scores per candidate film. Filter out films the user
+// already has in their seen/watchlist/rated lists. Return top 30.
+async function accumulateRecs(sources){
+  const sourceIds=new Set(sources.map(s=>s.id));
+  const seenSet=new Set(seenList);
+  const wlSet=new Set(watchlist);
+  const ratedSet=new Set(Object.keys(myRatings).map(k=>parseInt(k)));
+  const aggregate={};
+
+  // Fetch all sources' recommendations in parallel
+  await Promise.all(sources.map(async(src)=>{
+    try{
+      const data=await api(`/movie/${src.id}/recommendations`);
+      const results=data.results||[];
+      results.forEach((film,i)=>{
+        if(!film||!film.id) return;
+        if(sourceIds.has(film.id)) return;       // never recommend a source back
+        if(seenSet.has(film.id)) return;          // already seen
+        if(wlSet.has(film.id)) return;            // already on watchlist
+        if(ratedSet.has(film.id)) return;         // already rated
+        if(!film.poster_path) return;             // skip poster-less results
+        // Position weight: higher up in TMDB's list = stronger signal
+        const positionWeight=1/(i+2);             // i=0 → 0.5, i=1 → 0.33, …
+        const score=src.weight*positionWeight;
+        if(!aggregate[film.id]){
+          aggregate[film.id]={film,score:0,sources:0};
+        }
+        aggregate[film.id].score+=score;
+        aggregate[film.id].sources++;
+        // Cache for snappy film modal opens later
+        filmCache[film.id]={...(filmCache[film.id]||{}),...film,media_type:'movie'};
+      });
+    }catch(e){/* skip this source; one failure doesn't kill the batch */}
+  }));
+
+  // Convert to array, blend in a tiny bit of TMDB popularity to break ties
+  const candidates=Object.values(aggregate).map(c=>({
+    film:c.film,
+    score:c.score+(c.film.vote_average||0)*0.01,
+    sources:c.sources,
+  }));
+  candidates.sort((a,b)=>b.score-a.score);
+  return candidates.slice(0,30);
+}
+
+function renderRecResults(recs){
+  const res=document.getElementById('foryou-results');
+  if(!res) return;
+  if(!recs||!recs.length){
+    res.innerHTML=`
+      <div class="foryou-empty" style="padding:30px 20px;">
+        <div class="foryou-empty-title">No new recommendations</div>
+        <div class="foryou-empty-sub">Looks like you've already seen or saved everything we'd suggest. Try the other mode, or pick different seed films.</div>
+      </div>`;
+    return;
+  }
+  res.innerHTML=`
+    <div class="foryou-results-head">${recs.length} suggestion${recs.length===1?'':'s'} \u00b7 sorted by how well they match</div>
+    <div class="film-grid">${recs.map(r=>{
+      const f=r.film;
+      const y=(f.release_date||'').slice(0,4);
+      const poster=f.poster_path
+        ?`<img src="${IMG}w342${f.poster_path}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
+        :`<div class="film-poster-ph">\u{1F3AC}</div>`;
+      // Show a "matched by N films" badge for transparency
+      const badge=r.sources>1
+        ?`<div class="film-score-badge" style="background:rgba(244,185,82,0.95);color:#1a1410;font-family:'Russo One',sans-serif;font-size:11px;padding:3px 6px;">\u00d7${r.sources}</div>`
+        :'';
+      return `<div class="film-card" onclick="openFilm(${f.id},'movie')">
+        <div class="film-poster">${poster}${badge}</div>
+        <div class="film-info"><div class="film-title">${escapeHtml(f.title||'Untitled')}</div><div class="film-meta">${y}${f.vote_average?' \u00b7 '+fmt1(f.vote_average):''}</div></div>
+      </div>`;
+    }).join('')}</div>`;
+}
+
+
+// ============================================================
 // IMPORT FILMOGRAPHY
 // ============================================================
 
@@ -3363,7 +3880,7 @@ function parseLines(text){
         let n=(stars.match(/[★⭐]/g)||[]).length;
         if(/½/.test(stars)) n+=0.5;
         const v=Math.max(0,Math.min(10,n*2));
-        rating=snap05(v);
+        rating=snap01(v);
         originalRating=v;
         title=line.slice(0,starMatch.index).trim();
       }
@@ -3427,7 +3944,7 @@ function parseRating(v){
     else return null;
   }
   original=Math.max(0,Math.min(10,original));
-  return {snapped:snap05(original),original};
+  return {snapped:snap01(original),original};
 }
 function snap05(n){return Math.max(0,Math.min(10,Math.round(n*2)/2));}
 
@@ -3506,7 +4023,7 @@ async function runImport(items){
     const ok=!!film;
     row.className='import-result-row '+(ok?'ok':'fail');
     const matchTxt=ok?`${film.title}${film.release_date?' · '+film.release_date.slice(0,4):''}`:'No match found';
-    const ratingTxt=item.rating!=null?fmt05(item.rating):'';
+    const ratingTxt=item.rating!=null?fmt1(item.rating):'';
     row.innerHTML=`
       <span class="ir-mark">${ok?'✓':'—'}</span>
       <span class="ir-src">${escapeHtml(item.title)}${item.year?' ('+item.year+')':''}</span>
@@ -3555,23 +4072,58 @@ function commitImport(matches){
   let addedSeen=0,addedRatings=0;
   for(const m of matches){
     const id=m.film.id;
+    // Every imported film with a TMDB match goes to seen, unconditionally.
     if(!seenList.includes(id)){seenList.push(id);addedSeen++;}
+    // Importing implies "I've seen this," so if it was on the watchlist, remove it
     watchlist=watchlist.filter(x=>x!==id);
+    // Ratings — re-snap defensively so anything that bypassed parseRating
+    // (legacy code paths, hand-edited imports) still ends up at a clean 0.5 step.
     if(m.rating!=null){
-      myRatings[id]=m.rating;
-      addedRatings++;
+      const snapped=snap01(Number(m.rating));
+      if(!isNaN(snapped) && snapped>0){
+        myRatings[id]=snapped;
+        addedRatings++;
+      }
     }
     // Cache the film so it appears immediately in lists without an extra fetch
     filmCache[id]={...(filmCache[id]||{}),...m.film,media_type:'movie'};
   }
+  // Belt-and-suspenders: dedupe seenList in case of duplicate IDs across passes
+  seenList=Array.from(new Set(seenList));
+  // Persist locally first (instant)
   localStorage.setItem(userKey('seen'),JSON.stringify(seenList));
   localStorage.setItem(userKey('wl'),JSON.stringify(watchlist));
   localStorage.setItem(userKey('ratings'),JSON.stringify(myRatings));
-  syncToCloud();
+  // Force immediate cloud sync — bypass the 800ms debounce so a big import
+  // is durable right away even if the user closes the tab seconds later.
+  flushSyncNow();
   toast(`Added ${addedSeen} films · ${addedRatings} rated`);
   closeImportModal();
-  // Refresh filmography view
-  renderFilmography();
+  // Refresh filmography view in case it's currently visible
+  if(typeof renderFilmography==='function') renderFilmography();
+}
+
+// Bypass the syncToCloud debounce and write to Supabase immediately.
+// Used after a bulk operation (import) where we want durability NOW.
+async function flushSyncNow(){
+  if(isOffline||!sb||!currentUser) return;
+  clearTimeout(syncTimer);
+  try{
+    const {error}=await sb.from('user_data').upsert({
+      user_id:currentUser.id,
+      display_name:currentUser.displayName,
+      seen:seenList,
+      ratings:myRatings,
+      watchlist:watchlist,
+      oscars:myOscars,
+      updated_at:new Date().toISOString()
+    });
+    if(error) throw error;
+    showSyncIndicator('Synced');
+  }catch(e){
+    console.error('Immediate sync failed:',e);
+    showSyncIndicator('Sync failed — saved locally',true);
+  }
 }
 
 function setImportStatus(msg){
@@ -3822,6 +4374,27 @@ function openClubModal(mode){
         <label class="club-input-label">Password</label>
         <input class="club-input" id="club-create-pass" type="password" placeholder="4+ characters" autocomplete="new-password">
       </div>
+      <div class="club-input-row">
+        <label class="club-input-label">Member abilities</label>
+        <div class="club-perm-hint">What everyone else (besides you) can do in this club. You always have full control.</div>
+        <div class="club-perm-list">
+          <label class="club-perm-row">
+            <input type="checkbox" id="club-perm-post" checked>
+            <span class="club-perm-name">Post films</span>
+            <span class="club-perm-desc">Members can add films to the club's ranking list.</span>
+          </label>
+          <label class="club-perm-row">
+            <input type="checkbox" id="club-perm-rate" checked>
+            <span class="club-perm-name">Influence rankings</span>
+            <span class="club-perm-desc">Members' ratings count toward the club's group average.</span>
+          </label>
+          <label class="club-perm-row">
+            <input type="checkbox" id="club-perm-chat" checked>
+            <span class="club-perm-name">Discuss &amp; chat</span>
+            <span class="club-perm-desc">Members can post messages and vote in polls.</span>
+          </label>
+        </div>
+      </div>
       <div class="club-modal-error" id="club-modal-error"></div>
       <button class="club-modal-submit" onclick="submitCreateClub()">Create</button>`;
     _clubCreateIsPublic=false;
@@ -3862,6 +4435,9 @@ async function submitCreateClub(){
   const name=document.getElementById('club-create-name').value.trim();
   const pw=document.getElementById('club-create-pass').value;
   const isPublic=_clubCreateIsPublic;
+  const canPost=document.getElementById('club-perm-post')?.checked!==false;
+  const canRate=document.getElementById('club-perm-rate')?.checked!==false;
+  const canChat=document.getElementById('club-perm-chat')?.checked!==false;
   const err=document.getElementById('club-modal-error');
   err.textContent='';
   if(!name||name.length<2){err.textContent='Club name must be at least 2 characters';return;}
@@ -3872,6 +4448,9 @@ async function submitCreateClub(){
       p_password:isPublic?null:pw,
       p_display_name:currentUser.displayName||currentUser.email,
       p_is_public:isPublic,
+      p_members_can_post:canPost,
+      p_members_can_rate:canRate,
+      p_members_can_chat:canChat,
     });
     if(error) throw error;
     removePendingClub(name);
@@ -3943,7 +4522,7 @@ async function openClub(clubId,clubName){
   try{
     // Pull club info, members, films, and all ratings in parallel
     const [{data:club,error:eClub},{data:members,error:eMem},{data:films,error:eFilms},{data:ratings,error:eRate}]=await Promise.all([
-      sb.from('clubs').select('id,name,is_public,created_at,created_by').eq('id',clubId).single(),
+      sb.from('clubs').select('id,name,is_public,members_can_post,members_can_rate,members_can_chat,created_at,created_by').eq('id',clubId).single(),
       sb.from('club_members').select('user_id,display_name,joined_at').eq('club_id',clubId),
       sb.from('club_films').select('film_id,posted_by_id,posted_by_name,film_title,film_year,film_poster,posted_at').eq('club_id',clubId),
       sb.from('club_ratings').select('film_id,user_id,user_name,rating').eq('club_id',clubId),
@@ -3955,6 +4534,17 @@ async function openClub(clubId,clubName){
   } catch(e){
     body.innerHTML='<div class="clubs-empty">Could not load this club.<br><span style="text-transform:none;letter-spacing:0;font-family:Barlow Condensed,sans-serif;font-size:12px;color:var(--text2);">'+escapeHtml((e&&e.message)||'')+'</span></div>';
   }
+}
+
+// Small visual cue showing which member abilities are restricted in this
+// club. Empty when the club has the default (all abilities on).
+function permBadges(club){
+  const off=[];
+  if(club.members_can_post===false) off.push('No member posting');
+  if(club.members_can_rate===false) off.push('No member ratings');
+  if(club.members_can_chat===false) off.push('Discussion locked');
+  if(!off.length) return '';
+  return ' \u00b7 <span class="club-perm-tag">'+off.join(' \u00b7 ')+'</span>';
 }
 
 function renderClubDetail(){
@@ -3989,9 +4579,9 @@ function renderClubDetail(){
     <div class="club-detail-head">
       <div class="club-detail-back" onclick="renderClubsHome()">\u2190 All clubs</div>
       <div class="club-detail-name">${escapeHtml(club.name)} ${club.is_public?'<span class="club-badge public">Public</span>':'<span class="club-badge private">Private</span>'}</div>
-      <div class="club-detail-meta">${members.length} member${members.length===1?'':'s'} \u00b7 ${films.length} film${films.length===1?'':'s'} posted</div>
+      <div class="club-detail-meta">${members.length} member${members.length===1?'':'s'} \u00b7 ${films.length} film${films.length===1?'':'s'} posted${permBadges(club)}</div>
       <div class="club-detail-actions">
-        <button class="club-action-btn primary" onclick="openPostFilmDialog('${club.id}')">+ Post a film</button>
+        ${(club.created_by===currentUser.id || club.members_can_post!==false)?`<button class="club-action-btn primary" onclick="openPostFilmDialog('${club.id}')">+ Post a film</button>`:''}
         <button class="club-action-btn" onclick="shareClubLink('${club.id}','${escapeJs(club.name)}',${club.is_public?'true':'false'})">\u{1F517} Share invite</button>
         <button class="club-action-btn danger" onclick="leaveClub('${club.id}','${escapeJs(club.name)}')">Leave club</button>
         ${club.created_by===currentUser.id?`<button class="club-action-btn danger" onclick="deleteClub('${club.id}','${escapeJs(club.name)}',${members.length},${films.length})">\u{1F5D1} Delete club</button>`:''}
@@ -4001,11 +4591,55 @@ function renderClubDetail(){
       <div class="club-members-label">Members</div>
       <div class="club-members-list">${memberStrip}</div>
     </div>
-    <div class="club-rankings">
-      ${ranked.length?ranked.map(clubRankRow).join(''):'<div class="clubs-empty">No films posted yet. Tap "+ Post a film" to start the ranking.</div>'}
+    <div class="club-section-tabs">
+      <button class="club-section-tab ${_currentClubSection==='rankings'?'active':''}" onclick="setClubSection('rankings')">Rankings</button>
+      <button class="club-section-tab ${_currentClubSection==='chat'?'active':''}" onclick="setClubSection('chat')">Discussion</button>
+    </div>
+    <div id="club-section-rankings" class="club-section" style="display:${_currentClubSection==='rankings'?'':'none'};">
+      <div class="club-rankings">
+        ${ranked.length?ranked.map(clubRankRow).join(''):'<div class="clubs-empty">No films posted yet. Tap "+ Post a film" to start the ranking.</div>'}
+      </div>
+    </div>
+    <div id="club-section-chat" class="club-section" style="display:${_currentClubSection==='chat'?'':'none'};">
+      <div id="club-chat-feed" class="club-chat-feed"><div class="loading-box">Loading chat…</div></div>
+      ${(club.created_by===currentUser.id || club.members_can_chat!==false)?`
+        <div class="club-chat-composer">
+          <textarea class="club-chat-input" id="club-chat-input" placeholder="Say something… (Enter to send, Shift+Enter for newline)" maxlength="1000" rows="2"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendClubMessage('${club.id}')}"></textarea>
+          <div class="club-chat-composer-actions">
+            <button class="club-chat-btn-poll" onclick="openPollComposer('${club.id}')" title="Add a poll">\u{1F4CA} Poll</button>
+            <button class="club-chat-btn-send" onclick="sendClubMessage('${club.id}')">Send</button>
+          </div>
+        </div>`:`
+        <div class="club-chat-locked">\u{1F512} Discussion is read-only in this club. Only the creator can post messages.</div>`}
     </div>
   `;
+  // If we're on the chat tab, load messages
+  if(_currentClubSection==='chat') loadClubChat(club.id);
 }
+
+// Which section of the club detail is visible
+let _currentClubSection='rankings';
+function setClubSection(section){
+  _currentClubSection=section;
+  document.querySelectorAll('.club-section-tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('club-section-rankings').style.display=section==='rankings'?'':'none';
+  document.getElementById('club-section-chat').style.display=section==='chat'?'':'none';
+  if(section==='chat' && _currentClubId){
+    loadClubChat(_currentClubId);
+    // Refresh chat every 8 seconds while it's open
+    if(_chatPollTimer) clearInterval(_chatPollTimer);
+    _chatPollTimer=setInterval(()=>{
+      if(_currentClubSection==='chat' && _currentClubId) loadClubChat(_currentClubId,true);
+      else { clearInterval(_chatPollTimer); _chatPollTimer=null; }
+    },8000);
+  } else if(_chatPollTimer){
+    clearInterval(_chatPollTimer);
+    _chatPollTimer=null;
+  }
+}
+let _chatPollTimer=null;
 
 // Build the shareable URL for a club. The link encodes the club_id; the
 // password is not in the URL (would be insecure). For private clubs we
@@ -4151,6 +4785,16 @@ async function pushRatingToClubs(filmId,rating,clubIdsOverride){
       clubIds=(mine||[]).map(r=>r.club_id);
     }
     if(!clubIds.length) return;
+    // Respect the per-club "members can influence rankings" permission: skip
+    // clubs where rating is locked unless I'm the creator (creators always
+    // have full control regardless of the toggle they set for everyone else).
+    const {data:perms}=await sb.from('clubs')
+      .select('id,members_can_rate,created_by').in('id',clubIds);
+    const allowed=new Set((perms||[]).filter(c =>
+      c.members_can_rate!==false || c.created_by===currentUser.id
+    ).map(c=>c.id));
+    clubIds=clubIds.filter(id=>allowed.has(id));
+    if(!clubIds.length) return;
     const rows=clubIds.map(cid=>({
       club_id:cid,
       user_id:currentUser.id,
@@ -4161,6 +4805,524 @@ async function pushRatingToClubs(filmId,rating,clubIdsOverride){
     }));
     await sb.from('club_ratings').upsert(rows,{onConflict:'club_id,user_id,film_id'});
   } catch(e){/* non-fatal */console.warn('club rating sync failed',e);}
+}
+
+// ============================================================
+// CLUB CHAT — message feed, polls, votes
+// ============================================================
+
+// Cache the last-known message ids so we can render incrementally on refresh
+// and not yank the user's scroll position around.
+let _chatLastIds=new Set();
+
+async function loadClubChat(clubId,silent){
+  if(!sb||isOffline||!currentUser) return;
+  const feed=document.getElementById('club-chat-feed');
+  if(!feed) return;
+  try{
+    // Pull last 80 messages + all poll votes for those messages
+    const {data:msgs,error:eMsg}=await sb.from('club_messages')
+      .select('id,user_id,user_name,body,poll_options,is_pinned,film_id,created_at')
+      .eq('club_id',clubId)
+      .order('created_at',{ascending:false})
+      .limit(80);
+    if(eMsg) throw eMsg;
+    const messages=(msgs||[]).reverse(); // oldest at top, newest at bottom
+    let votesByMsg={};
+    if(messages.length){
+      const pollIds=messages.filter(m=>Array.isArray(m.poll_options)).map(m=>m.id);
+      if(pollIds.length){
+        const {data:votes}=await sb.from('club_poll_votes')
+          .select('message_id,user_id,option_index')
+          .in('message_id',pollIds);
+        for(const v of (votes||[])){
+          if(!votesByMsg[v.message_id]) votesByMsg[v.message_id]={};
+          votesByMsg[v.message_id][v.user_id]=v.option_index;
+        }
+      }
+    }
+    // Track whether the user is at the bottom of the feed BEFORE we re-render,
+    // so we can keep them there after if they were. Otherwise their scroll
+    // position is preserved.
+    const wasAtBottom=feed.scrollHeight - feed.scrollTop - feed.clientHeight < 80;
+    if(!messages.length){
+      feed.innerHTML='<div class="club-chat-empty">No messages yet. Be the first to start the conversation.</div>';
+      _chatLastIds=new Set();
+      return;
+    }
+    feed.innerHTML=messages.map(m=>renderChatMessage(m,votesByMsg[m.id]||{})).join('');
+    _chatLastIds=new Set(messages.map(m=>m.id));
+    if(wasAtBottom || !silent){
+      feed.scrollTop=feed.scrollHeight;
+    }
+  }catch(e){
+    if(!silent) feed.innerHTML='<div class="club-chat-empty">Could not load chat: '+escapeHtml((e&&e.message)||'error')+'</div>';
+  }
+}
+
+function renderChatMessage(m,votes){
+  const isMine=m.user_id===currentUser.id;
+  const isCreator=_currentClubData?.club?.created_by===currentUser.id;
+  const canDelete=isMine || isCreator;
+  const time=formatChatTime(m.created_at);
+  const initials=(m.user_name||'?').trim().split(/\s+/).map(p=>p[0]||'').slice(0,2).join('').toUpperCase()||'?';
+  let pollBlock='';
+  if(Array.isArray(m.poll_options) && m.poll_options.length){
+    const myVote=votes[currentUser.id];
+    const counts=m.poll_options.map((_,i)=>Object.values(votes).filter(v=>v===i).length);
+    const total=counts.reduce((a,b)=>a+b,0);
+    pollBlock=`<div class="chat-poll">
+      ${m.poll_options.map((opt,i)=>{
+        const c=counts[i];
+        const pct=total?Math.round(c/total*100):0;
+        const isMine=myVote===i;
+        return `<div class="chat-poll-opt ${isMine?'voted':''}" onclick="voteOnPoll('${m.id}',${i})">
+          <div class="chat-poll-opt-fill" style="width:${pct}%;"></div>
+          <div class="chat-poll-opt-row">
+            <span class="chat-poll-opt-text">${escapeHtml(opt)}</span>
+            <span class="chat-poll-opt-stats">${c} \u00b7 ${pct}%</span>
+          </div>
+        </div>`;
+      }).join('')}
+      <div class="chat-poll-total">${total} vote${total===1?'':'s'}${myVote!=null?' \u00b7 your pick highlighted':''}</div>
+    </div>`;
+  }
+  return `<div class="chat-msg ${isMine?'mine':''}" id="chat-msg-${m.id}">
+    <div class="chat-avatar">${initials}</div>
+    <div class="chat-bubble">
+      <div class="chat-meta">
+        <span class="chat-name">${escapeHtml(m.user_name||'Member')}</span>
+        <span class="chat-time">${time}</span>
+        ${canDelete?`<button class="chat-delete" onclick="deleteChatMessage('${m.id}')" title="Delete">\u00d7</button>`:''}
+      </div>
+      <div class="chat-body">${linkifyBody(m.body)}</div>
+      ${pollBlock}
+    </div>
+  </div>`;
+}
+
+function linkifyBody(s){
+  // Basic — escape, then turn newlines into <br>. Not doing URL detection
+  // for v1 to keep the risk surface small.
+  return escapeHtml(s).replace(/\n/g,'<br>');
+}
+
+function formatChatTime(iso){
+  if(!iso) return '';
+  const d=new Date(iso);
+  const now=new Date();
+  const ms=now-d;
+  if(ms<60000) return 'just now';
+  if(ms<3600000) return Math.floor(ms/60000)+'m ago';
+  if(ms<86400000) return Math.floor(ms/3600000)+'h ago';
+  if(ms<7*86400000) return Math.floor(ms/86400000)+'d ago';
+  return d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+}
+
+async function sendClubMessage(clubId){
+  const input=document.getElementById('club-chat-input');
+  if(!input) return;
+  const body=input.value.trim();
+  if(!body) return;
+  input.disabled=true;
+  try{
+    const {error}=await sb.rpc('post_club_message',{
+      p_club_id:clubId,
+      p_body:body,
+      p_user_name:currentUser.displayName||currentUser.email,
+      p_poll_options:null,
+      p_film_id:null,
+    });
+    if(error) throw error;
+    input.value='';
+    await loadClubChat(clubId);
+  }catch(e){
+    toast('Could not send: '+((e&&e.message)||''));
+  }finally{
+    input.disabled=false;
+    input.focus();
+  }
+}
+
+// Poll composer — a small modal inside the existing club modal overlay
+function openPollComposer(clubId){
+  const body=document.getElementById('club-modal-body');
+  body.innerHTML=`
+    <div class="club-modal-title">Create a poll</div>
+    <div class="club-modal-sub">Ask the club a question. Members vote with one tap.</div>
+    <div class="club-input-row">
+      <label class="club-input-label">Question</label>
+      <input class="club-input" id="poll-question" type="text" placeholder="Did this hold up?" maxlength="200" autocomplete="off">
+    </div>
+    <div class="club-input-row">
+      <label class="club-input-label">Options (one per line, 2\u20136)</label>
+      <textarea class="club-input" id="poll-options" rows="5" placeholder="Yes&#10;No&#10;Maybe" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;resize:vertical;"></textarea>
+    </div>
+    <div class="club-modal-error" id="club-modal-error"></div>
+    <button class="club-modal-submit" onclick="submitPoll('${clubId}')">Post poll</button>`;
+  document.getElementById('club-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('poll-question')?.focus(),50);
+}
+
+async function submitPoll(clubId){
+  const q=document.getElementById('poll-question').value.trim();
+  const optsRaw=document.getElementById('poll-options').value;
+  const err=document.getElementById('club-modal-error');
+  err.textContent='';
+  if(!q){err.textContent='Question required';return;}
+  const opts=optsRaw.split(/\n/).map(s=>s.trim()).filter(Boolean).slice(0,6);
+  if(opts.length<2){err.textContent='At least 2 options required';return;}
+  try{
+    const {error}=await sb.rpc('post_club_message',{
+      p_club_id:clubId,
+      p_body:q,
+      p_user_name:currentUser.displayName||currentUser.email,
+      p_poll_options:opts,
+      p_film_id:null,
+    });
+    if(error) throw error;
+    closeClubModal();
+    await loadClubChat(clubId);
+  }catch(e){
+    err.textContent=(e&&e.message)||'Could not post';
+  }
+}
+
+async function voteOnPoll(messageId,optionIndex){
+  if(!sb||!currentUser) return;
+  try{
+    const {error}=await sb.from('club_poll_votes')
+      .upsert({message_id:messageId,user_id:currentUser.id,option_index:optionIndex},
+              {onConflict:'message_id,user_id'});
+    if(error) throw error;
+    if(_currentClubId) loadClubChat(_currentClubId);
+  }catch(e){
+    toast('Vote failed: '+((e&&e.message)||''));
+  }
+}
+
+async function deleteChatMessage(id){
+  if(!confirm('Delete this message?')) return;
+  try{
+    const {error}=await sb.from('club_messages').delete().eq('id',id);
+    if(error) throw error;
+    if(_currentClubId) loadClubChat(_currentClubId);
+  }catch(e){
+    toast('Could not delete: '+((e&&e.message)||''));
+  }
+}
+
+// ============================================================
+// WEEKLY DEBATE
+//
+// Each ISO week of the year deterministically maps to one film from the
+// curated list below. All clients converge on the same film for the same
+// week, so the global chat thread is coherent. No server scheduler needed
+// — the week is computed from the current date.
+//
+// To extend: add more {tmdb_id, prompt} entries. The list cycles, so
+// length doesn't need to be exactly 52.
+// ============================================================
+
+const WEEKLY_FILMS=[
+  {id:238,prompt:"Family business, immigrant America. Has The Godfather earned its untouchable reputation \u2014 or is it a film we revere out of habit?"},
+  {id:680,prompt:"Pulp Fiction was a structural revolution in 1994. Watching it today, what holds up and what feels of its moment?"},
+  {id:155,prompt:"The Dark Knight redefined what \u201Cprestige blockbuster\u201D could mean. Is it still the gold standard for the form?"},
+  {id:550,prompt:"Fight Club: incisive cultural critique or adolescent provocation that aged poorly? Defend a side."},
+  {id:13,prompt:"Forrest Gump won Best Picture over Pulp Fiction and Shawshank. Was the Academy right?"},
+  {id:603,prompt:"The Matrix asked what reality is and gave a generation a new visual vocabulary. Does the philosophy still land?"},
+  {id:27205,prompt:"Inception: airtight worldbuilding or a clever puzzle box that hides its emptiness behind set pieces?"},
+  {id:496243,prompt:"Parasite winning Best Picture cracked a long-standing door. What did it actually change in mainstream film culture?"},
+  {id:769,prompt:"Goodfellas: the most rewatchable American film of the 90s, or simply Scorsese\u2019s greatest hit?"},
+  {id:122,prompt:"The Return of the King swept eleven Oscars. Does it deserve the sweep, or did Academy fatigue do the work for it?"},
+  {id:497,prompt:"The Green Mile is sentimental in ways modern audiences resist. Is the sentiment earned or extracted?"},
+  {id:120,prompt:"Fellowship of the Ring set the template for modern fantasy filmmaking. Has anything matched it since?"},
+  {id:11216,prompt:"Cinema Paradiso: is its nostalgia a feature or a crutch?"},
+  {id:637,prompt:"Life Is Beautiful uses comedy to address the Holocaust. Bold artistic choice or fundamental misreading of the material?"},
+  {id:429,prompt:"The Good, the Bad and the Ugly is three hours of cool. What does Leone\u2019s patience teach modern action filmmakers?"},
+  {id:539,prompt:"Psycho changed what audiences could be shown. What\u2019s the modern equivalent of the shower scene?"},
+  {id:914,prompt:"Citizen Kane is officially the Greatest Movie Ever according to a thousand polls. Is it actually fun to watch?"},
+  {id:289,prompt:"Casablanca: a perfect movie or the most quotable accident in studio history?"},
+  {id:567,prompt:"Rear Window is Hitchcock\u2019s most elegant trap. Does its restraint outdo his bigger thrillers?"},
+  {id:601,prompt:"E.T. felt revolutionary in 1982. Does Spielberg\u2019s sincerity now read as a strength or a limitation?"},
+  {id:670292,prompt:"The Holdovers is small, intimate, deliberately old-fashioned. Is throwback craft enough to make a great film today?"},
+  {id:872585,prompt:"Oppenheimer is a three-hour biopic told in two timelines. Is its structure essential or just intricate for its own sake?"},
+  {id:466420,prompt:"Killers of the Flower Moon: does Scorsese\u2019s late style serve this story, or is the film too long for its own emotional arc?"},
+  {id:920249,prompt:"Anatomy of a Fall hinges on what we don\u2019t see. Is that ambiguity profound or evasive?"},
+  {id:545611,prompt:"Everything Everywhere All at Once: a generational masterpiece, or a film whose effects swept the Oscars by sheer ambition?"},
+  {id:399170,prompt:"Lady Bird and the small-coming-of-age film: are we underrating quiet stories in an era of spectacle?"},
+  {id:474350,prompt:"It Chapter Two and modern horror franchises \u2014 are sequels diluting what made the original work?"},
+  {id:11324,prompt:"Shutter Island ends with a question that fans still argue about. What\u2019s your reading?"},
+  {id:550988,prompt:"Free Guy turned a video-game premise into a sincere romcom. Does the meta layer help or distract?"},
+  {id:438631,prompt:"Dune (2021): the most fully realized adaptation of unfilmable material, or visual splendor papering over thin character work?"},
+  {id:11324,prompt:"Shutter Island\u2019s twist works because the film teaches you how to watch it. Spoiler-proof storytelling: art or trick?"},
+  {id:46838,prompt:"Tangled vs Frozen: which is the better case for late-era Disney animation?"},
+  {id:354912,prompt:"Coco took grief seriously in a children\u2019s film. What does Pixar do that no other animation house does?"},
+  {id:333339,prompt:"Ready Player One asks: is nostalgia compatible with great filmmaking, or does it always sandbag the work?"},
+  {id:24428,prompt:"The Avengers (2012) launched a decade-long template. Looking back, was that a net positive for movies?"},
+  {id:299536,prompt:"Infinity War kills its protagonists in the last shot. Is that ending a masterstroke or a cliffhanger gimmick?"},
+  {id:299534,prompt:"Endgame is the closest the modern blockbuster has come to opera. Did the MCU earn the catharsis?"},
+  {id:181808,prompt:"The Last Jedi: brave reinvention of legacy IP, or fundamental misreading of what fans wanted?"},
+  {id:140607,prompt:"The Force Awakens: comforting return to form or expensive nostalgia exercise?"},
+  {id:585083,prompt:"Hotel Transylvania and the dad-bait family animation: what role do these films play in shaping kids\u2019 taste?"},
+  {id:475557,prompt:"Joker (2019) won Best Actor but split critics. Is it psychological character study or stylish provocation?"},
+  {id:374720,prompt:"Dunkirk\u2019s triptych structure manipulates time. Does it deepen the experience or make the film harder than it needs to be?"},
+  {id:530385,prompt:"Midsommar in daylight: does Aster\u2019s commitment to brightness make the horror more effective or less?"},
+  {id:419430,prompt:"Get Out turned social allegory into mass-market thrills. What\u2019s the bar for horror as cultural commentary?"},
+  {id:419704,prompt:"Ad Astra is quiet sci-fi about masculinity. Is the slow burn earned?"},
+  {id:399566,prompt:"Godzilla (2014) and the modern monster movie: what\u2019s lost when the kaiju is treated as a serious metaphor?"},
+  {id:493529,prompt:"Dungeons & Dragons (2023) is the rare game adaptation that respects its source. What does respect look like in adaptation?"},
+  {id:76341,prompt:"Mad Max: Fury Road is two hours of motion. Is plotless cinema a virtue here, or in spite of itself?"},
+  {id:316029,prompt:"The Greatest Showman: musical magic or focus-grouped Spotify-bait?"},
+  {id:530915,prompt:"1917 commits to a single-take illusion. Does the gimmick serve the war story or distract from it?"},
+  {id:447332,prompt:"A Quiet Place is built on a high-concept hook. Does it earn the premise, or coast on it?"},
+  {id:438148,prompt:"The Minions are pop-culture wallpaper at this point. Why do we keep showing up?"},
+  {id:447277,prompt:"The Little Mermaid (2023) and the live-action Disney remake era: what should be the standard for these projects?"},
+];
+
+// Compute ISO week key like "2026-W19" for a given date (defaults to today)
+function isoWeekKey(d){
+  d = d ? new Date(d) : new Date();
+  // Copy date, set to Thursday of this week (ISO convention)
+  const target=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  const dayNum=(target.getUTCDay()+6)%7;
+  target.setUTCDate(target.getUTCDate()-dayNum+3);
+  const firstThursday=new Date(Date.UTC(target.getUTCFullYear(),0,4));
+  const diff=(target - firstThursday)/86400000;
+  const weekNum=1+Math.round((diff - 3 + ((firstThursday.getUTCDay()+6)%7))/7);
+  return `${target.getUTCFullYear()}-W${String(weekNum).padStart(2,'0')}`;
+}
+
+// Map a week key to an entry in WEEKLY_FILMS (deterministic, cycling)
+function currentWeeklyFilm(){
+  const key=isoWeekKey();
+  // Hash week-of-year + year so the rotation feels less alphabetical
+  const yr=parseInt(key.slice(0,4));
+  const wk=parseInt(key.slice(6));
+  const idx=Math.abs((yr*53 + wk*7)) % WEEKLY_FILMS.length;
+  return {weekKey:key,...WEEKLY_FILMS[idx]};
+}
+
+let _weeklyPollTimer=null;
+
+async function renderWeeklyDebate(){
+  const wk=currentWeeklyFilm();
+  document.getElementById('weekly-title').textContent='Week of '+wk.weekKey.replace('-W',' \u00b7 Week ');
+  document.getElementById('weekly-sub').textContent='One film picked for the week. Everyone\u2019s talking about it.';
+  const body=document.getElementById('weekly-body');
+  body.innerHTML='<div class="loading-box">Loading the film\u2026</div>';
+  // Fetch the film details
+  let film=null;
+  try{
+    film=filmCache[wk.id]||await api(`/movie/${wk.id}`);
+    filmCache[wk.id]=film;
+  }catch(e){
+    body.innerHTML='<div class="clubs-empty">Could not load this week\u2019s film.</div>';
+    return;
+  }
+  const poster=film.poster_path?`<img class="weekly-poster" src="${IMG}w500${film.poster_path}" alt="${escapeHtml(film.title||'')}">`:`<div class="weekly-poster-ph">\u{1F3AC}</div>`;
+  const yr=(film.release_date||'').slice(0,4);
+  body.innerHTML=`
+    <div class="weekly-film-card">
+      <div onclick="openFilm(${film.id},'movie')" style="cursor:pointer;">${poster}</div>
+      <div class="weekly-film-info">
+        <div class="weekly-film-title" onclick="openFilm(${film.id},'movie')" style="cursor:pointer;">${escapeHtml(film.title||'Untitled')}</div>
+        <div class="weekly-film-meta">${yr}${film.vote_average?' \u00b7 '+fmt1(film.vote_average)+' / 10':''}${film.runtime?' \u00b7 '+film.runtime+' min':''}</div>
+        <div class="weekly-prompt">${escapeHtml(wk.prompt)}</div>
+        <div class="weekly-cta">Join the discussion below \u2014 everyone using Film Club sees the same thread for this week.</div>
+      </div>
+    </div>
+    <div id="weekly-chat-wrap">
+      <div id="weekly-chat-feed" class="club-chat-feed weekly-chat-feed"><div class="loading-box">Loading discussion\u2026</div></div>
+      <div class="club-chat-composer">
+        <textarea class="club-chat-input" id="weekly-chat-input" placeholder="Share your take\u2026 (Enter to send)" maxlength="1000" rows="2"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendWeeklyMessage()}"></textarea>
+        <div class="club-chat-composer-actions">
+          <button class="club-chat-btn-poll" onclick="openWeeklyPollComposer()">\u{1F4CA} Poll</button>
+          <button class="club-chat-btn-send" onclick="sendWeeklyMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+  `;
+  loadWeeklyChat(wk.weekKey);
+  // Refresh chat every 8s while page is visible
+  if(_weeklyPollTimer) clearInterval(_weeklyPollTimer);
+  _weeklyPollTimer=setInterval(()=>{
+    if(_currentPageId==='weekly') loadWeeklyChat(wk.weekKey,true);
+    else {clearInterval(_weeklyPollTimer);_weeklyPollTimer=null;}
+  },8000);
+}
+
+async function loadWeeklyChat(weekKey,silent){
+  const feed=document.getElementById('weekly-chat-feed');
+  if(!feed||!sb||!currentUser) return;
+  try{
+    const {data:msgs,error}=await sb.from('weekly_debate_messages')
+      .select('id,user_id,user_name,body,poll_options,created_at')
+      .eq('week_key',weekKey)
+      .order('created_at',{ascending:false})
+      .limit(80);
+    if(error) throw error;
+    const messages=(msgs||[]).reverse();
+    let votesByMsg={};
+    if(messages.length){
+      const pollIds=messages.filter(m=>Array.isArray(m.poll_options)).map(m=>m.id);
+      if(pollIds.length){
+        const {data:votes}=await sb.from('weekly_debate_poll_votes')
+          .select('message_id,user_id,option_index')
+          .in('message_id',pollIds);
+        for(const v of (votes||[])){
+          if(!votesByMsg[v.message_id]) votesByMsg[v.message_id]={};
+          votesByMsg[v.message_id][v.user_id]=v.option_index;
+        }
+      }
+    }
+    const wasAtBottom=feed.scrollHeight - feed.scrollTop - feed.clientHeight < 80;
+    if(!messages.length){
+      feed.innerHTML='<div class="club-chat-empty">No takes yet. Be the first.</div>';
+      return;
+    }
+    feed.innerHTML=messages.map(m=>renderWeeklyMessage(m,votesByMsg[m.id]||{})).join('');
+    if(wasAtBottom || !silent) feed.scrollTop=feed.scrollHeight;
+  }catch(e){
+    if(!silent) feed.innerHTML='<div class="club-chat-empty">Could not load: '+escapeHtml((e&&e.message)||'')+'</div>';
+  }
+}
+
+function renderWeeklyMessage(m,votes){
+  // Same shape as renderChatMessage but delete only available if it's MY message
+  const isMine=m.user_id===currentUser.id;
+  const canDelete=isMine;
+  const time=formatChatTime(m.created_at);
+  const initials=(m.user_name||'?').trim().split(/\s+/).map(p=>p[0]||'').slice(0,2).join('').toUpperCase()||'?';
+  let pollBlock='';
+  if(Array.isArray(m.poll_options) && m.poll_options.length){
+    const myVote=votes[currentUser.id];
+    const counts=m.poll_options.map((_,i)=>Object.values(votes).filter(v=>v===i).length);
+    const total=counts.reduce((a,b)=>a+b,0);
+    pollBlock=`<div class="chat-poll">
+      ${m.poll_options.map((opt,i)=>{
+        const c=counts[i];
+        const pct=total?Math.round(c/total*100):0;
+        const voted=myVote===i;
+        return `<div class="chat-poll-opt ${voted?'voted':''}" onclick="voteOnWeeklyPoll('${m.id}',${i})">
+          <div class="chat-poll-opt-fill" style="width:${pct}%;"></div>
+          <div class="chat-poll-opt-row">
+            <span class="chat-poll-opt-text">${escapeHtml(opt)}</span>
+            <span class="chat-poll-opt-stats">${c} \u00b7 ${pct}%</span>
+          </div>
+        </div>`;
+      }).join('')}
+      <div class="chat-poll-total">${total} vote${total===1?'':'s'}${myVote!=null?' \u00b7 your pick highlighted':''}</div>
+    </div>`;
+  }
+  return `<div class="chat-msg ${isMine?'mine':''}">
+    <div class="chat-avatar">${initials}</div>
+    <div class="chat-bubble">
+      <div class="chat-meta">
+        <span class="chat-name">${escapeHtml(m.user_name||'Member')}</span>
+        <span class="chat-time">${time}</span>
+        ${canDelete?`<button class="chat-delete" onclick="deleteWeeklyMessage('${m.id}')" title="Delete">\u00d7</button>`:''}
+      </div>
+      <div class="chat-body">${linkifyBody(m.body)}</div>
+      ${pollBlock}
+    </div>
+  </div>`;
+}
+
+async function sendWeeklyMessage(){
+  const input=document.getElementById('weekly-chat-input');
+  if(!input) return;
+  const body=input.value.trim();
+  if(!body) return;
+  const wk=currentWeeklyFilm();
+  input.disabled=true;
+  try{
+    const {error}=await sb.from('weekly_debate_messages').insert({
+      week_key:wk.weekKey,
+      user_id:currentUser.id,
+      user_name:currentUser.displayName||currentUser.email,
+      body:body,
+    });
+    if(error) throw error;
+    input.value='';
+    await loadWeeklyChat(wk.weekKey);
+  }catch(e){
+    toast('Could not send: '+((e&&e.message)||''));
+  }finally{
+    input.disabled=false;
+    input.focus();
+  }
+}
+
+function openWeeklyPollComposer(){
+  const body=document.getElementById('club-modal-body');
+  body.innerHTML=`
+    <div class="club-modal-title">Create a poll</div>
+    <div class="club-modal-sub">Ask everyone using Film Club this week\u2019s big question.</div>
+    <div class="club-input-row">
+      <label class="club-input-label">Question</label>
+      <input class="club-input" id="weekly-poll-q" type="text" placeholder="Holds up or not?" maxlength="200" autocomplete="off">
+    </div>
+    <div class="club-input-row">
+      <label class="club-input-label">Options (one per line)</label>
+      <textarea class="club-input" id="weekly-poll-opts" rows="5" placeholder="Holds up&#10;Aged poorly&#10;Mixed" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;resize:vertical;"></textarea>
+    </div>
+    <div class="club-modal-error" id="club-modal-error"></div>
+    <button class="club-modal-submit" onclick="submitWeeklyPoll()">Post poll</button>`;
+  document.getElementById('club-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('weekly-poll-q')?.focus(),50);
+}
+
+async function submitWeeklyPoll(){
+  const q=document.getElementById('weekly-poll-q').value.trim();
+  const optsRaw=document.getElementById('weekly-poll-opts').value;
+  const err=document.getElementById('club-modal-error');
+  err.textContent='';
+  if(!q){err.textContent='Question required';return;}
+  const opts=optsRaw.split(/\n/).map(s=>s.trim()).filter(Boolean).slice(0,6);
+  if(opts.length<2){err.textContent='At least 2 options required';return;}
+  const wk=currentWeeklyFilm();
+  try{
+    const {error}=await sb.from('weekly_debate_messages').insert({
+      week_key:wk.weekKey,
+      user_id:currentUser.id,
+      user_name:currentUser.displayName||currentUser.email,
+      body:q,
+      poll_options:opts,
+    });
+    if(error) throw error;
+    closeClubModal();
+    loadWeeklyChat(wk.weekKey);
+  }catch(e){
+    err.textContent=(e&&e.message)||'Could not post';
+  }
+}
+
+async function voteOnWeeklyPoll(messageId,optionIndex){
+  if(!sb||!currentUser) return;
+  try{
+    const {error}=await sb.from('weekly_debate_poll_votes')
+      .upsert({message_id:messageId,user_id:currentUser.id,option_index:optionIndex},
+              {onConflict:'message_id,user_id'});
+    if(error) throw error;
+    const wk=currentWeeklyFilm();
+    loadWeeklyChat(wk.weekKey);
+  }catch(e){
+    toast('Vote failed: '+((e&&e.message)||''));
+  }
+}
+
+async function deleteWeeklyMessage(id){
+  if(!confirm('Delete this message?')) return;
+  try{
+    const {error}=await sb.from('weekly_debate_messages').delete().eq('id',id);
+    if(error) throw error;
+    const wk=currentWeeklyFilm();
+    loadWeeklyChat(wk.weekKey);
+  }catch(e){
+    toast('Could not delete: '+((e&&e.message)||''));
+  }
 }
 
 async function leaveClub(clubId,name){
@@ -4270,6 +5432,8 @@ function _doPageSwap(id,el){
   if(id==='filmography') renderFilmography();
   if(id==='rankings') loadRankings();
   if(id==='clubs') renderClubsHome();
+  if(id==='weekly') renderWeeklyDebate();
+  if(id==='foryou') renderForYou();
   if(id==='history'){
     if(currentHistoryMode==='leaderboards') renderLeaderboard();
     else {renderYearBar();renderYearRecap(currentRecapYear);}
