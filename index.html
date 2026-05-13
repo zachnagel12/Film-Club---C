@@ -446,6 +446,126 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .fg-tab.active .fg-tab-count{background:var(--accent);color:var(--bg2);}
 .fg-body{padding:18px 20px;}
 
+/* FILM HISTORY page */
+.history-head{padding:22px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
+.history-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.history-title{font-family:'Russo One',sans-serif;font-size:28px;line-height:1.0;color:var(--text);margin-bottom:4px;}
+.history-sub{font-size:13px;color:var(--text2);font-weight:300;}
+.history-modes{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);}
+.history-mode{flex:1;padding:10px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;}
+.history-mode.active{color:var(--text);border-bottom:2px solid var(--accent);}
+.history-mode:hover:not(.active){color:var(--text2);}
+.history-pane{}
+/* Leaderboard rows */
+.lb-table{width:100%;border-collapse:collapse;}
+.lb-row{display:grid;grid-template-columns:40px 1fr auto auto;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--border);}
+.lb-rank{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);text-align:right;}
+.lb-rank.small{font-size:14px;color:var(--text3);}
+.lb-name{font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);line-height:1.15;}
+.lb-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
+.lb-count{font-family:'Russo One',sans-serif;font-size:24px;color:var(--gold);text-align:right;}
+.lb-count-lbl{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);}
+.lb-films{font-family:'Oswald',sans-serif;font-size:11px;color:var(--text2);grid-column:2;}
+.lb-films a{color:var(--accent);cursor:pointer;}
+.lb-films a:hover{color:var(--accent2);text-decoration:underline;}
+/* Year selector bar */
+.year-bar{display:flex;gap:0;overflow-x:auto;background:var(--bg2);border-bottom:1px solid var(--border);padding:0;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+.year-bar::-webkit-scrollbar{height:6px;}
+.year-bar::-webkit-scrollbar-thumb{background:var(--border2);}
+.year-btn{flex-shrink:0;padding:11px 14px;font-family:'Russo One',sans-serif;font-size:13px;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.12s;white-space:nowrap;}
+.year-btn:hover{color:var(--text2);}
+.year-btn.active{color:var(--text);border-bottom:2px solid var(--accent);background:var(--bg3);}
+/* Year recap content */
+.recap-wrap{padding:24px 20px;max-width:920px;margin:0 auto;}
+.recap-year-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:18px;}
+.recap-year-num{font-family:'Russo One',sans-serif;font-size:42px;color:var(--text);line-height:1;}
+.recap-year-num em{color:var(--accent);font-style:normal;}
+.recap-year-cer{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);}
+.recap-awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:30px;}
+.recap-award{background:var(--bg2);border:1px solid var(--gold);padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;}
+.recap-award-cat{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:600;}
+.recap-award-row{display:flex;gap:12px;align-items:center;cursor:pointer;transition:opacity 0.12s;}
+.recap-award-row:hover{opacity:0.85;}
+.recap-award-row.no-link{cursor:default;}
+.recap-award-row.no-link:hover{opacity:1;}
+.recap-award-poster{width:48px;height:72px;object-fit:cover;border:1px solid var(--border);background:var(--bg3);flex-shrink:0;}
+.recap-award-poster-ph{width:48px;height:72px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.recap-award-name{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);line-height:1.2;}
+.recap-award-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;color:var(--text3);margin-top:3px;}
+.recap-section-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);margin-bottom:10px;}
+.recap-section-sub{font-size:11px;color:var(--text3);font-style:italic;margin-top:-6px;margin-bottom:14px;}
+.recap-notable-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:24px;}
+.recap-empty{padding:30px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+
+@media (max-width:740px){
+  .history-head{padding:16px 14px 12px;}
+  .history-title{font-size:22px;}
+  .history-mode{font-size:10px;letter-spacing:0.12em;padding:9px 4px;}
+  .lb-row{grid-template-columns:30px 1fr auto;gap:10px;padding:10px 0;}
+  .lb-rank{font-size:15px;}
+  .lb-name{font-size:13px;}
+  .lb-count{font-size:20px;}
+  .lb-films{grid-column:2/4;font-size:10px;}
+  .year-btn{padding:9px 12px;font-size:12px;}
+  .recap-wrap{padding:16px 14px;}
+  .recap-year-num{font-size:32px;}
+  .recap-awards{grid-template-columns:1fr;gap:8px;}
+  .recap-section-title{font-size:15px;}
+  .recap-notable-grid{grid-template-columns:repeat(3,1fr);gap:8px;}
+}
+
+/* IMPORT BUTTON + MODAL */
+.import-btn{padding:8px 14px;background:var(--bg2);border:1px solid var(--accent);color:var(--accent);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all 0.12s;white-space:nowrap;flex-shrink:0;}
+.import-btn:hover{background:var(--accent);color:var(--bg2);}
+.import-title{font-family:'Russo One',sans-serif;font-size:20px;color:var(--text);line-height:1.1;margin-bottom:6px;}
+.import-sub{font-size:12px;color:var(--text2);line-height:1.5;font-weight:300;margin-bottom:16px;}
+.import-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.import-tab{flex:1;padding:9px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;border-bottom:2px solid transparent;background:transparent;transition:all 0.15s;}
+.import-tab.active{color:var(--text);border-bottom:2px solid var(--accent);}
+.import-tab:hover:not(.active){color:var(--text2);}
+.import-pane{}
+.import-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:30px 16px;border:2px dashed var(--border2);background:var(--bg3);cursor:pointer;text-align:center;transition:all 0.15s;}
+.import-drop:hover,.import-drop.drag{border-color:var(--accent);background:rgba(176,96,48,0.04);}
+.import-drop-icon{font-family:'Russo One',sans-serif;font-size:28px;color:var(--accent);line-height:1;}
+.import-drop-text{font-family:'Oswald',sans-serif;font-size:13px;color:var(--text2);letter-spacing:0.04em;}
+.import-drop-text strong{color:var(--text);font-weight:600;}
+.import-drop-hint{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-top:4px;}
+.import-help{background:var(--panel);border-left:3px solid var(--gold);padding:10px 12px;margin-top:14px;font-size:12px;color:var(--text2);line-height:1.55;font-weight:300;}
+.import-help code{font-family:ui-monospace,monospace;background:var(--bg3);padding:1px 5px;border:1px solid var(--border);font-size:11px;}
+.import-help p{margin:0;}
+#import-paste{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;padding:10px 12px;outline:none;resize:vertical;min-height:160px;transition:border-color 0.12s;}
+#import-paste:focus{border-color:var(--accent);}
+#import-paste::placeholder{color:var(--text3);}
+.import-go{margin-top:10px;width:100%;padding:11px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:opacity 0.12s;}
+.import-go:hover{opacity:0.88;}
+.import-go:disabled{background:var(--border2);cursor:not-allowed;}
+.import-status{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);padding:8px 12px;background:var(--bg3);border:1px solid var(--border);margin-bottom:12px;}
+.import-progress{height:3px;background:var(--bg3);border:1px solid var(--border);position:relative;overflow:hidden;margin-bottom:12px;}
+.import-progress-fill{height:100%;background:var(--accent);transition:width 0.25s ease-out;}
+.import-results{max-height:300px;overflow-y:auto;border:1px solid var(--border);background:var(--panel);}
+.import-result-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid var(--border);font-size:12px;}
+.import-result-row:last-child{border-bottom:none;}
+.import-result-row .ir-mark{font-family:'Russo One',sans-serif;font-size:12px;width:18px;text-align:center;flex-shrink:0;}
+.import-result-row.ok .ir-mark{color:var(--green);}
+.import-result-row.fail .ir-mark{color:var(--text3);}
+.import-result-row .ir-src{flex:1;min-width:0;color:var(--text);font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.import-result-row .ir-match{flex:1.4;min-width:0;color:var(--text2);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.import-result-row .ir-rating{font-family:'Russo One',sans-serif;font-size:13px;color:var(--gold);flex-shrink:0;}
+.import-summary{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:10px;}
+.import-summary-stat{font-family:'Russo One',sans-serif;font-size:15px;color:var(--accent);}
+.import-summary-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-left:4px;}
+.import-actions{display:flex;gap:8px;margin-top:12px;}
+.import-actions .btn-secondary{flex:1;padding:9px;background:transparent;border:1px solid var(--border2);color:var(--text2);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;}
+.import-actions .btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+
+@media (max-width:740px){
+  .import-btn{font-size:9px;padding:7px 10px;letter-spacing:0.1em;}
+  .import-title{font-size:17px;}
+  .import-tab{font-size:9px;letter-spacing:0.08em;padding:8px 4px;}
+  #import-paste{font-size:13px;}
+  .import-drop{padding:22px 12px;}
+}
+
 @media (max-width:740px){
   /* Nav restructured: logo+search top row, tabs scroll horizontally below */
   nav{flex-wrap:wrap;height:auto;padding:0;align-items:stretch;}
@@ -746,6 +866,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <div class="nav-tab" onclick="showPage('debate',this)">The Debate</div>
     <div class="nav-tab" onclick="showPage('compare',this)">Compare</div>
     <div class="nav-tab" onclick="showPage('filmography',this)">My Filmography</div>
+    <div class="nav-tab" onclick="showPage('history',this)">Film History</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
     <input type="text" class="nav-search" id="nav-search" placeholder="Search films, people..." oninput="handleSearch(this.value)">
@@ -864,9 +985,14 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 <!-- MY FILMOGRAPHY (merges Watchlist + Taste + My Oscars) -->
 <div class="page" id="page-filmography">
   <div class="filmography-head">
-    <div class="filmography-eyebrow">Personal Archive</div>
-    <div class="filmography-title">My Filmography</div>
-    <div class="filmography-sub">Everything you've seen, rated, and crowned.</div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;">
+      <div>
+        <div class="filmography-eyebrow">Personal Archive</div>
+        <div class="filmography-title">My Filmography</div>
+        <div class="filmography-sub">Everything you've seen, rated, and crowned.</div>
+      </div>
+      <button class="import-btn" onclick="openImportModal()">↓ Import</button>
+    </div>
   </div>
 
   <!-- MY OSCARS -->
@@ -894,6 +1020,35 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   <div class="fg-body" id="fg-body"></div>
 </div>
 
+<!-- FILM HISTORY -->
+<div class="page" id="page-history">
+  <div class="history-head">
+    <div class="history-eyebrow">The Archive</div>
+    <div class="history-title">Film History</div>
+    <div class="history-sub">Nearly a century of Academy Awards, year by year. Tap any film to open it.<br><span style="font-style:italic;color:var(--text3);font-size:11px;">Headline categories only: Best Picture, Director, Actor, Actress. Early years (1929–1950s) may have factual errors — flag any you spot.</span></div>
+  </div>
+  <div class="history-modes">
+    <button class="history-mode active" onclick="setHistoryMode('leaderboards',this)">Leaderboards</button>
+    <button class="history-mode" onclick="setHistoryMode('byyear',this)">By Year</button>
+  </div>
+
+  <!-- LEADERBOARDS -->
+  <div id="history-leaderboards" class="history-pane">
+    <div class="debate-tabs" style="margin-bottom:0;">
+      <button class="debate-tab active" id="lb-tab-director" onclick="setLeaderboard('director',this)">Directors</button>
+      <button class="debate-tab" id="lb-tab-actor" onclick="setLeaderboard('actor',this)">Actors</button>
+      <button class="debate-tab" id="lb-tab-actress" onclick="setLeaderboard('actress',this)">Actresses</button>
+    </div>
+    <div id="leaderboard-body" style="padding:18px 20px;"></div>
+  </div>
+
+  <!-- BY YEAR -->
+  <div id="history-byyear" class="history-pane" style="display:none;">
+    <div class="year-bar" id="year-bar"></div>
+    <div id="year-recap"></div>
+  </div>
+</div>
+
 <!-- SEARCH -->
 <div class="page" id="page-search">
   <div class="search-section">
@@ -907,6 +1062,56 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   <div class="modal" id="modal-inner">
     <span class="modal-close" onclick="closeModal()">×</span>
     <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-overlay" id="import-modal" onclick="maybeCloseImport(event)">
+  <div class="modal" id="import-inner" style="max-width:560px;">
+    <span class="modal-close" onclick="closeImportModal()">×</span>
+    <div class="modal-body" id="import-body">
+      <div class="import-title">Import your filmography</div>
+      <div class="import-sub">Bring over ratings from Letterboxd, a CSV, a PDF, or a notes export. We'll match each title to TMDB and add them to your list.</div>
+
+      <div class="import-tabs">
+        <button class="import-tab active" onclick="setImportTab('file',this)">File upload</button>
+        <button class="import-tab" onclick="setImportTab('paste',this)">Paste text</button>
+        <button class="import-tab" onclick="setImportTab('help',this)">From Google Docs</button>
+      </div>
+
+      <!-- FILE TAB -->
+      <div class="import-pane" id="import-pane-file">
+        <label class="import-drop" id="import-drop">
+          <input type="file" id="import-file" accept=".csv,.txt,.pdf,text/csv,text/plain,application/pdf" onchange="handleImportFile(event)" style="display:none;">
+          <div class="import-drop-icon">↓</div>
+          <div class="import-drop-text"><strong>Choose a file</strong> or drop one here</div>
+          <div class="import-drop-hint">CSV · TXT · PDF (up to ~5MB)</div>
+        </label>
+        <div class="import-help">
+          <strong>Letterboxd users:</strong> Settings → Data → Export your data → upload the <code>ratings.csv</code>.<br>
+          <strong>Apple Notes:</strong> File → Export as PDF, or copy &amp; paste into the next tab.
+        </div>
+      </div>
+
+      <!-- PASTE TAB -->
+      <div class="import-pane" id="import-pane-paste" style="display:none;">
+        <textarea id="import-paste" rows="10" placeholder="One film per line. Optional year in parentheses, optional score after a dash, comma, or tab. Examples:&#10;&#10;The Godfather (1972) - 9.5&#10;Parasite 2019, 9&#10;In the Mood for Love&#10;Past Lives, 8.5"></textarea>
+        <button class="import-go" onclick="processPaste()">Parse text</button>
+      </div>
+
+      <!-- GOOGLE DOCS HELP TAB -->
+      <div class="import-pane" id="import-pane-help" style="display:none;">
+        <div class="import-help" style="margin-top:0;">
+          <p style="margin-bottom:8px;">Google Docs can't be fetched directly from the browser, but importing is still easy:</p>
+          <p style="margin-bottom:6px;"><strong>Option 1 — Paste text:</strong> Open the doc, select all (⌘A / Ctrl+A), copy, then switch to the <em>Paste text</em> tab and paste.</p>
+          <p style="margin-bottom:6px;"><strong>Option 2 — Export as PDF:</strong> In your doc, <em>File → Download → PDF</em>, then upload that file on the <em>File upload</em> tab.</p>
+          <p style="margin-bottom:0;"><strong>Option 3 — Export as text:</strong> <em>File → Download → Plain text (.txt)</em>, then upload on the <em>File upload</em> tab.</p>
+        </div>
+      </div>
+
+      <!-- PREVIEW / RESULTS -->
+      <div id="import-preview" style="display:none;margin-top:16px;"></div>
+    </div>
   </div>
 </div>
 
@@ -1616,6 +1821,62 @@ async function loadRankings(){
   }catch(e){el.innerHTML='<div class="no-results">Failed to load rankings.</div>';}
 }
 
+// Pools of headline templates, one per Debate mode. Each is a function of (film) -> string.
+// pickHeadline uses the film id as a deterministic seed so a film keeps the same headline
+// across re-renders (no flicker when switching tabs).
+const HEADLINES={
+  underrated:[
+    f=>`Only ${(f.vote_count/1000).toFixed(1)}k people have seen this`,
+    f=>`The masterpiece hiding behind a thin vote count`,
+    f=>`Quiet score, loud admirers`,
+    f=>`A ${(f.release_date||'').slice(0,4)} gem the algorithm forgot`,
+    f=>`Critics know. Audiences don't.`,
+    f=>`Better than you'd guess from its profile`,
+    f=>`Underseen, overdelivered`,
+    f=>`Word-of-mouth has done all the work`,
+    f=>`Buried by release, kept alive by believers`,
+  ],
+  overrated:[
+    f=>`Everyone watched it. Most weren't impressed.`,
+    f=>`Box office hit, scoreboard miss`,
+    f=>`${Math.round(f.vote_count/1000)}k votes can be wrong`,
+    f=>`A hit that aged like milk`,
+    f=>`Loud release, lukewarm legacy`,
+    f=>`The marketing did more than the movie`,
+    f=>`Topped the charts, not the canon`,
+    f=>`Beloved by no one in particular`,
+    f=>`Numbers say popular, scores say mid`,
+  ],
+  recent:[
+    f=>`${Math.round(f.vote_count/1000)}k votes in. Verdict pending.`,
+    f=>`The argument hasn't settled yet`,
+    f=>`Splitting the room since ${(f.release_date||'').slice(0,4)}`,
+    f=>`Some left raving, others left walking out`,
+    f=>`Loved or loathed — rarely both`,
+    f=>`Discourse hasn't cooled on this one`,
+    f=>`A fresh release still divides`,
+    f=>`Critics one way, audiences the other`,
+    f=>`No consensus in sight`,
+  ],
+  cult:[
+    f=>`The ${(f.release_date||'').slice(0,4)} sleeper its fans still defend`,
+    f=>`A small church, but a devoted one`,
+    f=>`The kind of film people quote forever`,
+    f=>`Word-of-mouth kept this one alive`,
+    f=>`Missed by the masses, kept by the faithful`,
+    f=>`Built a quiet following over decades`,
+    f=>`The cult around this one only grows`,
+    f=>`A ${(f.release_date||'').slice(0,4)} title with a lifetime fandom`,
+    f=>`Never a hit. Always remembered.`,
+  ]
+};
+
+function pickHeadline(mode,film){
+  const pool=HEADLINES[mode]||HEADLINES.underrated;
+  const idx=(film.id||0)%pool.length;
+  return pool[idx](film);
+}
+
 async function loadDebate(){
   const el=document.getElementById('debate-body');
   el.innerHTML='<div class="loading-box">Loading</div>';
@@ -1626,14 +1887,14 @@ async function loadDebate(){
       const d=await api('/discover/movie',{sort_by:'vote_average.desc','vote_average.gte':7.7,'vote_count.gte':500,'vote_count.lte':5000,'primary_release_date.lte':'2024-12-31'});
       cards=d.results.slice(0,12).map(f=>({
         label:'Underrated',
-        headline:`Only ${(f.vote_count/1000).toFixed(1)}k people have rated this`,
+        headline:pickHeadline('underrated',f),
         film:f,stat:fmt1(f.vote_average),statLbl:'Score'
       }));
     } else if(m==='overrated'){
       const d=await api('/discover/movie',{sort_by:'popularity.desc','vote_count.gte':5000,'vote_average.lte':6.5});
       cards=d.results.slice(0,12).map(f=>({
         label:'Overrated',
-        headline:`Everyone watched it. Most weren't impressed.`,
+        headline:pickHeadline('overrated',f),
         film:f,stat:fmt1(f.vote_average),statLbl:'Score'
       }));
     } else if(m==='recent'){
@@ -1643,7 +1904,7 @@ async function loadDebate(){
         const verdict=f.vote_average>=7.5?'Acclaimed':f.vote_average>=6.5?'Divisive':'Polarizing';
         return {
           label:verdict,
-          headline:`${(f.vote_count/1000).toFixed(0)}k votes in. The verdict is in.`,
+          headline:pickHeadline('recent',f),
           film:f,stat:fmt1(f.vote_average),statLbl:'Score'
         };
       });
@@ -1651,7 +1912,7 @@ async function loadDebate(){
       const d=await api('/discover/movie',{sort_by:'vote_average.desc','vote_average.gte':7.3,'vote_count.gte':300,'vote_count.lte':3000,'primary_release_date.lte':'2010-12-31'});
       cards=d.results.slice(0,12).map(f=>({
         label:'Cult Classic',
-        headline:`The ${(f.release_date||'').slice(0,4)} sleeper still defended by its fans`,
+        headline:pickHeadline('cult',f),
         film:f,stat:fmt1(f.vote_average),statLbl:'Score'
       }));
     }
@@ -2325,7 +2586,9 @@ const OSCAR_CATEGORIES=[
   {key:'bestFilm',label:'Best Picture',type:'film',emptyIcon:'—'},
   {key:'bestDirector',label:'Best Director',type:'director',emptyIcon:'—'},
   {key:'bestActor',label:'Best Actor',type:'actor',emptyIcon:'—'},
-  {key:'bestActress',label:'Best Actress',type:'actress',emptyIcon:'—'}
+  {key:'bestActress',label:'Best Actress',type:'actress',emptyIcon:'—'},
+  {key:'bestCinematography',label:'Best Cinematography',type:'film',emptyIcon:'—'},
+  {key:'bestSound',label:'Best Sound',type:'film',emptyIcon:'—'}
 ];
 
 function renderOscars(){
@@ -2377,6 +2640,734 @@ function openOscarPicker(catKey){
 
 function closePicker(){document.getElementById('picker-modal').classList.remove('open');pickerCategory=null;}
 function maybeClosePicker(e){if(e.target===document.getElementById('picker-modal')) closePicker();}
+
+// ============================================================
+// FILM HISTORY — Oscar archive 1929–2025
+// ============================================================
+// Each entry: {year (film release year), ceremony (year award was given),
+//   picture, director, actor, actress}
+// Compiled from Academy / Wikipedia records.
+const OSCAR_HISTORY=[
+  {year:1927,ceremony:1929,picture:'Wings',director:'Frank Borzage',actor:'Emil Jannings',actress:'Janet Gaynor'},
+  {year:1928,ceremony:1930,picture:'The Broadway Melody',director:'Frank Lloyd',actor:'Warner Baxter',actress:'Mary Pickford'},
+  {year:1929,ceremony:1930,picture:'All Quiet on the Western Front',director:'Lewis Milestone',actor:'George Arliss',actress:'Norma Shearer'},
+  {year:1930,ceremony:1931,picture:'Cimarron',director:'Norman Taurog',actor:'Lionel Barrymore',actress:'Marie Dressler'},
+  {year:1931,ceremony:1932,picture:'Grand Hotel',director:'Frank Borzage',actor:'Wallace Beery & Fredric March',actress:'Helen Hayes'},
+  {year:1932,ceremony:1934,picture:'Cavalcade',director:'Frank Lloyd',actor:'Charles Laughton',actress:'Katharine Hepburn'},
+  {year:1934,ceremony:1935,picture:'It Happened One Night',director:'Frank Capra',actor:'Clark Gable',actress:'Claudette Colbert'},
+  {year:1935,ceremony:1936,picture:'Mutiny on the Bounty',director:'John Ford',actor:'Victor McLaglen',actress:'Bette Davis'},
+  {year:1936,ceremony:1937,picture:'The Great Ziegfeld',director:'Frank Capra',actor:'Paul Muni',actress:'Luise Rainer'},
+  {year:1937,ceremony:1938,picture:'The Life of Emile Zola',director:'Leo McCarey',actor:'Spencer Tracy',actress:'Luise Rainer'},
+  {year:1938,ceremony:1939,picture:'You Can\u2019t Take It with You',director:'Frank Capra',actor:'Spencer Tracy',actress:'Bette Davis'},
+  {year:1939,ceremony:1940,picture:'Gone with the Wind',director:'Victor Fleming',actor:'Robert Donat',actress:'Vivien Leigh'},
+  {year:1940,ceremony:1941,picture:'Rebecca',director:'John Ford',actor:'James Stewart',actress:'Ginger Rogers'},
+  {year:1941,ceremony:1942,picture:'How Green Was My Valley',director:'John Ford',actor:'Gary Cooper',actress:'Joan Fontaine'},
+  {year:1942,ceremony:1943,picture:'Mrs. Miniver',director:'William Wyler',actor:'James Cagney',actress:'Greer Garson'},
+  {year:1943,ceremony:1944,picture:'Casablanca',director:'Michael Curtiz',actor:'Paul Lukas',actress:'Jennifer Jones'},
+  {year:1944,ceremony:1945,picture:'Going My Way',director:'Leo McCarey',actor:'Bing Crosby',actress:'Ingrid Bergman'},
+  {year:1945,ceremony:1946,picture:'The Lost Weekend',director:'Billy Wilder',actor:'Ray Milland',actress:'Joan Crawford'},
+  {year:1946,ceremony:1947,picture:'The Best Years of Our Lives',director:'William Wyler',actor:'Fredric March',actress:'Olivia de Havilland'},
+  {year:1947,ceremony:1948,picture:'Gentleman\u2019s Agreement',director:'Elia Kazan',actor:'Ronald Colman',actress:'Loretta Young'},
+  {year:1948,ceremony:1949,picture:'Hamlet',director:'John Huston',actor:'Laurence Olivier',actress:'Jane Wyman'},
+  {year:1949,ceremony:1950,picture:'All the King\u2019s Men',director:'Joseph L. Mankiewicz',actor:'Broderick Crawford',actress:'Olivia de Havilland'},
+  {year:1950,ceremony:1951,picture:'All About Eve',director:'Joseph L. Mankiewicz',actor:'Jos\u00e9 Ferrer',actress:'Judy Holliday'},
+  {year:1951,ceremony:1952,picture:'An American in Paris',director:'George Stevens',actor:'Humphrey Bogart',actress:'Vivien Leigh'},
+  {year:1952,ceremony:1953,picture:'The Greatest Show on Earth',director:'John Ford',actor:'Gary Cooper',actress:'Shirley Booth'},
+  {year:1953,ceremony:1954,picture:'From Here to Eternity',director:'Fred Zinnemann',actor:'William Holden',actress:'Audrey Hepburn'},
+  {year:1954,ceremony:1955,picture:'On the Waterfront',director:'Elia Kazan',actor:'Marlon Brando',actress:'Grace Kelly'},
+  {year:1955,ceremony:1956,picture:'Marty',director:'Delbert Mann',actor:'Ernest Borgnine',actress:'Anna Magnani'},
+  {year:1956,ceremony:1957,picture:'Around the World in 80 Days',director:'George Stevens',actor:'Yul Brynner',actress:'Ingrid Bergman'},
+  {year:1957,ceremony:1958,picture:'The Bridge on the River Kwai',director:'David Lean',actor:'Alec Guinness',actress:'Joanne Woodward'},
+  {year:1958,ceremony:1959,picture:'Gigi',director:'Vincente Minnelli',actor:'David Niven',actress:'Susan Hayward'},
+  {year:1959,ceremony:1960,picture:'Ben-Hur',director:'William Wyler',actor:'Charlton Heston',actress:'Simone Signoret'},
+  {year:1960,ceremony:1961,picture:'The Apartment',director:'Billy Wilder',actor:'Burt Lancaster',actress:'Elizabeth Taylor'},
+  {year:1961,ceremony:1962,picture:'West Side Story',director:'Robert Wise & Jerome Robbins',actor:'Maximilian Schell',actress:'Sophia Loren'},
+  {year:1962,ceremony:1963,picture:'Lawrence of Arabia',director:'David Lean',actor:'Gregory Peck',actress:'Anne Bancroft'},
+  {year:1963,ceremony:1964,picture:'Tom Jones',director:'Tony Richardson',actor:'Sidney Poitier',actress:'Patricia Neal'},
+  {year:1964,ceremony:1965,picture:'My Fair Lady',director:'George Cukor',actor:'Rex Harrison',actress:'Julie Andrews'},
+  {year:1965,ceremony:1966,picture:'The Sound of Music',director:'Robert Wise',actor:'Lee Marvin',actress:'Julie Christie'},
+  {year:1966,ceremony:1967,picture:'A Man for All Seasons',director:'Fred Zinnemann',actor:'Paul Scofield',actress:'Elizabeth Taylor'},
+  {year:1967,ceremony:1968,picture:'In the Heat of the Night',director:'Mike Nichols',actor:'Rod Steiger',actress:'Katharine Hepburn'},
+  {year:1968,ceremony:1969,picture:'Oliver!',director:'Carol Reed',actor:'Cliff Robertson',actress:'Katharine Hepburn & Barbra Streisand'},
+  {year:1969,ceremony:1970,picture:'Midnight Cowboy',director:'John Schlesinger',actor:'John Wayne',actress:'Maggie Smith'},
+  {year:1970,ceremony:1971,picture:'Patton',director:'Franklin J. Schaffner',actor:'George C. Scott',actress:'Glenda Jackson'},
+  {year:1971,ceremony:1972,picture:'The French Connection',director:'William Friedkin',actor:'Gene Hackman',actress:'Jane Fonda'},
+  {year:1972,ceremony:1973,picture:'The Godfather',director:'Bob Fosse',actor:'Marlon Brando',actress:'Liza Minnelli'},
+  {year:1973,ceremony:1974,picture:'The Sting',director:'George Roy Hill',actor:'Jack Lemmon',actress:'Glenda Jackson'},
+  {year:1974,ceremony:1975,picture:'The Godfather Part II',director:'Francis Ford Coppola',actor:'Art Carney',actress:'Ellen Burstyn'},
+  {year:1975,ceremony:1976,picture:'One Flew Over the Cuckoo\u2019s Nest',director:'Milo\u0161 Forman',actor:'Jack Nicholson',actress:'Louise Fletcher'},
+  {year:1976,ceremony:1977,picture:'Rocky',director:'John G. Avildsen',actor:'Peter Finch',actress:'Faye Dunaway'},
+  {year:1977,ceremony:1978,picture:'Annie Hall',director:'Woody Allen',actor:'Richard Dreyfuss',actress:'Diane Keaton'},
+  {year:1978,ceremony:1979,picture:'The Deer Hunter',director:'Michael Cimino',actor:'Jon Voight',actress:'Jane Fonda'},
+  {year:1979,ceremony:1980,picture:'Kramer vs. Kramer',director:'Robert Benton',actor:'Dustin Hoffman',actress:'Sally Field'},
+  {year:1980,ceremony:1981,picture:'Ordinary People',director:'Robert Redford',actor:'Robert De Niro',actress:'Sissy Spacek'},
+  {year:1981,ceremony:1982,picture:'Chariots of Fire',director:'Warren Beatty',actor:'Henry Fonda',actress:'Katharine Hepburn'},
+  {year:1982,ceremony:1983,picture:'Gandhi',director:'Richard Attenborough',actor:'Ben Kingsley',actress:'Meryl Streep'},
+  {year:1983,ceremony:1984,picture:'Terms of Endearment',director:'James L. Brooks',actor:'Robert Duvall',actress:'Shirley MacLaine'},
+  {year:1984,ceremony:1985,picture:'Amadeus',director:'Milo\u0161 Forman',actor:'F. Murray Abraham',actress:'Sally Field'},
+  {year:1985,ceremony:1986,picture:'Out of Africa',director:'Sydney Pollack',actor:'William Hurt',actress:'Geraldine Page'},
+  {year:1986,ceremony:1987,picture:'Platoon',director:'Oliver Stone',actor:'Paul Newman',actress:'Marlee Matlin'},
+  {year:1987,ceremony:1988,picture:'The Last Emperor',director:'Bernardo Bertolucci',actor:'Michael Douglas',actress:'Cher'},
+  {year:1988,ceremony:1989,picture:'Rain Man',director:'Barry Levinson',actor:'Dustin Hoffman',actress:'Jodie Foster'},
+  {year:1989,ceremony:1990,picture:'Driving Miss Daisy',director:'Oliver Stone',actor:'Daniel Day-Lewis',actress:'Jessica Tandy'},
+  {year:1990,ceremony:1991,picture:'Dances with Wolves',director:'Kevin Costner',actor:'Jeremy Irons',actress:'Kathy Bates'},
+  {year:1991,ceremony:1992,picture:'The Silence of the Lambs',director:'Jonathan Demme',actor:'Anthony Hopkins',actress:'Jodie Foster'},
+  {year:1992,ceremony:1993,picture:'Unforgiven',director:'Clint Eastwood',actor:'Al Pacino',actress:'Emma Thompson'},
+  {year:1993,ceremony:1994,picture:'Schindler\u2019s List',director:'Steven Spielberg',actor:'Tom Hanks',actress:'Holly Hunter'},
+  {year:1994,ceremony:1995,picture:'Forrest Gump',director:'Robert Zemeckis',actor:'Tom Hanks',actress:'Jessica Lange'},
+  {year:1995,ceremony:1996,picture:'Braveheart',director:'Mel Gibson',actor:'Nicolas Cage',actress:'Susan Sarandon'},
+  {year:1996,ceremony:1997,picture:'The English Patient',director:'Anthony Minghella',actor:'Geoffrey Rush',actress:'Frances McDormand'},
+  {year:1997,ceremony:1998,picture:'Titanic',director:'James Cameron',actor:'Jack Nicholson',actress:'Helen Hunt'},
+  {year:1998,ceremony:1999,picture:'Shakespeare in Love',director:'Steven Spielberg',actor:'Roberto Benigni',actress:'Gwyneth Paltrow'},
+  {year:1999,ceremony:2000,picture:'American Beauty',director:'Sam Mendes',actor:'Kevin Spacey',actress:'Hilary Swank'},
+  {year:2000,ceremony:2001,picture:'Gladiator',director:'Steven Soderbergh',actor:'Russell Crowe',actress:'Julia Roberts'},
+  {year:2001,ceremony:2002,picture:'A Beautiful Mind',director:'Ron Howard',actor:'Denzel Washington',actress:'Halle Berry'},
+  {year:2002,ceremony:2003,picture:'Chicago',director:'Roman Polanski',actor:'Adrien Brody',actress:'Nicole Kidman'},
+  {year:2003,ceremony:2004,picture:'The Lord of the Rings: The Return of the King',director:'Peter Jackson',actor:'Sean Penn',actress:'Charlize Theron'},
+  {year:2004,ceremony:2005,picture:'Million Dollar Baby',director:'Clint Eastwood',actor:'Jamie Foxx',actress:'Hilary Swank'},
+  {year:2005,ceremony:2006,picture:'Crash',director:'Ang Lee',actor:'Philip Seymour Hoffman',actress:'Reese Witherspoon'},
+  {year:2006,ceremony:2007,picture:'The Departed',director:'Martin Scorsese',actor:'Forest Whitaker',actress:'Helen Mirren'},
+  {year:2007,ceremony:2008,picture:'No Country for Old Men',director:'Joel & Ethan Coen',actor:'Daniel Day-Lewis',actress:'Marion Cotillard'},
+  {year:2008,ceremony:2009,picture:'Slumdog Millionaire',director:'Danny Boyle',actor:'Sean Penn',actress:'Kate Winslet'},
+  {year:2009,ceremony:2010,picture:'The Hurt Locker',director:'Kathryn Bigelow',actor:'Jeff Bridges',actress:'Sandra Bullock'},
+  {year:2010,ceremony:2011,picture:'The King\u2019s Speech',director:'Tom Hooper',actor:'Colin Firth',actress:'Natalie Portman'},
+  {year:2011,ceremony:2012,picture:'The Artist',director:'Michel Hazanavicius',actor:'Jean Dujardin',actress:'Meryl Streep'},
+  {year:2012,ceremony:2013,picture:'Argo',director:'Ang Lee',actor:'Daniel Day-Lewis',actress:'Jennifer Lawrence'},
+  {year:2013,ceremony:2014,picture:'12 Years a Slave',director:'Alfonso Cuar\u00f3n',actor:'Matthew McConaughey',actress:'Cate Blanchett'},
+  {year:2014,ceremony:2015,picture:'Birdman',director:'Alejandro G. I\u00f1\u00e1rritu',actor:'Eddie Redmayne',actress:'Julianne Moore'},
+  {year:2015,ceremony:2016,picture:'Spotlight',director:'Alejandro G. I\u00f1\u00e1rritu',actor:'Leonardo DiCaprio',actress:'Brie Larson'},
+  {year:2016,ceremony:2017,picture:'Moonlight',director:'Damien Chazelle',actor:'Casey Affleck',actress:'Emma Stone'},
+  {year:2017,ceremony:2018,picture:'The Shape of Water',director:'Guillermo del Toro',actor:'Gary Oldman',actress:'Frances McDormand'},
+  {year:2018,ceremony:2019,picture:'Green Book',director:'Alfonso Cuar\u00f3n',actor:'Rami Malek',actress:'Olivia Colman'},
+  {year:2019,ceremony:2020,picture:'Parasite',director:'Bong Joon-ho',actor:'Joaquin Phoenix',actress:'Ren\u00e9e Zellweger'},
+  {year:2020,ceremony:2021,picture:'Nomadland',director:'Chlo\u00e9 Zhao',actor:'Anthony Hopkins',actress:'Frances McDormand'},
+  {year:2021,ceremony:2022,picture:'CODA',director:'Jane Campion',actor:'Will Smith',actress:'Jessica Chastain'},
+  {year:2022,ceremony:2023,picture:'Everything Everywhere All at Once',director:'Daniel Kwan & Daniel Scheinert',actor:'Brendan Fraser',actress:'Michelle Yeoh'},
+  {year:2023,ceremony:2024,picture:'Oppenheimer',director:'Christopher Nolan',actor:'Cillian Murphy',actress:'Emma Stone'},
+  {year:2024,ceremony:2025,picture:'Anora',director:'Sean Baker',actor:'Adrien Brody',actress:'Mikey Madison'},
+  {year:2025,ceremony:2026,picture:'One Battle After Another',director:'Paul Thomas Anderson',actor:'Michael B. Jordan',actress:'Jessie Buckley'}
+];
+
+let currentHistoryMode='leaderboards';
+let currentLeaderboard='director';
+let currentRecapYear=2025;
+
+function setHistoryMode(mode,btn){
+  currentHistoryMode=mode;
+  document.querySelectorAll('.history-mode').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('history-leaderboards').style.display=mode==='leaderboards'?'':'none';
+  document.getElementById('history-byyear').style.display=mode==='byyear'?'':'none';
+  if(mode==='leaderboards') renderLeaderboard();
+  if(mode==='byyear'){renderYearBar();renderYearRecap(currentRecapYear);}
+}
+
+function setLeaderboard(which,btn){
+  currentLeaderboard=which;
+  document.querySelectorAll('#history-leaderboards .debate-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLeaderboard();
+}
+
+function renderLeaderboard(){
+  const field=currentLeaderboard==='director'?'director':currentLeaderboard==='actor'?'actor':'actress';
+  // Aggregate wins per name. Some entries are joint (e.g. "Robert Wise & Jerome Robbins" or "Joel & Ethan Coen").
+  // For headline tallies, we credit each named person individually.
+  const tally={};
+  OSCAR_HISTORY.forEach(rec=>{
+    const raw=rec[field];
+    if(!raw) return;
+    const names=raw.split(/\s+(?:&|and)\s+/);
+    names.forEach(name=>{
+      const n=name.trim();
+      if(!n) return;
+      if(!tally[n]) tally[n]={count:0,films:[]};
+      tally[n].count++;
+      tally[n].films.push({title:rec.picture,year:rec.year});
+    });
+  });
+  const ranked=Object.entries(tally).map(([name,v])=>({name,...v}))
+    .filter(r=>r.count>=2) // surface only those with multiple wins
+    .sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name));
+
+  const body=document.getElementById('leaderboard-body');
+  if(!ranked.length){body.innerHTML='<div class="recap-empty">No data.</div>';return;}
+
+  let lastCount=null,visibleRank=0;
+  body.innerHTML=`
+    <div style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;">Most decorated · multiple-win club</div>
+    ${ranked.map((r,i)=>{
+      if(r.count!==lastCount){visibleRank=i+1;lastCount=r.count;}
+      const filmLinks=r.films.map(f=>
+        `<a onclick="openFilmByTitle('${escapeJs(f.title)}',${f.year})">${escapeHtml(f.title)} (${f.year})</a>`
+      ).join(' · ');
+      return `<div class="lb-row">
+        <div class="lb-rank ${visibleRank>10?'small':''}">${visibleRank}</div>
+        <div>
+          <div class="lb-name">${escapeHtml(r.name)}</div>
+          <div class="lb-meta">Best ${currentLeaderboard.charAt(0).toUpperCase()+currentLeaderboard.slice(1)} winner</div>
+        </div>
+        <div>
+          <div class="lb-count">${r.count}</div>
+          <div class="lb-count-lbl" style="text-align:right;">Oscars</div>
+        </div>
+        <div class="lb-films" style="grid-column:2/4;">${filmLinks}</div>
+      </div>`;
+    }).join('')}
+    <div style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;color:var(--text3);margin-top:14px;font-style:italic;">Only multiple-win recipients shown. Joint nominations split the credit.</div>
+  `;
+}
+
+function renderYearBar(){
+  const bar=document.getElementById('year-bar');
+  const years=OSCAR_HISTORY.map(r=>r.year).sort((a,b)=>b-a);
+  bar.innerHTML=years.map(y=>
+    `<button class="year-btn ${y===currentRecapYear?'active':''}" data-year="${y}" onclick="renderYearRecap(${y})">${y}</button>`
+  ).join('');
+  // Scroll the active button into view
+  setTimeout(()=>{
+    const active=bar.querySelector('.year-btn.active');
+    if(active){
+      const barRect=bar.getBoundingClientRect();
+      const btnRect=active.getBoundingClientRect();
+      bar.scrollLeft+=btnRect.left-barRect.left-(barRect.width/2)+(btnRect.width/2);
+    }
+  },0);
+}
+
+async function renderYearRecap(year){
+  currentRecapYear=year;
+  document.querySelectorAll('.year-btn').forEach(b=>{
+    b.classList.toggle('active',parseInt(b.dataset.year)===year);
+  });
+  const wrap=document.getElementById('year-recap');
+  const rec=OSCAR_HISTORY.find(r=>r.year===year);
+  if(!rec){wrap.innerHTML='<div class="recap-empty">No data for that year.</div>';return;}
+
+  wrap.innerHTML=`
+    <div class="recap-wrap">
+      <div class="recap-year-head">
+        <div>
+          <div class="recap-year-num"><em>${year}</em></div>
+          <div class="recap-year-cer" style="margin-top:4px;">${rec.ceremony}\u2009Academy\u2009Awards · ${rec.ceremony-1928}${rec.ceremony-1928===1?'st':rec.ceremony-1928===2?'nd':rec.ceremony-1928===3?'rd':'th'} ceremony</div>
+        </div>
+      </div>
+      <div class="recap-awards" id="recap-awards-grid">
+        ${recapAwardCard('Best Picture',rec.picture,'film',rec.year)}
+        ${recapAwardCard('Best Director',rec.director,'person')}
+        ${recapAwardCard('Best Actor',rec.actor,'person')}
+        ${recapAwardCard('Best Actress',rec.actress,'person')}
+      </div>
+      <div class="recap-section-title">Notable films of ${year}</div>
+      <div class="recap-section-sub">Highly rated and culturally significant releases from this year.</div>
+      <div class="recap-notable-grid" id="recap-notable"><div class="loading-box">Loading</div></div>
+    </div>
+  `;
+  // Hydrate the BP card poster
+  hydrateRecapPicture(rec.picture,rec.year);
+  // Load notable films
+  loadNotableFilms(year);
+}
+
+function recapAwardCard(category,name,kind,year){
+  if(!name) return '';
+  if(kind==='film'){
+    return `<div class="recap-award" id="recap-bp-card">
+      <div class="recap-award-cat">${category}</div>
+      <div class="recap-award-row" onclick="openFilmByTitle('${escapeJs(name)}',${year})">
+        <div class="recap-award-poster-ph" id="recap-bp-poster">\ud83c\udfac</div>
+        <div>
+          <div class="recap-award-name">${escapeHtml(name)}</div>
+          <div class="recap-award-sub">${year} · tap to open</div>
+        </div>
+      </div>
+    </div>`;
+  }
+  // person — non-clickable text card (we don't have a People page)
+  return `<div class="recap-award">
+    <div class="recap-award-cat">${category}</div>
+    <div class="recap-award-row no-link">
+      <div class="recap-award-poster-ph" style="width:48px;height:48px;border-radius:50%;">\u2014</div>
+      <div>
+        <div class="recap-award-name">${escapeHtml(name)}</div>
+        <div class="recap-award-sub">Winner</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function hydrateRecapPicture(title,year){
+  try{
+    const data=await api('/search/movie',{query:title,year:year});
+    const film=data.results&&data.results[0];
+    if(film&&film.poster_path){
+      const card=document.getElementById('recap-bp-card');
+      if(card){
+        const ph=card.querySelector('.recap-award-poster-ph');
+        if(ph){
+          const img=document.createElement('img');
+          img.className='recap-award-poster';
+          img.src=`${IMG}w185${film.poster_path}`;
+          ph.replaceWith(img);
+        }
+        // Wire the card to open the actual film by id (more reliable than re-searching)
+        const row=card.querySelector('.recap-award-row');
+        if(row) row.onclick=()=>openFilm(film.id,'movie');
+      }
+    }
+  } catch(e){/* leave the placeholder */}
+}
+
+// Search TMDB by title (+ optional year), open the first result's modal
+async function openFilmByTitle(title,year){
+  try{
+    const params={query:title};
+    if(year) params.year=year;
+    const data=await api('/search/movie',params);
+    const film=data.results&&data.results[0];
+    if(film) openFilm(film.id,'movie');
+    else toast('Could not find that film');
+  } catch(e){toast('Could not open film');}
+}
+
+async function loadNotableFilms(year){
+  const grid=document.getElementById('recap-notable');
+  if(!grid) return;
+  try{
+    // Pull two pages of top-rated films from this year and merge.
+    const [a,b]=await Promise.all([
+      api('/discover/movie',{primary_release_year:year,sort_by:'vote_average.desc','vote_count.gte':500,page:1}),
+      api('/discover/movie',{primary_release_year:year,sort_by:'popularity.desc','vote_count.gte':500,page:1})
+    ]);
+    const seen=new Set();
+    const films=[];
+    for(const f of [...(a.results||[]),...(b.results||[])]){
+      if(seen.has(f.id)) continue;
+      seen.add(f.id);
+      films.push(f);
+    }
+    // Sort by a simple weighted score so we surface films with both quality and reach
+    films.sort((x,y)=>{
+      const sx=(x.vote_average||0)*Math.log10((x.vote_count||1)+10);
+      const sy=(y.vote_average||0)*Math.log10((y.vote_count||1)+10);
+      return sy-sx;
+    });
+    const top=films.filter(f=>f.poster_path).slice(0,12);
+    if(!top.length){grid.innerHTML='<div class="recap-empty">No notable films found for this year.</div>';return;}
+    grid.innerHTML=top.map(f=>{
+      const score=fmt1(f.vote_average);
+      return `<div class="film-card" onclick="openFilm(${f.id},'movie')">
+        <div class="film-poster">
+          <img src="${IMG}w342${f.poster_path}" loading="lazy">
+          <div class="film-score-badge">${score}</div>
+        </div>
+        <div class="film-info">
+          <div class="film-title">${escapeHtml(f.title||f.name||'Untitled')}</div>
+          <div class="film-meta">${(f.release_date||'').slice(0,4)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e){
+    grid.innerHTML='<div class="recap-empty">Could not load films for this year.</div>';
+  }
+}
+
+function escapeJs(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+
+
+
+// ============================================================
+// IMPORT FILMOGRAPHY
+// ============================================================
+
+function openImportModal(){
+  document.getElementById('import-modal').classList.add('open');
+  document.getElementById('import-preview').style.display='none';
+  document.getElementById('import-preview').innerHTML='';
+  // Reset to file tab
+  document.querySelectorAll('.import-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.getElementById('import-pane-file').style.display='';
+  document.getElementById('import-pane-paste').style.display='none';
+  document.getElementById('import-pane-help').style.display='none';
+}
+function closeImportModal(){document.getElementById('import-modal').classList.remove('open');}
+function maybeCloseImport(e){if(e.target===document.getElementById('import-modal')) closeImportModal();}
+
+function setImportTab(name,btn){
+  document.querySelectorAll('.import-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  ['file','paste','help'].forEach(n=>{
+    document.getElementById('import-pane-'+n).style.display=n===name?'':'none';
+  });
+}
+
+// --- Drag & drop wiring for the file drop zone ---
+function _wireImportDnD(){
+  const drop=document.getElementById('import-drop');
+  if(!drop||drop._wired) return;
+  drop._wired=true;
+  ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag');}));
+  drop.addEventListener('drop',e=>{
+    const f=e.dataTransfer.files[0];
+    if(f) routeFile(f);
+  });
+}
+
+function handleImportFile(e){
+  const f=e.target.files[0];
+  if(f) routeFile(f);
+}
+
+async function routeFile(file){
+  const ext=(file.name.split('.').pop()||'').toLowerCase();
+  const mime=file.type||'';
+  setImportStatus(`Reading ${file.name}…`);
+  try{
+    let text='';
+    if(ext==='csv'||mime==='text/csv'){
+      text=await file.text();
+      const rows=parseCSV(text);
+      const parsed=interpretCSV(rows);
+      return await runImport(parsed);
+    }
+    if(ext==='txt'||mime==='text/plain'||mime===''){
+      text=await file.text();
+      const parsed=parseLines(text);
+      return await runImport(parsed);
+    }
+    if(ext==='pdf'||mime==='application/pdf'){
+      setImportStatus('Loading PDF reader…');
+      text=await extractPdfText(file);
+      const parsed=parseLines(text);
+      return await runImport(parsed);
+    }
+    setImportError(`Unsupported file type: .${ext}. Try CSV, TXT, or PDF.`);
+  } catch(e){
+    setImportError('Could not read file: '+(e.message||e));
+  }
+}
+
+function processPaste(){
+  const t=document.getElementById('import-paste').value;
+  if(!t.trim()){setImportError('Paste some film titles first.');return;}
+  const parsed=parseLines(t);
+  runImport(parsed);
+}
+
+// --- CSV parsing (handles quoted fields, commas inside quotes) ---
+function parseCSV(text){
+  const rows=[];
+  let row=[],field='',inQ=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i],n=text[i+1];
+    if(inQ){
+      if(c==='"'&&n==='"'){field+='"';i++;}
+      else if(c==='"'){inQ=false;}
+      else field+=c;
+    } else {
+      if(c==='"'){inQ=true;}
+      else if(c===','){row.push(field);field='';}
+      else if(c==='\n'){row.push(field);rows.push(row);row=[];field='';}
+      else if(c==='\r'){/* skip */}
+      else field+=c;
+    }
+  }
+  if(field.length||row.length){row.push(field);rows.push(row);}
+  return rows.filter(r=>r.some(c=>c&&c.trim().length));
+}
+
+// --- Translate generic CSV rows into {title, year, rating} ---
+function interpretCSV(rows){
+  if(!rows.length) return [];
+  const headerCells=rows[0].map(c=>c.trim().toLowerCase());
+  let titleIdx=-1,yearIdx=-1,ratingIdx=-1,dataStart=0;
+  const headerish=['name','title','film','movie','year','rating','score','stars'];
+  const looksLikeHeader=headerCells.some(h=>headerish.includes(h));
+  if(looksLikeHeader){
+    dataStart=1;
+    headerCells.forEach((h,i)=>{
+      if(/^(name|title|film|movie)/.test(h)) titleIdx=i;
+      if(/^year/.test(h)) yearIdx=i;
+      if(/^(rating|score|stars)/.test(h)) ratingIdx=i;
+    });
+  }
+  // Fall back to positional guesses
+  if(titleIdx<0) titleIdx=0;
+  if(yearIdx<0&&rows[dataStart]&&rows[dataStart][1]&&/^\d{4}$/.test(rows[dataStart][1].trim())) yearIdx=1;
+  if(ratingIdx<0) ratingIdx=rows[0].length-1;
+  if(ratingIdx===titleIdx||ratingIdx===yearIdx) ratingIdx=-1;
+
+  const out=[];
+  for(let i=dataStart;i<rows.length;i++){
+    const r=rows[i];
+    const title=(r[titleIdx]||'').trim();
+    if(!title) continue;
+    const year=yearIdx>=0?parseYear(r[yearIdx]):null;
+    const r2=ratingIdx>=0?parseRating(r[ratingIdx]):null;
+    const rating=r2?r2.snapped:null;
+    const originalRating=r2?r2.original:null;
+    out.push({title,year,rating,originalRating,raw:r.join(', ')});
+  }
+  return out;
+}
+
+// --- Plain-text / pasted line parsing ---
+function parseLines(text){
+  const lines=text.split(/\r?\n/);
+  const out=[];
+  for(let raw of lines){
+    let line=raw.trim();
+    if(!line) continue;
+    // Strip leading "1. " or "- " or "* " bullets
+    line=line.replace(/^(\d+\.\s+|[-*•]\s+)/,'');
+    if(!line||line.length>200) continue;
+    // Skip lines that look like headers
+    if(/^(rating|score|year|title|name|film|movie|date)s?$/i.test(line)) continue;
+
+    let rating=null,originalRating=null,year=null,title=line;
+
+    // Rating: trailing " - 8.5", " — 8.34", ", 8.5", "\t8.5", " | 8.5" (any decimal precision)
+    const ratingMatch=line.match(/\s*[-—–,|\t]\s*(\d{1,2}(?:\.\d+)?|\d?\.\d+)(?:\s*\/\s*\d+)?\s*\*?\s*$/);
+    if(ratingMatch){
+      const r2=parseRating(ratingMatch[1]);
+      if(r2){rating=r2.snapped;originalRating=r2.original;}
+      title=line.slice(0,ratingMatch.index).trim();
+    } else {
+      // Letterboxd-style trailing "★★★★½"
+      const starMatch=line.match(/(★+½?|⭐+½?)\s*$/);
+      if(starMatch){
+        const stars=starMatch[1].replace(/[^★⭐½]/g,'');
+        let n=(stars.match(/[★⭐]/g)||[]).length;
+        if(/½/.test(stars)) n+=0.5;
+        const v=Math.max(0,Math.min(10,n*2));
+        rating=snap05(v);
+        originalRating=v;
+        title=line.slice(0,starMatch.index).trim();
+      }
+    }
+
+    // Year: trailing "(1972)" or " 1972"
+    const yearParen=title.match(/\s*\((\d{4})\)\s*$/);
+    if(yearParen){year=parseInt(yearParen[1]);title=title.slice(0,yearParen.index).trim();}
+    else {
+      const yearTrail=title.match(/\s+(\d{4})$/);
+      if(yearTrail){
+        const y=parseInt(yearTrail[1]);
+        if(y>=1880&&y<=new Date().getFullYear()+2){year=y;title=title.slice(0,yearTrail.index).trim();}
+      }
+    }
+
+    title=title.replace(/^["'\u2018\u201C]+|["'\u2019\u201D]+$/g,'').trim();
+    if(title.length<2) continue;
+    out.push({title,year,rating,originalRating,raw});
+  }
+  return out;
+}
+
+function parseYear(v){
+  if(!v) return null;
+  const m=String(v).match(/(\d{4})/);
+  return m?parseInt(m[1]):null;
+}
+
+// Accepts a rating string in any of these shapes:
+//   - "8.5" / "8.34" / "7" — bare number, any decimal precision
+//   - "8/10" / "4/5" / "85/100" — explicit fraction
+//   - "★★★★½" — star glyphs with optional half
+// Returns {snapped, original} where:
+//   - snapped: on 0–10, rounded to the nearest 0.5
+//   - original: pre-snap 0–10 value (so callers can detect lost precision)
+// Returns null if v can't be interpreted.
+function parseRating(v){
+  if(v===null||v===undefined) return null;
+  const s=String(v).trim();
+  if(!s) return null;
+  let original=null;
+  // Fractional form: "8/10", "4/5", "85/100"
+  const slash=s.match(/^(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
+  if(slash){
+    const num=parseFloat(slash[1]),denom=parseFloat(slash[2]);
+    if(!denom) return null;
+    original=(num/denom)*10;
+  } else if(/[★⭐]/.test(s)){
+    let n=(s.match(/[★⭐]/g)||[]).length;
+    if(/½/.test(s)) n+=0.5;
+    original=n*2;
+  } else {
+    const n=parseFloat(s);
+    if(isNaN(n)) return null;
+    // Scale heuristic: a value ≤5 is 0–5 (Letterboxd-style) and gets doubled.
+    // 5< n ≤10 is treated as 0–10. 10< n ≤100 is treated as percentage.
+    if(n>0&&n<=5) original=n*2;
+    else if(n<=10) original=n;
+    else if(n<=100) original=n/10;
+    else return null;
+  }
+  original=Math.max(0,Math.min(10,original));
+  return {snapped:snap05(original),original};
+}
+function snap05(n){return Math.max(0,Math.min(10,Math.round(n*2)/2));}
+
+// --- PDF text extraction via PDF.js (lazy CDN load) ---
+async function extractPdfText(file){
+  if(!window.pdfjsLib){
+    await new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      s.onload=res;s.onerror=()=>rej(new Error('Could not load PDF reader'));
+      document.head.appendChild(s);
+    });
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  const buf=await file.arrayBuffer();
+  const pdf=await window.pdfjsLib.getDocument({data:buf}).promise;
+  let text='';
+  for(let i=1;i<=pdf.numPages;i++){
+    const page=await pdf.getPage(i);
+    const content=await page.getTextContent();
+    // Group items into lines by their y coordinate
+    const linesByY={};
+    for(const it of content.items){
+      const y=Math.round(it.transform[5]);
+      (linesByY[y]=linesByY[y]||[]).push(it.str);
+    }
+    const ys=Object.keys(linesByY).map(Number).sort((a,b)=>b-a);
+    for(const y of ys) text+=linesByY[y].join(' ').replace(/\s+/g,' ').trim()+'\n';
+  }
+  return text;
+}
+
+// --- TMDB matching + import execution ---
+let _importRunning=false;
+async function runImport(items){
+  if(_importRunning) return;
+  if(!items||!items.length){setImportError('No film titles detected.');return;}
+  // Hard cap so a runaway PDF doesn't make 800 TMDB calls
+  const CAP=300;
+  const truncated=items.length>CAP;
+  if(truncated) items=items.slice(0,CAP);
+
+  _importRunning=true;
+  const preview=document.getElementById('import-preview');
+  preview.style.display='';
+  preview.innerHTML=`
+    <div class="import-status" id="ix-status">Matching ${items.length} title${items.length===1?'':'s'} to TMDB…</div>
+    <div class="import-progress"><div class="import-progress-fill" id="ix-progress" style="width:0%;"></div></div>
+    <div class="import-results" id="ix-results"></div>
+  `;
+  const resEl=document.getElementById('ix-results');
+  const matches=[];
+  let done=0;
+
+  for(const item of items){
+    let film=null;
+    try{
+      const params={query:item.title};
+      if(item.year) params.year=item.year;
+      const data=await api('/search/movie',params);
+      if(data.results&&data.results.length){
+        film=data.results[0];
+        // If we have a year and the first result is far off, try to find a closer match
+        if(item.year&&film.release_date){
+          const fy=parseInt(film.release_date.slice(0,4));
+          if(Math.abs(fy-item.year)>2){
+            const better=data.results.find(r=>r.release_date&&Math.abs(parseInt(r.release_date.slice(0,4))-item.year)<=1);
+            if(better) film=better;
+          }
+        }
+      }
+    } catch(e){/* keep going on a single failure */}
+    matches.push({...item,film});
+    done++;
+    const row=document.createElement('div');
+    const ok=!!film;
+    row.className='import-result-row '+(ok?'ok':'fail');
+    const matchTxt=ok?`${film.title}${film.release_date?' · '+film.release_date.slice(0,4):''}`:'No match found';
+    const ratingTxt=item.rating!=null?fmt05(item.rating):'';
+    row.innerHTML=`
+      <span class="ir-mark">${ok?'✓':'—'}</span>
+      <span class="ir-src">${escapeHtml(item.title)}${item.year?' ('+item.year+')':''}</span>
+      <span class="ir-match">${escapeHtml(matchTxt)}</span>
+      <span class="ir-rating">${ratingTxt}</span>
+    `;
+    resEl.appendChild(row);
+    resEl.scrollTop=resEl.scrollHeight;
+    document.getElementById('ix-progress').style.width=`${(done/items.length)*100}%`;
+    document.getElementById('ix-status').textContent=`Matched ${done} of ${items.length}…`;
+    // Throttle: ~5 req/sec
+    await sleep(200);
+  }
+
+  const matched=matches.filter(m=>m.film);
+  const withRating=matched.filter(m=>m.rating!=null);
+  // Detect ratings that got snapped to 0.5
+  const snapped=matched.filter(m=>
+    m.rating!=null && m.originalRating!=null &&
+    Math.abs(m.rating-m.originalRating)>1e-9
+  );
+  document.getElementById('ix-status').textContent=
+    `${matched.length} matched · ${matches.length-matched.length} unmatched · ${withRating.length} with ratings${truncated?` · (capped at ${CAP})`:''}`;
+
+  // Build summary + confirm buttons
+  const summary=document.createElement('div');
+  summary.style.marginTop='14px';
+  const snapNotice=snapped.length?`<div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--text2);letter-spacing:0.04em;margin-bottom:10px;font-style:italic;font-weight:300;">${snapped.length} rating${snapped.length===1?'':'s'} rounded to the nearest 0.5 (e.g. 8.34 → 8.5)</div>`:'';
+  summary.innerHTML=`
+    ${snapNotice}
+    <div class="import-summary">
+      <div><span class="import-summary-stat">${matched.length}</span><span class="import-summary-lbl">Will add to seen</span></div>
+      <div><span class="import-summary-stat">${withRating.length}</span><span class="import-summary-lbl">With ratings</span></div>
+    </div>
+    <div class="import-actions">
+      <button class="btn-secondary" onclick="closeImportModal()">Cancel</button>
+      <button class="import-go" id="ix-confirm">Add to my filmography</button>
+    </div>
+  `;
+  preview.appendChild(summary);
+  document.getElementById('ix-confirm').onclick=()=>commitImport(matched);
+  _importRunning=false;
+}
+
+function commitImport(matches){
+  let addedSeen=0,addedRatings=0;
+  for(const m of matches){
+    const id=m.film.id;
+    if(!seenList.includes(id)){seenList.push(id);addedSeen++;}
+    watchlist=watchlist.filter(x=>x!==id);
+    if(m.rating!=null){
+      myRatings[id]=m.rating;
+      addedRatings++;
+    }
+    // Cache the film so it appears immediately in lists without an extra fetch
+    filmCache[id]={...(filmCache[id]||{}),...m.film,media_type:'movie'};
+  }
+  localStorage.setItem(userKey('seen'),JSON.stringify(seenList));
+  localStorage.setItem(userKey('wl'),JSON.stringify(watchlist));
+  localStorage.setItem(userKey('ratings'),JSON.stringify(myRatings));
+  syncToCloud();
+  toast(`Added ${addedSeen} films · ${addedRatings} rated`);
+  closeImportModal();
+  // Refresh filmography view
+  renderFilmography();
+}
+
+function setImportStatus(msg){
+  const pv=document.getElementById('import-preview');
+  pv.style.display='';
+  pv.innerHTML=`<div class="import-status">${escapeHtml(msg)}</div>`;
+}
+function setImportError(msg){
+  const pv=document.getElementById('import-preview');
+  pv.style.display='';
+  pv.innerHTML=`<div class="import-status" style="color:var(--red);border-color:var(--red);">${escapeHtml(msg)}</div>`;
+}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+// Wire drag-and-drop once DOM is ready
+if(document.readyState!=='loading') _wireImportDnD();
+else document.addEventListener('DOMContentLoaded',_wireImportDnD);
 
 let pickerTimer;
 function pickerSearch(q){
@@ -2481,6 +3472,10 @@ function showPage(id,el){
   if(id==='rankings') loadRankings();
   if(id==='debate') loadDebate();
   if(id==='compare') loadCompare();
+  if(id==='history'){
+    if(currentHistoryMode==='leaderboards') renderLeaderboard();
+    else {renderYearBar();renderYearRecap(currentRecapYear);}
+  }
   window.scrollTo(0,0);
 }
 
