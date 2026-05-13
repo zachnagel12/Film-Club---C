@@ -3893,7 +3893,7 @@ function loadPendingClubs(){
 function savePendingClub(name){
   const list=loadPendingClubs().filter(n=>n!==name);
   list.unshift(name);
-  try{localStorage.setItem(pendingClubsKey(),JSON.stringify(list.slice(0,5)));}catch(e){}
+  try{localStorage.setItem(pendingClubsKey(),JSON.stringify(list.slice(0,20)));}catch(e){}
 }
 function removePendingClub(name){
   const list=loadPendingClubs().filter(n=>n!==name);
@@ -3994,6 +3994,7 @@ function renderClubDetail(){
         <button class="club-action-btn primary" onclick="openPostFilmDialog('${club.id}')">+ Post a film</button>
         <button class="club-action-btn" onclick="shareClubLink('${club.id}','${escapeJs(club.name)}',${club.is_public?'true':'false'})">\u{1F517} Share invite</button>
         <button class="club-action-btn danger" onclick="leaveClub('${club.id}','${escapeJs(club.name)}')">Leave club</button>
+        ${club.created_by===currentUser.id?`<button class="club-action-btn danger" onclick="deleteClub('${club.id}','${escapeJs(club.name)}',${members.length},${films.length})">\u{1F5D1} Delete club</button>`:''}
       </div>
     </div>
     <div class="club-members">
@@ -4170,6 +4171,38 @@ async function leaveClub(clubId,name){
     renderClubsHome();
   } catch(e){
     toast('Could not leave: '+((e&&e.message)||''));
+  }
+}
+
+// Permanent club deletion — only the creator can call this. The server-side
+// delete_club RPC double-checks ownership before running. ON DELETE CASCADE
+// on club_members/club_films/club_ratings tears everything else down.
+//
+// Two-step confirmation: a summary prompt and then a "type the name" prompt
+// for clubs with members or posted films. For an empty club (just you, no
+// posts), one confirm is enough.
+async function deleteClub(clubId,name,memberCount,filmCount){
+  const hasContent = memberCount>1 || filmCount>0;
+  const summary = hasContent
+    ? `Permanently delete "${name}"?\n\nThis will remove:\n  • ${memberCount} member${memberCount===1?'':'s'}\n  • ${filmCount} posted film${filmCount===1?'':'s'}\n  • All ratings\n\nThis cannot be undone.`
+    : `Delete "${name}"? This cannot be undone.`;
+  if(!confirm(summary)) return;
+  // For clubs with other members or films, require typing the name to confirm
+  if(hasContent){
+    const typed = prompt(`Type the club name exactly to confirm:\n\n${name}`);
+    if(typed===null) return;
+    if(typed.trim() !== name){
+      toast('Name did not match — deletion canceled');
+      return;
+    }
+  }
+  try{
+    const {error}=await sb.rpc('delete_club',{p_club_id:clubId});
+    if(error) throw error;
+    toast('Deleted '+name);
+    renderClubsHome();
+  } catch(e){
+    toast('Could not delete: '+((e&&e.message)||''));
   }
 }
 
