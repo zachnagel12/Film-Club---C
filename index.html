@@ -249,6 +249,8 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .modal{background:var(--bg2);border:1px solid var(--border2);max-width:720px;width:100%;position:relative;}
 .modal-close{position:absolute;top:10px;right:12px;font-size:18px;color:var(--bg2);cursor:pointer;z-index:10;line-height:1;background:rgba(0,0,0,0.5);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
 .modal-close:hover{background:rgba(0,0,0,0.7);}
+.modal-back{position:absolute;top:10px;left:12px;z-index:10;background:rgba(0,0,0,0.55);color:#fff;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:6px 11px;cursor:pointer;transition:background 0.12s;border-radius:0;}
+.modal-back:hover{background:rgba(0,0,0,0.8);}
 .modal-backdrop{width:100%;height:auto;max-height:60vh;object-fit:contain;display:block;background:var(--bg3);}
 .modal-backdrop-ph{width:100%;height:180px;background:linear-gradient(135deg,var(--bg3),var(--border));display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--text3);}
 .modal-body{padding:16px;}
@@ -265,6 +267,12 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .modal-section-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
 .modal-cast{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
 .cast-pill{background:var(--bg3);border:1px solid var(--border);padding:3px 8px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text2);}
+/* Tappable person name — used in Oscar archive, recap cards, leaderboard, cast pills */
+.person-link{cursor:pointer;color:inherit;border-bottom:1px dotted transparent;transition:color 0.1s,border-color 0.1s;}
+.person-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
+.cast-pill.person-link{cursor:pointer;}
+.cast-pill.person-link:hover{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
+.person-link-sep{color:var(--text3);font-weight:normal;}
 .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;}
 .mact-btn{padding:9px;border:none;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.12s;}
 .mact-btn:hover{opacity:0.85;}
@@ -302,6 +310,9 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 
 .search-section{padding:20px;}
 .search-title{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
+.search-section-head{font-family:'Russo One',sans-serif;font-size:16px;color:var(--text);letter-spacing:0.02em;margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:8px;}
+.search-section-head:first-child{margin-top:0;}
+.search-section-count{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;color:var(--text3);font-weight:400;}
 
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg2);padding:10px 18px;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;z-index:300;opacity:0;transition:opacity 0.25s,transform 0.25s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -447,6 +458,96 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .fg-body{padding:18px 20px;}
 
 /* FILM HISTORY page */
+/* CLUBS page */
+.clubs-head{padding:22px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
+.clubs-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.clubs-title{font-family:'Russo One',sans-serif;font-size:28px;line-height:1.0;color:var(--text);margin-bottom:4px;}
+.clubs-sub{font-size:13px;color:var(--text2);font-weight:300;margin-bottom:14px;}
+.clubs-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.clubs-btn-primary,.clubs-btn-secondary{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;cursor:pointer;padding:9px 14px;border:1px solid var(--accent);transition:all 0.12s;}
+.clubs-btn-primary{background:var(--accent);color:var(--bg2);border:1px solid var(--accent);}
+.clubs-btn-primary:hover{opacity:0.88;}
+.clubs-btn-secondary{background:transparent;color:var(--accent);}
+.clubs-btn-secondary:hover{background:var(--accent);color:var(--bg2);}
+.clubs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;padding:20px;}
+.club-card{background:var(--bg2);border:1px solid var(--border);padding:16px 16px 14px;cursor:pointer;transition:border-color 0.12s,transform 0.12s;}
+.club-card:hover{border-color:var(--accent);transform:translateY(-1px);}
+.club-card-name{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);line-height:1.1;margin-bottom:6px;}
+.club-card-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+.club-card-stats{display:flex;gap:14px;margin-top:8px;}
+.club-card-stat{display:flex;flex-direction:column;}
+.club-card-stat-val{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);line-height:1;}
+.club-card-stat-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
+.clubs-empty{padding:40px 20px;text-align:center;color:var(--text3);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;}
+
+/* Club detail view */
+.club-detail-head{padding:22px 20px 14px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));display:flex;flex-direction:column;gap:6px;}
+.club-detail-back{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;align-self:flex-start;margin-bottom:4px;}
+.club-detail-back:hover{color:var(--accent);}
+.club-detail-name{font-family:'Russo One',sans-serif;font-size:26px;color:var(--text);line-height:1.05;}
+.club-detail-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);}
+.club-detail-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.club-action-btn{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;cursor:pointer;padding:7px 12px;background:transparent;border:1px solid var(--border2);color:var(--text2);transition:all 0.12s;}
+.club-action-btn:hover{border-color:var(--accent);color:var(--accent);}
+.club-action-btn.primary{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
+.club-action-btn.danger:hover{border-color:var(--red);color:var(--red);}
+
+.club-rankings{padding:18px 20px;}
+.club-rank-row{display:grid;grid-template-columns:36px 60px 1fr auto auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;}
+.club-rank-row:hover{background:var(--panel);}
+.club-rank-num{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);text-align:right;}
+.club-rank-poster{width:60px;height:90px;object-fit:cover;background:var(--bg3);border:1px solid var(--border);}
+.club-rank-poster-ph{width:60px;height:90px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text3);font-style:italic;font-family:'Oswald',sans-serif;font-size:18px;}
+.club-rank-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--text);line-height:1.15;}
+.club-rank-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;color:var(--text3);margin-top:3px;}
+.club-rank-posted{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
+.club-rank-score{font-family:'Russo One',sans-serif;font-size:22px;color:var(--gold);text-align:right;}
+.club-rank-score-lbl{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);}
+.club-rank-count{font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);text-align:right;}
+.club-rank-count-lbl{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);}
+
+/* Members strip */
+.club-members{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg2);}
+.club-members-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.club-members-list{display:flex;gap:6px;flex-wrap:wrap;}
+.club-member-chip{padding:4px 10px;background:var(--bg3);border:1px solid var(--border);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text2);}
+.club-member-chip.you{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
+
+/* Modal form */
+.club-modal-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--text);line-height:1.1;margin-bottom:6px;}
+.club-modal-sub{font-size:12px;color:var(--text2);line-height:1.5;font-weight:300;margin-bottom:16px;}
+.club-input-row{margin-bottom:12px;}
+.club-input-label{display:block;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
+.club-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;padding:9px 11px;outline:none;transition:border-color 0.12s;}
+.club-input:focus{border-color:var(--accent);}
+.club-modal-error{color:var(--red);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.06em;margin-bottom:10px;min-height:14px;}
+.club-modal-submit{width:100%;padding:11px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;cursor:pointer;}
+.club-modal-submit:hover{opacity:0.88;}
+.club-modal-submit:disabled{background:var(--border2);cursor:not-allowed;}
+
+/* "Post to club" pulldown on the film modal */
+.club-post-row{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.club-post-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.club-post-buttons{display:flex;gap:6px;flex-wrap:wrap;}
+.club-post-pill{padding:5px 10px;background:var(--bg3);border:1px solid var(--border);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;cursor:pointer;transition:all 0.12s;color:var(--text2);}
+.club-post-pill:hover{border-color:var(--accent);color:var(--accent);}
+.club-post-pill.posted{background:var(--gold);color:var(--bg2);border-color:var(--gold);cursor:default;}
+
+@media (max-width:740px){
+  .clubs-head{padding:16px 14px 12px;}
+  .clubs-title{font-size:22px;}
+  .clubs-grid{grid-template-columns:1fr;padding:14px;gap:10px;}
+  .club-detail-head{padding:16px 14px 12px;}
+  .club-detail-name{font-size:20px;}
+  .club-rankings{padding:12px 14px;}
+  .club-rank-row{grid-template-columns:26px 50px 1fr auto;gap:8px;padding:9px 0;}
+  .club-rank-poster,.club-rank-poster-ph{width:50px;height:75px;}
+  .club-rank-num{font-size:15px;}
+  .club-rank-title{font-size:13px;}
+  .club-rank-score{font-size:18px;}
+  .club-rank-count{display:none;} /* fold count into the row to save space */
+}
+
 .history-head{padding:22px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
 .history-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
 .history-title{font-family:'Russo One',sans-serif;font-size:28px;line-height:1.0;color:var(--text);margin-bottom:4px;}
@@ -507,6 +608,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .recap-nominee.tappable:hover{background:var(--bg3);color:var(--accent);}
 .rn-name{font-weight:600;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.02em;color:var(--text);}
 .rn-film{color:var(--text3);font-style:italic;font-size:11px;}
+.recap-film-link{cursor:pointer;border-bottom:1px dotted transparent;transition:color 0.1s,border-color 0.1s;}
+.recap-film-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
 .recap-section-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);margin-bottom:10px;}
 .recap-section-sub{font-size:11px;color:var(--text3);font-style:italic;margin-top:-6px;margin-bottom:14px;}
 .recap-notable-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:24px;}
@@ -883,6 +986,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <div class="nav-tab" onclick="showPage('debate',this)">The Debate</div>
     <div class="nav-tab" onclick="showPage('compare',this)">Compare</div>
     <div class="nav-tab" onclick="showPage('filmography',this)">My Filmography</div>
+    <div class="nav-tab" onclick="showPage('clubs',this)">Clubs</div>
     <div class="nav-tab" onclick="showPage('history',this)">Film History</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
@@ -1041,6 +1145,28 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   <div class="fg-body" id="fg-body"></div>
 </div>
 
+<!-- CLUBS -->
+<div class="page" id="page-clubs">
+  <div class="clubs-head">
+    <div class="clubs-eyebrow">Group Rankings</div>
+    <div class="clubs-title">Clubs</div>
+    <div class="clubs-sub">Form a private group, post films, and see rankings built from your members' ratings only.</div>
+    <div class="clubs-actions">
+      <button class="clubs-btn-primary" onclick="openClubModal('create')">+ Create a club</button>
+      <button class="clubs-btn-secondary" onclick="openClubModal('join')">Join with password</button>
+    </div>
+  </div>
+  <div id="clubs-body"><div class="loading-box">Loading your clubs…</div></div>
+</div>
+
+<!-- CLUB CREATE/JOIN MODAL -->
+<div class="modal-overlay" id="club-modal" onclick="maybeCloseClubModal(event)">
+  <div class="modal" id="club-modal-inner" style="max-width:440px;">
+    <span class="modal-close" onclick="closeClubModal()">×</span>
+    <div class="modal-body" id="club-modal-body"></div>
+  </div>
+</div>
+
 <!-- FILM HISTORY -->
 <div class="page" id="page-history">
   <div class="history-head">
@@ -1074,13 +1200,14 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 <div class="page" id="page-search">
   <div class="search-section">
     <div class="search-title" id="search-label">Search Results</div>
-    <div class="film-grid" id="search-grid"></div>
+    <div id="search-grid"></div>
   </div>
 </div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal" onclick="maybeCloseModal(event)">
   <div class="modal" id="modal-inner">
+    <span class="modal-back" id="modal-back-btn" onclick="modalBack()" style="display:none;">← Back</span>
     <span class="modal-close" onclick="closeModal()">×</span>
     <div id="modal-content"></div>
   </div>
@@ -1195,32 +1322,51 @@ function initSupabase(){
         switchAuthTab('reset');
       }
     });
-    // Check for an existing session — but defer slightly so the recovery event fires first
-    setTimeout(()=>{
+    // Always show the auth screen on page load — no silent session resume.
+    // If Supabase has a persisted session from a previous visit, sign it out so
+    // the next sign-in is an explicit, deliberate action by the user. We still
+    // pre-fill the email field as a convenience for returning users.
+    setTimeout(async ()=>{
       if(inRecovery) return;
-      sb.auth.getSession().then(({data})=>{
-        if(inRecovery) return;
-        if(data.session) handleLoggedIn(data.session.user,{skipLoader:true});
-        else showAuthScreen();
-      });
+      try{
+        const {data}=await sb.auth.getSession();
+        if(data&&data.session){
+          // Capture the email for pre-fill BEFORE signing out
+          const lastEmail=data.session.user&&data.session.user.email;
+          await sb.auth.signOut();
+          if(lastEmail){
+            try{
+              localStorage.setItem('fc_last_email',lastEmail);
+            }catch(e){}
+          }
+        }
+      }catch(e){/* ignore — fall through to auth screen */}
+      showAuthScreen();
+      prefillLastEmail();
     },50);
   } else {
     setOfflineMode();
-    // In offline mode, restore last guest session
-    const last=localStorage.getItem('fc_guest_session');
-    if(last){
-      const accts=JSON.parse(localStorage.getItem('fc_offline_accts')||'{}');
-      if(accts[last]){
-        currentUser={id:last,email:last,displayName:accts[last].name};
-        loadUserDataLocal();
-        handleLoggedIn(null,{skipLoader:true});
-      } else {
-        showAuthScreen();
-      }
-    } else {
-      showAuthScreen();
-    }
+    // Offline mode: always show login. No silent guest-session restore.
+    // Clear the stale guest pointer so a subsequent page load doesn't keep
+    // trying to resume into a session the user never confirmed.
+    try{localStorage.removeItem('fc_guest_session');}catch(e){}
+    showAuthScreen();
+    prefillLastEmail();
   }
+}
+
+// Pre-fill the sign-in email from the last successful login, if any.
+// Pure convenience: the user still must enter their password.
+function prefillLastEmail(){
+  try{
+    const last=localStorage.getItem('fc_last_email');
+    if(!last) return;
+    const el=document.getElementById('login-email');
+    if(el&&!el.value) el.value=last;
+    // Move focus to the password field so the user can type immediately
+    const pw=document.getElementById('login-pass');
+    if(pw) setTimeout(()=>pw.focus(),0);
+  }catch(e){}
 }
 
 if(window.SUPABASE_READY===undefined){
@@ -1513,6 +1659,13 @@ async function handleLoggedIn(supabaseUser,opts={}){
     };
   }
   if(!currentUser) return;
+
+  // Remember the email for the next page-load's pre-fill convenience.
+  // (We do NOT auto-resume sessions — see initSupabase. The user must
+  // re-enter their password every visit.)
+  try{
+    if(currentUser.email) localStorage.setItem('fc_last_email',currentUser.email);
+  }catch(e){}
 
   // Update UI chrome
   const initial=(currentUser.displayName||currentUser.email||'?')[0].toUpperCase();
@@ -2041,6 +2194,7 @@ function clearCompareSlot(i){
 async function openFilm(id,mt='movie'){
   const modal=document.getElementById('modal');
   const content=document.getElementById('modal-content');
+  if(modal.classList.contains('open')) _pushModalState();
   modal.classList.add('open');
   content.innerHTML='<div class="loading-box">Loading</div>';
   try{
@@ -2102,18 +2256,21 @@ async function openFilm(id,mt='movie'){
               ${myR?`<div class="mscore"><div class="mscore-val" style="color:var(--gold);">${fmt05(myR)}</div><div class="mscore-label">Yours</div></div>`:''}
             </div>
             <div class="star-row" id="stars-${id}">${stars}</div>
-            ${dirs.length?`<div class="modal-section-label" style="margin-top:8px;">Directed by</div><div style="display:flex;gap:5px;flex-wrap:wrap;">${dirs.map(d=>`<span class="cast-pill">${d.name}</span>`).join('')}</div>`:''}
+            ${dirs.length?`<div class="modal-section-label" style="margin-top:8px;">Directed by</div><div style="display:flex;gap:5px;flex-wrap:wrap;">${dirs.map(d=>`<span class="cast-pill person-link" onclick="event.stopPropagation();openPerson(${d.id})">${escapeHtml(d.name)}</span>`).join('')}</div>`:''}
           </div>
         </div>
         ${film.overview?`<div class="modal-overview">${film.overview}</div>`:''}
-        ${cast.length?`<div class="modal-section-label">Cast</div><div class="modal-cast">${cast.map(c=>`<span class="cast-pill">${c.name}</span>`).join('')}</div>`:''}
+        ${cast.length?`<div class="modal-section-label">Cast</div><div class="modal-cast">${cast.map(c=>`<span class="cast-pill person-link" onclick="event.stopPropagation();openPerson(${c.id})">${escapeHtml(c.name)}</span>`).join('')}</div>`:''}
         <div class="modal-actions">
           <button class="mact-btn ${isSeen?'btn-seen':'btn-seen inactive'}" onclick="toggleSeen(${id})">${isSeen?'✓ Seen':'Mark Seen'}</button>
           <button class="mact-btn ${isWL?'btn-wl':'btn-wl inactive'}" onclick="toggleWL(${id})">${isWL?'✓ On Watchlist':'+ Watchlist'}</button>
         </div>
         <button class="mact-btn btn-compare" onclick="addToCompare(${id});">⚖ Add to Compare</button>
+        <div id="club-post-row-${id}" class="club-post-row" style="display:none;"></div>
         ${simHtml}
       </div>`;
+    // Hydrate the club-post row asynchronously — only if there are clubs to post to
+    hydrateClubPostRow(id).catch(()=>{});
   }catch(e){content.innerHTML='<div class="loading-box">Failed to load film.</div>';}
 }
 
@@ -2146,6 +2303,16 @@ function rateFilm(id,n){
   const yoursEl=document.querySelector('#modal-content .mscore-val[style*="--gold"]');
   if(yoursEl) yoursEl.textContent=n?fmt05(n):'';
   toast(n?`Rated ${fmt05(n)} / 10`:'Rating cleared');
+  // If this film exists in any of my clubs, mirror the rating there too.
+  // (No-op when offline or when clubs schema isn't set up — fails silently.)
+  if(typeof pushRatingToClubs==='function'){
+    if(n>0) pushRatingToClubs(id,n);
+    else if(sb&&!isOffline&&currentUser){
+      // Rating cleared — remove our row from club_ratings for this film
+      sb.from('club_ratings').delete()
+        .eq('film_id',id).eq('user_id',currentUser.id).then(()=>{},()=>{});
+    }
+  }
 }
 
 function toggleSeen(id){
@@ -2170,44 +2337,84 @@ function toggleWL(id){
   openFilm(id);
 }
 
-function closeModal(){document.getElementById('modal').classList.remove('open');}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  _modalStack=[];
+  _updateBackBtn();
+}
+
+// Modal navigation stack — supports "rabbit-hole" navigation: tap a director in
+// a film modal, see the director, tap a film in the director's filmography,
+// see the film, etc. Each push captures the previous content so the back
+// button can restore it without a network refetch.
+let _modalStack=[];
+function _pushModalState(){
+  const content=document.getElementById('modal-content');
+  if(content && content.innerHTML && !content.querySelector('.loading-box')){
+    _modalStack.push(content.innerHTML);
+    if(_modalStack.length>10) _modalStack.shift(); // hard cap
+  }
+  _updateBackBtn();
+}
+function _updateBackBtn(){
+  const btn=document.getElementById('modal-back-btn');
+  if(btn) btn.style.display=_modalStack.length?'block':'none';
+}
+function modalBack(){
+  if(!_modalStack.length) return;
+  const prev=_modalStack.pop();
+  const content=document.getElementById('modal-content');
+  content.innerHTML=prev;
+  content.scrollTop=0;
+  _updateBackBtn();
+}
 function maybeCloseModal(e){if(e.target===document.getElementById('modal')) closeModal();}
 
-async function openPerson(id){
+async function openPerson(id,opts){
   if(!id) return;
-  showPage('people',document.querySelectorAll('.nav-tab')[6]);
-  const detail=document.getElementById('person-detail');
-  document.getElementById('people-results').style.display='none';
-  document.getElementById('people-suggestions').style.display='none';
-  detail.style.display='block';
-  detail.innerHTML='<div class="loading-box">Loading</div>';
-  closeModal();
+  const skipPush=opts&&opts.skipPush;
+  // Render into the existing film/person modal (we removed the People page,
+  // so person info now lives in a modal — keeping the rabbit hole intact
+  // without re-adding a nav tab).
+  const overlay=document.getElementById('modal');
+  const content=document.getElementById('modal-content');
+  if(!skipPush && overlay.classList.contains('open')) _pushModalState();
+  content.innerHTML='<div class="loading-box">Loading</div>';
+  overlay.classList.add('open');
   try{
     const [p,cr]=await Promise.all([api(`/person/${id}`),api(`/person/${id}/combined_credits`)]);
     const photo=p.profile_path
       ?`<img class="person-photo" src="${IMG}w185${p.profile_path}" alt="">`
-      :`<div class="person-photo-ph">👤</div>`;
+      :`<div class="person-photo-ph">\ud83d\udc64</div>`;
     const dept=p.known_for_department||'Acting';
 
     let raw=[];
     if(dept==='Directing') raw=(cr.crew||[]).filter(c=>c.job==='Director');
     else raw=cr.cast||[];
 
-    const seen=new Set();
-    const films=raw.filter(f=>{
-      if(seen.has(f.id)) return false;
-      seen.add(f.id);
+    const seenIds=new Set();
+    const allFilms=raw.filter(f=>{
+      if(seenIds.has(f.id)) return false;
+      seenIds.add(f.id);
       return (f.vote_count||0)>=50 && (f.title||f.name);
     });
 
-    films.sort((a,b)=>weightedScore(b)-weightedScore(a));
-    const topFilms=films.slice(0,16);
+    // Split by media type — Film Club is film-first but TV is shown in a separate section
+    const movieList=allFilms.filter(f=>(f.media_type||'movie')==='movie');
+    const tvList=allFilms.filter(f=>f.media_type==='tv');
 
-    const chrono=[...films].filter(f=>f.release_date||f.first_air_date)
-      .sort((a,b)=>(a.release_date||a.first_air_date||'').localeCompare(b.release_date||b.first_air_date||''));
+    movieList.sort((a,b)=>weightedScore(b)-weightedScore(a));
+    tvList.sort((a,b)=>weightedScore(b)-weightedScore(a));
+    const topMovies=movieList.slice(0,16);
+    const topTv=tvList.slice(0,12);
 
-    const avg=films.length?fmt1(films.reduce((s,f)=>s+(f.vote_average||0),0)/films.length):'—';
-    const best=films.length?films[0]:null;
+    // Career arc tracks movies only (cleaner visual; this is a film app)
+    const chrono=[...movieList].filter(f=>f.release_date)
+      .sort((a,b)=>(a.release_date||'').localeCompare(b.release_date||''));
+
+    // Stats panel reflects movies only — keeps the headline numbers focused
+    const avg=movieList.length?fmt1(movieList.reduce((s,f)=>s+(f.vote_average||0),0)/movieList.length):'\u2014';
+    const best=movieList.length?movieList[0]:null;
 
     let arcSvg='';
     if(chrono.length>=3){
@@ -2217,14 +2424,14 @@ async function openPerson(id){
       const path=xs.map((x,i)=>`${i===0?'M':'L'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
       const dots=xs.map((x,i)=>{
         const f=chrono[i];
-        const yr=(f.release_date||f.first_air_date||'').slice(0,4);
+        const yr=(f.release_date||'').slice(0,4);
         const isHigh=(f.vote_average||0)>=7.5;
-        return `<circle cx="${x.toFixed(1)}" cy="${ys[i].toFixed(1)}" r="${isHigh?4:3}" fill="${isHigh?'#b06030':'#8a7e72'}" stroke="#faf9f7" stroke-width="1.5" style="cursor:pointer;" onclick="openFilm(${f.id},'${f.media_type||'movie'}')">
-          <title>${(f.title||f.name||'').replace(/"/g,'')} (${yr}) — ${fmt1(f.vote_average||0)}</title></circle>`;
+        return `<circle cx="${x.toFixed(1)}" cy="${ys[i].toFixed(1)}" r="${isHigh?4:3}" fill="${isHigh?'#b06030':'#8a7e72'}" stroke="#faf9f7" stroke-width="1.5" style="cursor:pointer;" onclick="openFilm(${f.id},'movie')">
+          <title>${(f.title||'').replace(/"/g,'')} (${yr}) \u2014 ${fmt1(f.vote_average||0)}</title></circle>`;
       }).join('');
       const refY=H-P-0.7*(H-P*2);
       arcSvg=`<div class="career-arc">
-        <div class="career-arc-title">Career Arc · ${chrono.length} films · Score over time</div>
+        <div class="career-arc-title">Career Arc \u00b7 ${chrono.length} films \u00b7 Score over time</div>
         <svg class="career-arc-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
           <line x1="${P}" y1="${refY}" x2="${W-P}" y2="${refY}" stroke="#ddd6cc" stroke-dasharray="3,3"/>
           <text x="${W-P-2}" y="${refY-3}" text-anchor="end" font-family="Oswald" font-size="9" fill="#8a7e72" letter-spacing="0.1em">7.0</text>
@@ -2234,15 +2441,16 @@ async function openPerson(id){
       </div>`;
     }
 
-    detail.innerHTML=`
+    content.innerHTML=`
       <div class="person-hero">
         ${photo}
         <div style="min-width:0;flex:1;">
-          <div class="person-name">${p.name}</div>
-          <div class="person-known">${dept}${p.place_of_birth?' · '+p.place_of_birth:''}</div>
-          <div class="person-bio">${(p.biography||'No biography available.').slice(0,320)}${p.biography&&p.biography.length>320?'…':''}</div>
+          <div class="person-name">${escapeHtml(p.name||'')}</div>
+          <div class="person-known">${escapeHtml(dept)}${p.place_of_birth?' \u00b7 '+escapeHtml(p.place_of_birth):''}</div>
+          <div class="person-bio">${escapeHtml((p.biography||'No biography available.').slice(0,320))}${p.biography&&p.biography.length>320?'\u2026':''}</div>
           <div class="person-stats">
-            <div class="pstat"><div class="pstat-val">${films.length}</div><div class="pstat-label">Films</div></div>
+            <div class="pstat"><div class="pstat-val">${movieList.length}</div><div class="pstat-label">Films</div></div>
+            ${tvList.length?`<div class="pstat"><div class="pstat-val">${tvList.length}</div><div class="pstat-label">TV</div></div>`:''}
             <div class="pstat"><div class="pstat-val">${avg}</div><div class="pstat-label">Avg Score</div></div>
             ${best?`<div class="pstat"><div class="pstat-val">${fmt1(best.vote_average||0)}</div><div class="pstat-label">Best</div></div>`:''}
             ${p.birthday?`<div class="pstat"><div class="pstat-val">${new Date().getFullYear()-parseInt(p.birthday.slice(0,4))}</div><div class="pstat-label">Age</div></div>`:''}
@@ -2250,11 +2458,48 @@ async function openPerson(id){
         </div>
       </div>
       ${arcSvg}
-      <div class="section-wrap">
-        <div class="section-bar"><span class="section-title"><strong>Filmography</strong> · Ranked by Weighted Score</span></div>
-        <div class="film-grid">${topFilms.map(filmCard).join('')}</div>
-      </div>`;
-  }catch(e){detail.innerHTML='<div class="loading-box">Failed to load.</div>';}
+      ${topMovies.length?`
+        <div class="section-wrap">
+          <div class="section-bar"><span class="section-title"><strong>Films</strong> \u00b7 Ranked by Weighted Score</span></div>
+          <div class="film-grid">${topMovies.map(filmCard).join('')}</div>
+        </div>`:''}
+      ${topTv.length?`
+        <div class="section-wrap">
+          <div class="section-bar"><span class="section-title"><strong>Television</strong> \u00b7 ${tvList.length} credit${tvList.length===1?'':'s'}</span></div>
+          <div class="film-grid">${topTv.map(filmCard).join('')}</div>
+        </div>`:''}
+      ${!topMovies.length&&!topTv.length?'<div class="loading-box">No notable credits.</div>':''}`;
+  }catch(e){content.innerHTML='<div class="loading-box">Failed to load.</div>';}
+}
+
+// Resolve a person name to a TMDB person ID, then open their modal.
+// Cached because the same names (Spielberg, Hepburn, Day-Lewis) get tapped repeatedly.
+const _personIdByName={};
+async function openPersonByName(name){
+  if(!name) return;
+  const key=name.trim().toLowerCase();
+  if(_personIdByName[key]){return openPerson(_personIdByName[key]);}
+  // Open modal immediately with a spinner so the user sees feedback
+  const overlay=document.getElementById('modal');
+  const content=document.getElementById('modal-content');
+  if(overlay.classList.contains('open')) _pushModalState();
+  content.innerHTML='<div class="loading-box">Finding '+escapeHtml(name)+'\u2026</div>';
+  overlay.classList.add('open');
+  try{
+    const data=await api('/search/person',{query:name});
+    // Prefer the result with highest popularity; TMDB tends to put Hollywood
+    // figures at the top, but joint nominees can be obscure.
+    const results=(data.results||[]).filter(r=>r.id);
+    if(!results.length){
+      content.innerHTML='<div class="loading-box">Could not find that person on TMDB.</div>';
+      return;
+    }
+    const best=results[0];
+    _personIdByName[key]=best.id;
+    return openPerson(best.id,{skipPush:true});
+  } catch(e){
+    content.innerHTML='<div class="loading-box">Could not load.</div>';
+  }
 }
 
 async function loadTrendingPeople(){
@@ -2426,8 +2671,25 @@ function handleSearch(q){
     document.getElementById('search-label').textContent=`Results for "${q}"`;
     try{
       const data=await api('/search/multi',{query:q});
-      const films=data.results.filter(r=>r.media_type==='movie'||r.media_type==='tv');
-      document.getElementById('search-grid').innerHTML=films.map(filmCard).join('')||'<div class="no-results">No results found.</div>';
+      const results=(data.results||[]).filter(r=>r.media_type==='movie'||r.media_type==='tv');
+      const movies=results.filter(r=>r.media_type==='movie');
+      const tv=results.filter(r=>r.media_type==='tv');
+      const sections=[];
+      if(movies.length){
+        sections.push(`
+          <div class="search-section-head">Films <span class="search-section-count">${movies.length}</span></div>
+          <div class="film-grid">${movies.map(filmCard).join('')}</div>
+        `);
+      }
+      if(tv.length){
+        sections.push(`
+          <div class="search-section-head">Television <span class="search-section-count">${tv.length}</span></div>
+          <div class="film-grid">${tv.map(filmCard).join('')}</div>
+        `);
+      }
+      document.getElementById('search-grid').innerHTML=sections.length
+        ? sections.join('')
+        : '<div class="no-results">No results found.</div>';
     }catch(e){document.getElementById('search-grid').innerHTML='<div class="no-results">Search unavailable.</div>';}
   },400);
 }
@@ -2773,7 +3035,7 @@ async function renderLeaderboard(){
       return `<div class="lb-row">
         <div class="lb-rank ${visibleRank>10?'small':''}">${visibleRank}</div>
         <div>
-          <div class="lb-name">${escapeHtml(r.name)}</div>
+          <div class="lb-name"><span class="person-link" onclick="openPersonByName('${escapeJs(r.name)}')">${escapeHtml(r.name)}</span></div>
           <div class="lb-meta">Best ${currentLeaderboard} winner</div>
         </div>
         <div>
@@ -2896,26 +3158,46 @@ async function renderYearRecap(year){
 }
 
 function renderRecapCategory(cat,entries){
+  const isFilmCat=FILM_WINNER_CATS.has(cat);
+  // For film-only categories, the "name" field is producer/studio metadata —
+  // we display only the film and make the whole row tap that film.
+  // For everything else, the row has a person name (always tappable) AND
+  // usually a separate film (also tappable). Both are independent rabbit holes.
+  const releaseYear=currentRecapYear-1;
+
+  const renderRow=(entry,winnerStyle)=>{
+    const isWin=!!entry.won;
+    const rowCls=isWin?'recap-cat-winner':'recap-nominee';
+    if(isFilmCat){
+      // Whole row taps the film. No separate person link.
+      const filmName=entry.film||entry.name||'\u2014';
+      return `<div class="${rowCls} tappable" onclick="openFilmByTitle('${escapeJs(filmName)}',${releaseYear})">
+        ${isWin
+          ? `<div class="recap-winner-name">${escapeHtml(filmName)}</div>`
+          : `<span class="rn-name">${escapeHtml(filmName)}</span>`}
+      </div>`;
+    }
+    // Person + (optional) film. Two distinct tap targets.
+    const personHtml=personPills(entry.name,{cls:'person-link'}) || escapeHtml(entry.name||'\u2014');
+    const filmHtml=(entry.film && entry.film!==entry.name)
+      ? `<span class="recap-film-link" onclick="event.stopPropagation();openFilmByTitle('${escapeJs(entry.film)}',${releaseYear})">${escapeHtml(entry.film)}</span>`
+      : '';
+    if(isWin){
+      return `<div class="${rowCls}">
+        <div class="recap-winner-name">${personHtml}</div>
+        ${filmHtml?`<div class="recap-winner-film">${filmHtml}</div>`:''}
+      </div>`;
+    }
+    return `<div class="${rowCls}">
+      <span class="rn-name">${personHtml}</span>${filmHtml?` <span class="rn-film">${filmHtml}</span>`:''}
+    </div>`;
+  };
+
   const winners=entries.filter(e=>e.won);
   const nominees=entries.filter(e=>!e.won);
-  const winnerHtml=winners.map(w=>{
-    const isFilm=FILM_WINNER_CATS.has(cat);
-    const tapHandler=isFilm
-      ? `onclick="openFilmByTitle('${escapeJs(w.film)}',${currentRecapYear-1})"`
-      : (PERSON_WINNER_CATS.has(cat) ? '' : `onclick="openFilmByTitle('${escapeJs(w.film)}',${currentRecapYear-1})"`);
-    return `<div class="recap-cat-winner ${tapHandler?'tappable':''}" ${tapHandler}>
-      <div class="recap-winner-name">${escapeHtml(w.name||w.film||'—')}</div>
-      ${w.film&&w.film!==w.name?`<div class="recap-winner-film">${escapeHtml(w.film)}</div>`:''}
-    </div>`;
-  }).join('');
+  const winnerHtml=winners.map(w=>renderRow(w,true)).join('');
   const nomineeHtml=nominees.length
-    ? `<div class="recap-nominees">${nominees.map(n=>{
-        const isFilm=FILM_WINNER_CATS.has(cat);
-        const tap=isFilm
-          ? `onclick="openFilmByTitle('${escapeJs(n.film)}',${currentRecapYear-1})"`
-          : (PERSON_WINNER_CATS.has(cat) ? '' : `onclick="openFilmByTitle('${escapeJs(n.film)}',${currentRecapYear-1})"`);
-        return `<div class="recap-nominee ${tap?'tappable':''}" ${tap}><span class="rn-name">${escapeHtml(n.name||n.film||'—')}</span>${n.film&&n.film!==n.name?` <span class="rn-film">${escapeHtml(n.film)}</span>`:''}</div>`;
-      }).join('')}</div>`
+    ? `<div class="recap-nominees">${nominees.map(n=>renderRow(n,false)).join('')}</div>`
     : '';
   return `<div class="recap-cat">
     <div class="recap-cat-label">${escapeHtml(cat)}</div>
@@ -2981,6 +3263,18 @@ async function loadNotableFilms(year){
 }
 
 function escapeJs(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+
+// Render a name (possibly joint, e.g. "Joel Coen & Ethan Coen") as one or more
+// tappable spans. Each name opens that person's modal via TMDB search.
+function personPills(name,opts){
+  const cls=(opts&&opts.cls)||'person-link';
+  if(!name) return '';
+  const parts=String(name).split(/\s+(?:&|and)\s+/).map(s=>s.trim()).filter(Boolean);
+  if(!parts.length) return '';
+  return parts.map(n=>
+    `<span class="${cls}" onclick="event.stopPropagation();openPersonByName('${escapeJs(n)}')">${escapeHtml(n)}</span>`
+  ).join('<span class="person-link-sep"> &amp; </span>');
+}
 
 
 
@@ -3471,6 +3765,454 @@ function setDebateMode(m,btn){
   loadDebate();
 }
 
+// ============================================================
+// CLUBS
+// ============================================================
+// Multi-user feature backed by Supabase tables: clubs, club_members,
+// club_films, club_ratings. The user must run clubs-schema.sql in their
+// Supabase project once for the tables and RPCs to exist. Without those,
+// every clubs operation gracefully errors out with a helpful toast.
+
+let _myClubs=[];          // list of {club_id, name, joined_at, member_count, film_count}
+let _currentClubId=null;  // when viewing a club detail page
+let _currentClubData=null;// cached {club, members, films, ratings}
+
+async function renderClubsHome(){
+  _currentClubId=null;
+  const body=document.getElementById('clubs-body');
+  if(!sb||isOffline){
+    body.innerHTML='<div class="clubs-empty">Clubs require an online account. Sign out and back in once your connection is restored.</div>';
+    return;
+  }
+  if(!currentUser){
+    body.innerHTML='<div class="clubs-empty">Sign in to join a club.</div>';
+    return;
+  }
+  body.innerHTML='<div class="loading-box">Loading your clubs…</div>';
+  try{
+    // Pull clubs I'm a member of
+    const {data:members,error:e1}=await sb.from('club_members')
+      .select('club_id, joined_at, clubs(id,name,created_at)')
+      .eq('user_id',currentUser.id);
+    if(e1) throw e1;
+    if(!members||!members.length){
+      body.innerHTML=`
+        <div class="clubs-empty">
+          You haven't joined any clubs yet.<br><br>
+          <span style="text-transform:none;letter-spacing:0;font-size:13px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;">Create one to start sharing films, or join an existing one with the name and password.</span>
+        </div>`;
+      return;
+    }
+    // For each club, pull member + film counts in parallel
+    const ids=members.map(m=>m.club_id);
+    const [{data:mc},{data:fc}]=await Promise.all([
+      sb.from('club_members').select('club_id').in('club_id',ids),
+      sb.from('club_films').select('club_id').in('club_id',ids),
+    ]);
+    const memberCounts={},filmCounts={};
+    (mc||[]).forEach(r=>memberCounts[r.club_id]=(memberCounts[r.club_id]||0)+1);
+    (fc||[]).forEach(r=>filmCounts[r.club_id]=(filmCounts[r.club_id]||0)+1);
+
+    _myClubs=members.map(m=>({
+      club_id:m.club_id,
+      name:m.clubs?m.clubs.name:'(unnamed)',
+      joined_at:m.joined_at,
+      created_at:m.clubs?m.clubs.created_at:null,
+      member_count:memberCounts[m.club_id]||1,
+      film_count:filmCounts[m.club_id]||0,
+    })).sort((a,b)=>new Date(b.joined_at)-new Date(a.joined_at));
+
+    body.innerHTML=`<div class="clubs-grid">${_myClubs.map(clubCard).join('')}</div>`;
+  } catch(e){
+    console.error('clubs home error',e);
+    if(e&&e.message&&/relation .* does not exist/i.test(e.message)){
+      body.innerHTML=`<div class="clubs-empty">Clubs feature isn't set up yet.<br><br><span style="text-transform:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text2);letter-spacing:0;">Run <code style="background:var(--bg3);padding:1px 6px;font-family:ui-monospace,monospace;">clubs-schema.sql</code> in your Supabase SQL editor once to enable it.</span></div>`;
+    } else {
+      body.innerHTML='<div class="clubs-empty">Could not load clubs. '+escapeHtml((e&&e.message)||'')+'</div>';
+    }
+  }
+}
+
+function clubCard(c){
+  return `<div class="club-card" onclick="openClub('${c.club_id}','${escapeJs(c.name)}')">
+    <div class="club-card-name">${escapeHtml(c.name)}</div>
+    <div class="club-card-meta">Joined ${formatRelative(c.joined_at)}</div>
+    <div class="club-card-stats">
+      <div class="club-card-stat">
+        <div class="club-card-stat-val">${c.member_count}</div>
+        <div class="club-card-stat-lbl">Member${c.member_count===1?'':'s'}</div>
+      </div>
+      <div class="club-card-stat">
+        <div class="club-card-stat-val">${c.film_count}</div>
+        <div class="club-card-stat-lbl">Film${c.film_count===1?'':'s'}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function formatRelative(iso){
+  if(!iso) return '';
+  const ms=Date.now()-new Date(iso).getTime();
+  const days=Math.floor(ms/86400000);
+  if(days<1) return 'today';
+  if(days===1) return 'yesterday';
+  if(days<30) return days+' days ago';
+  const months=Math.floor(days/30);
+  if(months<12) return months+' month'+(months===1?'':'s')+' ago';
+  const years=Math.floor(months/12);
+  return years+' year'+(years===1?'':'s')+' ago';
+}
+
+// --- Create/join modal ---
+function openClubModal(mode){
+  const body=document.getElementById('club-modal-body');
+  if(mode==='create'){
+    body.innerHTML=`
+      <div class="club-modal-title">Create a club</div>
+      <div class="club-modal-sub">Pick a unique name and a password. Share both with friends to let them in.</div>
+      <div class="club-input-row">
+        <label class="club-input-label">Club name</label>
+        <input class="club-input" id="club-create-name" type="text" placeholder="The Tuesday Movie Night" maxlength="60" autocomplete="off">
+      </div>
+      <div class="club-input-row">
+        <label class="club-input-label">Password</label>
+        <input class="club-input" id="club-create-pass" type="password" placeholder="4+ characters" autocomplete="new-password">
+      </div>
+      <div class="club-modal-error" id="club-modal-error"></div>
+      <button class="club-modal-submit" onclick="submitCreateClub()">Create</button>`;
+    setTimeout(()=>document.getElementById('club-create-name')?.focus(),50);
+  } else {
+    body.innerHTML=`
+      <div class="club-modal-title">Join a club</div>
+      <div class="club-modal-sub">Type the club's exact name and password.</div>
+      <div class="club-input-row">
+        <label class="club-input-label">Club name</label>
+        <input class="club-input" id="club-join-name" type="text" placeholder="The Tuesday Movie Night" maxlength="60" autocomplete="off">
+      </div>
+      <div class="club-input-row">
+        <label class="club-input-label">Password</label>
+        <input class="club-input" id="club-join-pass" type="password" autocomplete="off">
+      </div>
+      <div class="club-modal-error" id="club-modal-error"></div>
+      <button class="club-modal-submit" onclick="submitJoinClub()">Join</button>`;
+    setTimeout(()=>document.getElementById('club-join-name')?.focus(),50);
+  }
+  document.getElementById('club-modal').classList.add('open');
+}
+function closeClubModal(){document.getElementById('club-modal').classList.remove('open');}
+function maybeCloseClubModal(e){if(e.target===document.getElementById('club-modal')) closeClubModal();}
+
+async function submitCreateClub(){
+  const name=document.getElementById('club-create-name').value.trim();
+  const pw=document.getElementById('club-create-pass').value;
+  const err=document.getElementById('club-modal-error');
+  err.textContent='';
+  if(!name||name.length<2){err.textContent='Club name must be at least 2 characters';return;}
+  if(pw.length<4){err.textContent='Password must be at least 4 characters';return;}
+  try{
+    const {data,error}=await sb.rpc('create_club',{
+      p_name:name,
+      p_password:pw,
+      p_display_name:currentUser.displayName||currentUser.email,
+    });
+    if(error) throw error;
+    closeClubModal();
+    toast('Club created');
+    await renderClubsHome();
+    // Auto-open the new club
+    if(data) openClub(data,name);
+  } catch(e){
+    err.textContent=(e&&e.message)||'Could not create club';
+  }
+}
+
+async function submitJoinClub(){
+  const name=document.getElementById('club-join-name').value.trim();
+  const pw=document.getElementById('club-join-pass').value;
+  const err=document.getElementById('club-modal-error');
+  err.textContent='';
+  if(!name){err.textContent='Enter the club name';return;}
+  if(!pw){err.textContent='Enter the password';return;}
+  try{
+    const {data,error}=await sb.rpc('join_club',{
+      p_name:name,
+      p_password:pw,
+      p_display_name:currentUser.displayName||currentUser.email,
+    });
+    if(error) throw error;
+    closeClubModal();
+    toast('Joined '+name);
+    await renderClubsHome();
+    if(data) openClub(data,name);
+  } catch(e){
+    err.textContent=(e&&e.message)||'Could not join club';
+  }
+}
+
+// --- Club detail view ---
+async function openClub(clubId,clubName){
+  _currentClubId=clubId;
+  const body=document.getElementById('clubs-body');
+  body.innerHTML='<div class="loading-box">Loading club…</div>';
+  try{
+    // Pull club info, members, films, and all ratings in parallel
+    const [{data:club,error:eClub},{data:members,error:eMem},{data:films,error:eFilms},{data:ratings,error:eRate}]=await Promise.all([
+      sb.from('clubs').select('id,name,created_at,created_by').eq('id',clubId).single(),
+      sb.from('club_members').select('user_id,display_name,joined_at').eq('club_id',clubId),
+      sb.from('club_films').select('film_id,posted_by_id,posted_by_name,film_title,film_year,film_poster,posted_at').eq('club_id',clubId),
+      sb.from('club_ratings').select('film_id,user_id,user_name,rating').eq('club_id',clubId),
+    ]);
+    if(eClub) throw eClub;
+
+    _currentClubData={club,members:members||[],films:films||[],ratings:ratings||[]};
+    renderClubDetail();
+  } catch(e){
+    body.innerHTML='<div class="clubs-empty">Could not load this club.<br><span style="text-transform:none;letter-spacing:0;font-family:Barlow Condensed,sans-serif;font-size:12px;color:var(--text2);">'+escapeHtml((e&&e.message)||'')+'</span></div>';
+  }
+}
+
+function renderClubDetail(){
+  const {club,members,films,ratings}=_currentClubData;
+  // Aggregate ratings by film_id
+  const byFilm={};
+  for(const r of ratings){
+    if(!byFilm[r.film_id]) byFilm[r.film_id]={sum:0,count:0,raters:[]};
+    byFilm[r.film_id].sum+=Number(r.rating);
+    byFilm[r.film_id].count++;
+    byFilm[r.film_id].raters.push({name:r.user_name,rating:Number(r.rating)});
+  }
+  // Compute group rank for each film
+  const ranked=films.map(f=>{
+    const agg=byFilm[f.film_id]||{sum:0,count:0,raters:[]};
+    const avg=agg.count?agg.sum/agg.count:null;
+    return {...f,avg,count:agg.count,raters:agg.raters};
+  }).sort((a,b)=>{
+    // Films with ratings rank by avg; unrated films sink to the bottom by posted_at desc
+    if(a.avg==null&&b.avg==null) return new Date(b.posted_at)-new Date(a.posted_at);
+    if(a.avg==null) return 1;
+    if(b.avg==null) return -1;
+    return b.avg-a.avg;
+  });
+
+  const isMe=u=>u===currentUser.id;
+  const memberStrip=members.map(m=>
+    `<span class="club-member-chip ${isMe(m.user_id)?'you':''}">${escapeHtml(m.display_name||'Member')}</span>`
+  ).join('');
+
+  document.getElementById('clubs-body').innerHTML=`
+    <div class="club-detail-head">
+      <div class="club-detail-back" onclick="renderClubsHome()">\u2190 All clubs</div>
+      <div class="club-detail-name">${escapeHtml(club.name)}</div>
+      <div class="club-detail-meta">${members.length} member${members.length===1?'':'s'} \u00b7 ${films.length} film${films.length===1?'':'s'} posted</div>
+      <div class="club-detail-actions">
+        <button class="club-action-btn primary" onclick="openPostFilmDialog('${club.id}')">+ Post a film</button>
+        <button class="club-action-btn danger" onclick="leaveClub('${club.id}','${escapeJs(club.name)}')">Leave club</button>
+      </div>
+    </div>
+    <div class="club-members">
+      <div class="club-members-label">Members</div>
+      <div class="club-members-list">${memberStrip}</div>
+    </div>
+    <div class="club-rankings">
+      ${ranked.length?ranked.map(clubRankRow).join(''):'<div class="clubs-empty">No films posted yet. Tap "+ Post a film" to start the ranking.</div>'}
+    </div>
+  `;
+}
+
+function clubRankRow(f,i){
+  const posted=f.posted_by_name?'Posted by '+escapeHtml(f.posted_by_name):'';
+  const poster=f.film_poster?`<img class="club-rank-poster" src="${IMG}w185${f.film_poster}" alt="">`
+    :`<div class="club-rank-poster-ph">\u2014</div>`;
+  const score=f.avg!=null?fmt1(f.avg):'\u2014';
+  return `<div class="club-rank-row" onclick="openFilm(${f.film_id},'movie')">
+    <div class="club-rank-num">${i+1}</div>
+    ${poster}
+    <div>
+      <div class="club-rank-title">${escapeHtml(f.film_title||'Untitled')}</div>
+      <div class="club-rank-sub">${f.film_year||''}</div>
+      <div class="club-rank-posted">${posted}</div>
+    </div>
+    <div>
+      <div class="club-rank-score">${score}</div>
+      <div class="club-rank-score-lbl" style="text-align:right;">Club avg</div>
+    </div>
+    <div>
+      <div class="club-rank-count">${f.count}</div>
+      <div class="club-rank-count-lbl" style="text-align:right;">Rating${f.count===1?'':'s'}</div>
+    </div>
+  </div>`;
+}
+
+// --- Post a film to a club ---
+// Two paths to post: (a) from the club detail view (search for film), or
+// (b) from the film modal (a "post to club" pill is rendered there).
+
+function openPostFilmDialog(clubId){
+  const body=document.getElementById('club-modal-body');
+  body.innerHTML=`
+    <div class="club-modal-title">Post a film</div>
+    <div class="club-modal-sub">Search and pick a film to share with the club. Members can rate it from the film page.</div>
+    <div class="club-input-row">
+      <input class="club-input" id="club-post-search" type="text" placeholder="Search films..." autocomplete="off" oninput="searchFilmsForPost('${clubId}')">
+    </div>
+    <div id="club-post-results" style="max-height:340px;overflow-y:auto;"></div>
+  `;
+  document.getElementById('club-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('club-post-search')?.focus(),50);
+}
+
+let _postSearchTimer=null;
+async function searchFilmsForPost(clubId){
+  clearTimeout(_postSearchTimer);
+  const q=document.getElementById('club-post-search').value.trim();
+  const results=document.getElementById('club-post-results');
+  if(!q){results.innerHTML='';return;}
+  _postSearchTimer=setTimeout(async()=>{
+    results.innerHTML='<div style="padding:10px;color:var(--text3);font-family:Oswald,sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;">Searching\u2026</div>';
+    try{
+      const data=await api('/search/movie',{query:q});
+      const items=(data.results||[]).slice(0,8);
+      if(!items.length){results.innerHTML='<div style="padding:10px;color:var(--text3);">No matches.</div>';return;}
+      results.innerHTML=items.map(f=>{
+        const y=(f.release_date||'').slice(0,4);
+        const poster=f.poster_path?`<img src="${IMG}w92${f.poster_path}" style="width:36px;height:54px;object-fit:cover;border:1px solid var(--border);">`:`<div style="width:36px;height:54px;background:var(--bg3);border:1px solid var(--border);"></div>`;
+        return `<div onclick="postFilmToClub('${clubId}',${f.id},'${escapeJs(f.title||'')}','${y}','${f.poster_path||''}')" style="display:flex;gap:10px;align-items:center;padding:8px;cursor:pointer;border-bottom:1px solid var(--border);" onmouseover="this.style.background='var(--panel)'" onmouseout="this.style.background=''">
+          ${poster}
+          <div style="flex:1;min-width:0;">
+            <div style="font-family:Russo One,sans-serif;font-size:13px;color:var(--text);line-height:1.15;">${escapeHtml(f.title||'Untitled')}</div>
+            <div style="font-family:Oswald,sans-serif;font-size:10px;letter-spacing:0.08em;color:var(--text3);margin-top:2px;">${y} \u00b7 ${fmt1(f.vote_average||0)} avg</div>
+          </div>
+        </div>`;
+      }).join('');
+    } catch(e){
+      results.innerHTML='<div style="padding:10px;color:var(--text3);">Search failed.</div>';
+    }
+  },300);
+}
+
+async function postFilmToClub(clubId,filmId,title,year,posterPath){
+  closeClubModal();
+  try{
+    const {error}=await sb.from('club_films').insert({
+      club_id:clubId,
+      film_id:filmId,
+      posted_by_id:currentUser.id,
+      posted_by_name:currentUser.displayName||currentUser.email,
+      film_title:title,
+      film_year:year?parseInt(year):null,
+      film_poster:posterPath||null,
+    });
+    if(error){
+      if(error.code==='23505'){toast('Already posted to this club');}
+      else throw error;
+    } else {
+      toast('Posted to club');
+      // If the user has already rated this film globally, sync that rating to the club
+      if(myRatings[filmId]!=null){
+        await pushRatingToClubs(filmId,myRatings[filmId],[clubId]);
+      }
+    }
+    // Refresh the club view if we're inside one
+    if(_currentClubId===clubId) await openClub(clubId);
+  } catch(e){
+    toast('Could not post: '+((e&&e.message)||'error'));
+  }
+}
+
+// Called from rateFilm() in the main rating flow. For each club where this
+// film is posted, upsert a club_ratings row mirroring the new rating.
+async function pushRatingToClubs(filmId,rating,clubIdsOverride){
+  if(!sb||isOffline||!currentUser) return;
+  try{
+    let clubIds=clubIdsOverride;
+    if(!clubIds){
+      // Find clubs that have this film posted AND that I'm a member of
+      const {data}=await sb.from('club_films').select('club_id').eq('film_id',filmId);
+      const allClubIds=(data||[]).map(r=>r.club_id);
+      if(!allClubIds.length) return;
+      const {data:mine}=await sb.from('club_members').select('club_id').eq('user_id',currentUser.id).in('club_id',allClubIds);
+      clubIds=(mine||[]).map(r=>r.club_id);
+    }
+    if(!clubIds.length) return;
+    const rows=clubIds.map(cid=>({
+      club_id:cid,
+      user_id:currentUser.id,
+      user_name:currentUser.displayName||currentUser.email,
+      film_id:filmId,
+      rating:rating,
+      updated_at:new Date().toISOString(),
+    }));
+    await sb.from('club_ratings').upsert(rows,{onConflict:'club_id,user_id,film_id'});
+  } catch(e){/* non-fatal */console.warn('club rating sync failed',e);}
+}
+
+async function leaveClub(clubId,name){
+  if(!confirm('Leave "'+name+'"? You can rejoin with the password.')) return;
+  try{
+    await sb.from('club_members').delete().eq('club_id',clubId).eq('user_id',currentUser.id);
+    toast('Left '+name);
+    renderClubsHome();
+  } catch(e){
+    toast('Could not leave: '+((e&&e.message)||''));
+  }
+}
+
+// Show a "Post to: <club1> <club2>" row on the film modal if the user is in any
+// clubs. Each chip toggles posting; if already posted, the chip is gold and inert.
+async function hydrateClubPostRow(filmId){
+  if(!sb||isOffline||!currentUser) return;
+  const row=document.getElementById(`club-post-row-${filmId}`);
+  if(!row) return;
+  try{
+    const {data:members}=await sb.from('club_members').select('club_id, clubs(name)').eq('user_id',currentUser.id);
+    if(!members||!members.length) return; // not in any clubs — leave row hidden
+    const myClubIds=members.map(m=>m.club_id);
+    const {data:postings}=await sb.from('club_films').select('club_id').eq('film_id',filmId).in('club_id',myClubIds);
+    const postedSet=new Set((postings||[]).map(p=>p.club_id));
+    const pills=members.map(m=>{
+      const posted=postedSet.has(m.club_id);
+      const name=(m.clubs&&m.clubs.name)||'(club)';
+      if(posted){
+        return `<span class="club-post-pill posted" title="Already posted">\u2713 ${escapeHtml(name)}</span>`;
+      }
+      return `<span class="club-post-pill" onclick="quickPostFilm('${m.club_id}',${filmId},this)">+ ${escapeHtml(name)}</span>`;
+    }).join('');
+    row.innerHTML=`<div class="club-post-label">Post to club</div><div class="club-post-buttons">${pills}</div>`;
+    row.style.display='block';
+  } catch(e){/* no-op, table missing or perms */}
+}
+
+// Quick post from the film modal — uses the cached film snapshot from filmCache
+async function quickPostFilm(clubId,filmId,pillEl){
+  const film=filmCache[filmId];
+  if(!film){toast('Could not post — film not loaded');return;}
+  const title=film.title||film.name||'';
+  const year=(film.release_date||'').slice(0,4);
+  const poster=film.poster_path||null;
+  try{
+    const {error}=await sb.from('club_films').insert({
+      club_id:clubId,
+      film_id:filmId,
+      posted_by_id:currentUser.id,
+      posted_by_name:currentUser.displayName||currentUser.email,
+      film_title:title,
+      film_year:year?parseInt(year):null,
+      film_poster:poster,
+    });
+    if(error&&error.code!=='23505') throw error;
+    if(pillEl){
+      pillEl.classList.add('posted');
+      pillEl.textContent='\u2713 '+pillEl.textContent.replace(/^\+\s*/,'');
+      pillEl.onclick=null;
+    }
+    if(myRatings[filmId]!=null) await pushRatingToClubs(filmId,myRatings[filmId],[clubId]);
+    toast('Posted to club');
+  } catch(e){
+    toast('Could not post: '+((e&&e.message)||''));
+  }
+}
+
+
 function showPage(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -3480,6 +4222,7 @@ function showPage(id,el){
   if(id==='rankings') loadRankings();
   if(id==='debate') loadDebate();
   if(id==='compare') loadCompare();
+  if(id==='clubs') renderClubsHome();
   if(id==='history'){
     if(currentHistoryMode==='leaderboards') renderLeaderboard();
     else {renderYearBar();renderYearRecap(currentRecapYear);}
