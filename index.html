@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Film Club — A Personal Repertory</title>
+<title>Film Club — Know What to Watch. Win Every Debate.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Oswald:wght@300;400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
 
 <!-- ============================================================
      SUPABASE SETUP — REQUIRED FOR CLOUD AUTH + SYNC
@@ -66,297 +66,281 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bg:#f0ece4;--bg2:#faf9f7;--bg3:#f4f2ee;--panel:#faf9f7;
-  --border:#e2dcd2;--border2:#cfc6ba;
-  --accent:#a85838;--accent2:#c47048;--gold:#8a6a28;
-  --text:#1a1410;--text2:#54483c;--text3:#8c8074;
+  --border:#ddd6cc;--border2:#c8beb4;
+  --accent:#b06030;--accent2:#c87040;--gold:#9a7830;
+  --text:#1a1610;--text2:#50453a;--text3:#8a7e72;
   --green:#1a6a2a;--red:#8a2020;
-  --serif:'Fraunces',Georgia,serif;
-  --sans:'Inter Tight','Inter',system-ui,sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,monospace;
 }
-body{background:var(--bg3);color:var(--text);font-family:var(--sans);min-height:100vh;font-size:14px;font-feature-settings:"ss01","cv11";-webkit-font-smoothing:antialiased;line-height:1.5;}
+body{background:var(--bg3);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;font-size:14px;}
 
-nav{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:54px;position:sticky;top:0;z-index:100;}
-.nav-logo{font-family:var(--serif);font-style:italic;font-weight:400;font-size:22px;letter-spacing:-0.01em;color:var(--text);cursor:pointer;}
-.nav-logo span{color:var(--accent);font-style:italic;}
+nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:46px;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Russo One',sans-serif;font-size:19px;letter-spacing:0.02em;color:var(--text);cursor:pointer;}
+.nav-logo span{color:var(--accent);}
 .nav-tabs{display:flex;gap:0;}
-.nav-tab{padding:0 14px;height:54px;display:flex;align-items:center;font-family:var(--sans);font-size:12px;font-weight:400;letter-spacing:0.01em;color:var(--text3);cursor:pointer;border-bottom:1px solid transparent;transition:color 0.15s,border-color 0.15s;}
+.nav-tab{padding:0 16px;height:46px;display:flex;align-items:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;}
 .nav-tab:hover{color:var(--text2);}
-.nav-tab.active{color:var(--text);border-bottom:1px solid var(--accent);}
-.nav-search{background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:13px;padding:5px 4px;outline:none;width:200px;transition:border-color 0.15s;}
-.nav-search:focus{border-bottom-color:var(--accent);}
-.nav-search::placeholder{color:var(--text3);font-style:italic;}
+.nav-tab.active{color:var(--text);border-bottom:2px solid var(--accent);}
+.nav-search{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;padding:5px 10px;outline:none;width:200px;}
+.nav-search:focus{border-color:var(--accent2);}
+.nav-search::placeholder{color:var(--text3);}
 
-.ticker{background:var(--bg2);padding:0;font-family:var(--mono);font-size:11px;color:var(--text2);display:flex;align-items:center;white-space:nowrap;overflow:hidden;position:relative;border-bottom:1px solid var(--border);font-weight:300;}
-.ticker-tag{color:var(--text3);padding:7px 14px;font-size:10px;flex-shrink:0;font-style:italic;font-family:var(--serif);font-weight:300;align-self:stretch;display:flex;align-items:center;border-right:1px solid var(--border);background:var(--bg3);}
-.ticker-track{display:flex;gap:28px;padding:7px 22px;animation:tickerScroll 90s linear infinite;}
+.ticker{background:var(--accent);padding:0;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--bg2);display:flex;align-items:center;white-space:nowrap;overflow:hidden;position:relative;}
+.ticker-tag{background:var(--bg2);color:var(--accent);padding:4px 9px;font-size:9px;letter-spacing:0.2em;flex-shrink:0;font-weight:600;align-self:stretch;display:flex;align-items:center;}
+.ticker-track{display:flex;gap:24px;padding:4px 18px;animation:tickerScroll 80s linear infinite;}
 .ticker-track:hover{animation-play-state:paused;}
 .ticker-item{flex-shrink:0;}
-.ticker-item .tk-score{color:var(--accent);font-weight:400;margin-left:6px;}
-.tk-sep{color:var(--text3);opacity:0.6;margin:0 2px;}
+.ticker-item .tk-score{color:var(--bg2);font-weight:700;margin-left:4px;}
+.tk-sep{opacity:0.5;margin:0 4px;}
 @keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
 .page{display:none;}
 .page.active{display:block;}
 
-/* HERO — quieter editorial layout */
-.hero{padding:34px 28px 26px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:start;}
-.hero-eyebrow{font-family:var(--serif);font-style:italic;font-weight:300;font-size:13px;color:var(--accent);margin-bottom:14px;letter-spacing:0.01em;}
-.hero-eyebrow::before{content:'— ';color:var(--text3);}
-.hero-title{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1.02;color:var(--text);margin-bottom:14px;letter-spacing:-0.015em;}
-.hero-title em{color:var(--accent);font-style:italic;font-weight:400;}
-.hero-desc{font-size:15px;color:var(--text2);line-height:1.55;max-width:440px;font-weight:300;margin-bottom:20px;font-family:var(--serif);}
-.hero-cta{display:flex;gap:10px;}
-.hero-cta-btn{padding:9px 16px;font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:0.01em;cursor:pointer;border:none;transition:all 0.15s;}
+/* HERO with Now Showing */
+.hero{padding:22px 20px 16px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:start;}
+.hero-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:7px;}
+.hero-title{font-family:'Russo One',sans-serif;font-size:32px;line-height:1.0;color:var(--text);margin-bottom:8px;}
+.hero-title em{color:var(--accent);font-style:normal;}
+.hero-desc{font-size:13px;color:var(--text2);line-height:1.5;max-width:420px;font-weight:300;margin-bottom:14px;}
+.hero-cta{display:flex;gap:6px;}
+.hero-cta-btn{padding:7px 13px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;border:none;transition:opacity 0.12s;}
 .hero-cta-btn:hover{opacity:0.85;}
-.hero-cta-primary{background:var(--text);color:var(--bg2);}
-.hero-cta-primary:hover{background:var(--accent);opacity:1;}
-.hero-cta-secondary{background:transparent;border:1px solid var(--border2);color:var(--text2);}
-.hero-cta-secondary:hover{border-color:var(--text);color:var(--text);opacity:1;}
+.hero-cta-primary{background:var(--accent);color:var(--bg2);}
+.hero-cta-secondary{background:var(--bg2);border:1px solid var(--border2);color:var(--text2);}
 
-.now-showing{background:transparent;border:1px solid var(--border);}
-.ns-head{display:flex;align-items:baseline;justify-content:space-between;padding:14px 18px 10px;border-bottom:1px solid var(--border);}
-.ns-head-title{font-family:var(--serif);font-style:italic;font-weight:300;font-size:16px;color:var(--text);}
-.ns-head-meta{font-family:var(--mono);font-size:10px;color:var(--text3);font-weight:300;}
-.ns-row{display:grid;grid-template-columns:28px 1fr auto auto;gap:14px;align-items:baseline;padding:11px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s;}
-.ns-row:hover{background:var(--bg2);}
+.now-showing{background:var(--panel);border:1px solid var(--border);}
+.ns-head{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-bottom:1px solid var(--border);background:var(--bg3);}
+.ns-head-title{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text);font-weight:600;}
+.ns-head-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.ns-row{display:grid;grid-template-columns:22px 1fr auto auto;gap:10px;align-items:center;padding:6px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;}
+.ns-row:hover{background:var(--bg3);}
 .ns-row:last-child{border-bottom:none;}
-.ns-rank{font-family:var(--mono);font-size:11px;color:var(--text3);font-weight:300;}
+.ns-rank{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text3);}
 .ns-rank.top{color:var(--accent);}
-.ns-title{font-family:var(--serif);font-size:15px;font-weight:400;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;letter-spacing:-0.005em;}
-.ns-meta{font-size:11px;color:var(--text3);font-family:var(--mono);font-weight:300;}
-.ns-score{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:400;}
-.ns-trend{font-family:var(--mono);font-size:11px;font-weight:300;width:14px;text-align:center;color:var(--text3);}
+.ns-title{font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+.ns-meta{font-size:10px;color:var(--text3);font-family:'Oswald',sans-serif;letter-spacing:0.06em;}
+.ns-score{font-family:'Russo One',sans-serif;font-size:13px;color:var(--accent);}
+.ns-trend{font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;width:14px;text-align:center;}
 .ns-trend.up{color:var(--green);}
+.ns-trend.flat{color:var(--text3);}
 
-.genre-bar{display:flex;gap:0;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;padding:0 18px;}
-.genre-btn{padding:13px 16px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:14px;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:1px solid transparent;transition:color 0.15s,border-color 0.15s;white-space:nowrap;letter-spacing:0;}
+.genre-bar{display:flex;gap:0;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.genre-btn{padding:8px 16px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;}
 .genre-btn:hover{color:var(--text2);}
-.genre-btn.active{color:var(--text);border-bottom:1px solid var(--accent);}
+.genre-btn.active{color:var(--text);border-bottom:2px solid var(--accent);}
 
-.section-wrap{padding:30px 28px 0;}
-.section-bar{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:8px;}
-.section-title{font-family:var(--serif);font-style:italic;font-weight:300;font-size:11px;color:var(--text3);letter-spacing:0.02em;}
-.section-title strong{color:var(--text);font-weight:400;font-style:italic;font-size:22px;letter-spacing:-0.01em;display:inline-block;margin-right:8px;}
-.section-sub{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text3);font-weight:300;margin-top:-6px;margin-bottom:18px;line-height:1.5;}
+.section-wrap{padding:18px 20px 0;}
+.section-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.section-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);}
+.section-title strong{color:var(--text);font-weight:600;}
+.section-sub{font-size:11px;color:var(--text3);font-weight:300;margin-top:-6px;margin-bottom:12px;font-style:italic;}
 
-.film-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px;margin-bottom:36px;}
-.film-card{cursor:pointer;transition:opacity 0.15s;}
+.film-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:24px;}
+.film-card{cursor:pointer;transition:opacity 0.12s;}
 .film-card:hover{opacity:0.82;}
 .film-poster{width:100%;aspect-ratio:2/3;background:var(--panel);border:1px solid var(--border);position:relative;overflow:hidden;}
 .film-poster img{width:100%;height:100%;object-fit:cover;display:block;}
-.film-poster-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text3);font-family:var(--serif);font-style:italic;}
-.film-score-badge{position:absolute;bottom:6px;right:6px;background:rgba(26,20,16,0.88);font-family:var(--mono);font-size:10px;color:var(--bg2);padding:2px 6px;font-weight:400;letter-spacing:0.02em;}
-.film-info{padding:8px 0 0;}
-.film-title{font-family:var(--serif);font-size:14px;font-weight:400;color:var(--text);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.005em;}
-.film-meta{font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--mono);font-weight:300;}
+.film-poster-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.film-score-badge{position:absolute;bottom:5px;right:5px;background:rgba(250,249,247,0.92);font-family:'Russo One',sans-serif;font-size:11px;color:var(--accent);padding:2px 5px;border:1px solid var(--border2);}
+.film-info{padding:5px 0 0;}
+.film-title{font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;color:var(--text);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.film-meta{font-size:10px;color:var(--text3);margin-top:1px;}
 
 /* RANKINGS */
-.rankings-panel{max-width:920px;margin:0 auto;padding-top:8px;}
-.rank-controls{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;padding:0 18px;}
-.rank-btn{flex:1;padding:12px 0;text-align:center;font-family:var(--serif);font-style:italic;font-weight:300;font-size:14px;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:1px solid transparent;transition:color 0.15s,border-color 0.15s;white-space:nowrap;min-width:90px;}
-.rank-btn.active{color:var(--text);border-bottom:1px solid var(--accent);}
+.rankings-panel{max-width:920px;margin:0 auto;}
+.rank-controls{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.rank-btn{flex:1;padding:9px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;min-width:90px;}
+.rank-btn.active{color:var(--text);border-bottom:2px solid var(--accent);}
 .rank-btn:hover:not(.active){color:var(--text2);}
 .rank-table{width:100%;border-collapse:collapse;}
-.rank-table thead th{font-family:var(--serif);font-style:italic;font-weight:300;font-size:11px;color:var(--text3);padding:14px 18px;text-align:left;border-bottom:1px solid var(--border);font-weight:400;}
+.rank-table thead th{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);padding:7px 16px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg2);font-weight:400;}
 .rank-table tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;}
-.rank-table tbody tr:hover{background:var(--bg2);}
-.rank-table td{padding:14px 18px;vertical-align:middle;}
-.r-num{font-family:var(--mono);font-size:11px;color:var(--text3);width:30px;font-weight:300;}
-.r-poster{width:40px;height:60px;object-fit:cover;background:var(--panel);}
-.r-poster-ph{width:40px;height:60px;background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text3);}
-.r-name{font-family:var(--serif);font-size:16px;font-weight:400;color:var(--text);letter-spacing:-0.005em;}
-.r-meta{font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--mono);font-weight:300;}
-.r-score{font-family:var(--mono);font-size:14px;color:var(--accent);text-align:right;font-weight:400;}
+.rank-table tbody tr:hover{background:var(--panel);}
+.rank-table td{padding:8px 16px;vertical-align:middle;}
+.r-num{font-family:'Oswald',sans-serif;font-size:11px;color:var(--text3);width:30px;}
+.r-poster{width:36px;height:54px;object-fit:cover;border:1px solid var(--border);background:var(--panel);}
+.r-poster-ph{width:36px;height:54px;background:var(--panel);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.r-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--text);}
+.r-meta{font-size:10px;color:var(--text3);margin-top:1px;}
+.r-score{font-family:'Russo One',sans-serif;font-size:14px;color:var(--accent);text-align:right;}
 
 /* DEBATE */
-.debate-head{padding:34px 28px 22px;border-bottom:1px solid var(--border);}
-.debate-eyebrow{font-family:var(--serif);font-style:italic;font-weight:300;font-size:13px;color:var(--accent);margin-bottom:12px;}
-.debate-eyebrow::before{content:'— ';color:var(--text3);}
-.debate-title{font-family:var(--serif);font-weight:300;font-size:36px;line-height:1.05;color:var(--text);margin-bottom:10px;letter-spacing:-0.015em;}
-.debate-sub{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--text2);font-weight:300;max-width:580px;line-height:1.55;}
-.debate-tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;padding:0 18px;}
-.debate-tab{flex:1;padding:12px 0;text-align:center;font-family:var(--serif);font-style:italic;font-weight:300;font-size:14px;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:1px solid transparent;transition:color 0.15s,border-color 0.15s;min-width:120px;}
-.debate-tab.active{color:var(--text);border-bottom:1px solid var(--accent);}
+.debate-head{padding:22px 20px 14px;border-bottom:1px solid var(--border);}
+.debate-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.debate-title{font-family:'Russo One',sans-serif;font-size:26px;line-height:1.0;color:var(--text);margin-bottom:6px;}
+.debate-sub{font-size:13px;color:var(--text2);font-weight:300;max-width:560px;line-height:1.5;}
+.debate-tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.debate-tab{flex:1;padding:9px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;min-width:120px;}
+.debate-tab.active{color:var(--text);border-bottom:2px solid var(--accent);}
 .debate-tab:hover:not(.active){color:var(--text2);}
 
-.takes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;padding:24px 28px;}
-.take-card{background:transparent;border:1px solid var(--border);padding:20px;cursor:pointer;transition:border-color 0.15s,background 0.15s;}
-.take-card:hover{border-color:var(--text2);background:var(--bg2);}
-.take-label{font-family:var(--serif);font-style:italic;font-weight:300;font-size:11px;color:var(--accent);margin-bottom:10px;}
-.take-label::before{content:'— ';color:var(--text3);}
-.take-headline{font-family:var(--serif);font-weight:300;font-size:20px;color:var(--text);line-height:1.2;margin-bottom:10px;letter-spacing:-0.01em;}
-.take-film{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text2);margin-bottom:14px;}
-.take-stat{display:flex;align-items:baseline;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
-.take-stat-val{font-family:var(--mono);font-size:18px;color:var(--accent);font-weight:300;}
-.take-stat-lbl{font-family:var(--mono);font-size:10px;color:var(--text3);font-weight:300;}
+.takes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;padding:18px 20px;}
+.take-card{background:var(--panel);border:1px solid var(--border);padding:14px;cursor:pointer;transition:all 0.12s;border-left:3px solid var(--accent);}
+.take-card:hover{border-left-color:var(--accent2);transform:translateY(-1px);box-shadow:0 2px 8px rgba(26,22,16,0.06);}
+.take-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;font-weight:600;}
+.take-headline{font-family:'Russo One',sans-serif;font-size:16px;color:var(--text);line-height:1.15;margin-bottom:6px;}
+.take-film{font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:8px;}
+.take-stat{display:flex;align-items:baseline;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.take-stat-val{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);}
+.take-stat-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
 
 /* COMPARE */
-.compare-wrap{padding:30px 28px;max-width:960px;margin:0 auto;}
-.compare-head{text-align:center;margin-bottom:30px;}
-.compare-grid{display:grid;grid-template-columns:1fr 80px 1fr;gap:18px;align-items:stretch;}
-.compare-slot{background:transparent;border:1px solid var(--border);padding:18px;min-height:280px;display:flex;flex-direction:column;}
-.compare-empty{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:var(--text3);font-family:var(--serif);font-style:italic;font-size:13px;text-align:center;padding:30px;}
-.compare-empty-btn{padding:9px 16px;background:transparent;border:1px solid var(--text2);color:var(--text);font-family:var(--sans);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;}
-.compare-empty-btn:hover{background:var(--text);color:var(--bg2);}
-.compare-vs{display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-weight:300;font-size:30px;color:var(--accent);}
-.compare-poster{width:100%;aspect-ratio:2/3;object-fit:cover;margin-bottom:14px;}
-.compare-poster-ph{width:100%;aspect-ratio:2/3;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--text3);font-family:var(--serif);font-style:italic;}
-.compare-film-title{font-family:var(--serif);font-weight:400;font-size:20px;color:var(--text);line-height:1.15;margin-bottom:4px;letter-spacing:-0.01em;}
-.compare-film-meta{font-family:var(--mono);font-size:11px;color:var(--text3);font-weight:300;margin-bottom:14px;}
-.compare-stats{display:flex;flex-direction:column;gap:0;margin-top:auto;border-top:1px solid var(--border);}
-.compare-stat{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--border);}
-.compare-stat-lbl{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--text3);font-weight:300;}
-.compare-stat-val{font-family:var(--mono);font-size:13px;color:var(--text);font-weight:400;}
+.compare-wrap{padding:20px;max-width:920px;margin:0 auto;}
+.compare-head{text-align:center;margin-bottom:18px;}
+.compare-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:14px;align-items:stretch;}
+.compare-slot{background:var(--panel);border:1px solid var(--border);padding:14px;min-height:280px;display:flex;flex-direction:column;}
+.compare-empty{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--text3);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;text-align:center;padding:30px;}
+.compare-empty-btn{padding:8px 14px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;}
+.compare-vs{display:flex;align-items:center;justify-content:center;font-family:'Russo One',sans-serif;font-size:24px;color:var(--accent);}
+.compare-poster{width:100%;aspect-ratio:2/3;object-fit:cover;border:1px solid var(--border);margin-bottom:10px;}
+.compare-poster-ph{width:100%;aspect-ratio:2/3;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:36px;}
+.compare-film-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--text);line-height:1.1;margin-bottom:3px;}
+.compare-film-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;}
+.compare-stats{display:flex;flex-direction:column;gap:6px;margin-top:auto;}
+.compare-stat{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:var(--bg3);border:1px solid var(--border);}
+.compare-stat-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.compare-stat-val{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);}
 .compare-stat.winner .compare-stat-val{color:var(--accent);}
-.compare-stat.winner .compare-stat-lbl{color:var(--text2);}
-.compare-clear{margin-top:14px;padding:7px;background:transparent;border:1px solid var(--border);color:var(--text3);font-family:var(--sans);font-size:11px;cursor:pointer;transition:color 0.15s,border-color 0.15s;}
+.compare-stat.winner{background:rgba(176,96,48,0.08);border-color:var(--accent);}
+.compare-clear{margin-top:8px;padding:5px;background:transparent;border:1px solid var(--border);color:var(--text3);font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;}
 .compare-clear:hover{color:var(--text2);border-color:var(--border2);}
 
 /* TASTE */
 .taste-wrap{padding:22px 20px;}
 .taste-empty{padding:50px 20px;text-align:center;}
-.taste-empty-icon{font-size:42px;margin-bottom:14px;color:var(--text3);font-family:var(--serif);font-style:italic;}
-.taste-empty-title{font-family:var(--serif);font-weight:300;font-size:22px;color:var(--text);margin-bottom:8px;letter-spacing:-0.01em;}
-.taste-empty-desc{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--text2);font-weight:300;max-width:360px;margin:0 auto;line-height:1.55;}
-.taste-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:20px;}
-.taste-card{background:transparent;border:1px solid var(--border);padding:18px;}
-.taste-card-head{font-family:var(--serif);font-style:italic;font-weight:300;font-size:12px;color:var(--text3);margin-bottom:14px;}
-.taste-big{font-family:var(--serif);font-weight:300;font-size:34px;color:var(--accent);line-height:1;letter-spacing:-0.015em;}
-.taste-big-sub{font-family:var(--mono);font-size:11px;color:var(--text2);margin-top:8px;font-weight:300;}
-.taste-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px;}
-.taste-bar-name{flex:0 0 90px;font-family:var(--serif);font-size:13px;color:var(--text2);font-style:italic;font-weight:300;}
-.taste-bar-bar{flex:1;height:1px;background:var(--border);position:relative;overflow:visible;}
-.taste-bar-fill{height:1px;background:var(--accent);position:relative;}
-.taste-bar-fill::after{content:'';position:absolute;right:-1px;top:-3px;width:1px;height:7px;background:var(--accent);}
-.taste-bar-val{flex:0 0 28px;text-align:right;font-family:var(--mono);font-size:11px;color:var(--text3);font-weight:300;}
+.taste-empty-icon{font-size:42px;margin-bottom:10px;}
+.taste-empty-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);margin-bottom:6px;}
+.taste-empty-desc{font-size:13px;color:var(--text2);font-weight:300;max-width:340px;margin:0 auto;line-height:1.5;}
+.taste-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px;}
+.taste-card{background:var(--panel);border:1px solid var(--border);padding:14px;}
+.taste-card-head{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+.taste-big{font-family:'Russo One',sans-serif;font-size:26px;color:var(--accent);line-height:1;}
+.taste-big-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-top:4px;}
+.taste-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:11px;}
+.taste-bar-name{flex:0 0 80px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text2);text-transform:uppercase;}
+.taste-bar-bar{flex:1;height:8px;background:var(--bg3);border:1px solid var(--border);position:relative;}
+.taste-bar-fill{height:100%;background:var(--accent);}
+.taste-bar-val{flex:0 0 28px;text-align:right;font-family:'Oswald',sans-serif;font-size:10px;color:var(--text3);font-weight:600;}
 
 /* PERSON */
-.person-hero{padding:30px 28px;border-bottom:1px solid var(--border);display:flex;gap:24px;align-items:flex-start;}
-.person-photo{width:120px;height:120px;border-radius:50%;object-fit:cover;border:1px solid var(--border2);flex-shrink:0;}
-.person-photo-ph{width:120px;height:120px;border-radius:50%;background:var(--panel);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:38px;flex-shrink:0;color:var(--text3);font-family:var(--serif);font-style:italic;}
-.person-name{font-family:var(--serif);font-weight:300;font-size:34px;color:var(--text);margin-bottom:6px;line-height:1.05;letter-spacing:-0.015em;}
-.person-known{font-family:var(--serif);font-style:italic;font-weight:300;font-size:13px;color:var(--accent);margin-bottom:14px;}
-.person-known::before{content:'— ';color:var(--text3);}
-.person-bio{font-family:var(--serif);font-size:14px;color:var(--text2);line-height:1.6;font-weight:300;max-width:600px;margin-bottom:18px;}
-.person-stats{display:flex;gap:24px;flex-wrap:wrap;}
-.pstat{background:transparent;border:none;padding:0;text-align:left;min-width:0;}
-.pstat-val{font-family:var(--serif);font-weight:300;font-size:24px;color:var(--accent);line-height:1;letter-spacing:-0.01em;}
-.pstat-label{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--text3);margin-top:4px;font-weight:300;}
+.person-hero{padding:20px;border-bottom:1px solid var(--border);display:flex;gap:18px;align-items:flex-start;}
+.person-photo{width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid var(--border2);flex-shrink:0;}
+.person-photo-ph{width:100px;height:100px;border-radius:50%;background:var(--panel);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;}
+.person-name{font-family:'Russo One',sans-serif;font-size:24px;color:var(--text);margin-bottom:3px;line-height:1;}
+.person-known{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.person-bio{font-size:12px;color:var(--text2);line-height:1.55;font-weight:300;max-width:560px;margin-bottom:10px;}
+.person-stats{display:flex;gap:8px;flex-wrap:wrap;}
+.pstat{background:var(--panel);border:1px solid var(--border);padding:6px 12px;text-align:center;min-width:74px;}
+.pstat-val{font-family:'Russo One',sans-serif;font-size:16px;color:var(--accent);line-height:1;}
+.pstat-label{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-top:3px;}
 
-.career-arc{padding:28px 28px 0;}
-.career-arc-title{font-family:var(--serif);font-style:italic;font-weight:300;font-size:13px;color:var(--text3);margin-bottom:14px;}
-.career-arc-title::before{content:'— ';}
-.career-arc-svg{width:100%;height:130px;background:transparent;border:1px solid var(--border);display:block;}
+.career-arc{padding:18px 20px 0;}
+.career-arc-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+.career-arc-svg{width:100%;height:120px;background:var(--panel);border:1px solid var(--border);display:block;}
 
 /* WATCHLIST */
-.watchlist-empty{padding:60px 20px;text-align:center;font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text3);font-weight:300;}
-.wl-head{display:flex;gap:10px;align-items:baseline;}
-.wl-count{background:transparent;color:var(--accent);font-family:var(--mono);font-size:13px;padding:0;font-weight:300;}
+.watchlist-empty{padding:60px 20px;text-align:center;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.wl-head{display:flex;gap:10px;align-items:center;}
+.wl-count{background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:11px;padding:1px 7px;}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:200;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:32px 16px;}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--bg2);border:1px solid var(--border2);max-width:760px;width:100%;position:relative;}
-.modal-close{position:absolute;top:14px;right:16px;font-size:18px;color:var(--bg2);cursor:pointer;z-index:10;line-height:1;background:rgba(0,0,0,0.5);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-family:var(--serif);font-weight:300;}
-.modal-close:hover{background:rgba(0,0,0,0.75);}
-.modal-backdrop{width:100%;height:240px;object-fit:cover;display:block;}
-.modal-backdrop-ph{width:100%;height:240px;background:linear-gradient(135deg,var(--bg3),var(--border));display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--text3);font-family:var(--serif);font-style:italic;}
-.modal-body{padding:26px 28px;}
-.modal-top{display:flex;gap:22px;margin-bottom:20px;}
-.modal-poster{width:108px;height:162px;flex-shrink:0;object-fit:cover;}
-.modal-poster-ph{width:108px;height:162px;flex-shrink:0;background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--text3);font-family:var(--serif);font-style:italic;}
-.modal-title{font-family:var(--serif);font-weight:300;font-size:30px;color:var(--text);line-height:1.05;margin-bottom:8px;letter-spacing:-0.015em;}
-.modal-meta{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:14px;font-weight:300;}
-.modal-scores{display:flex;gap:24px;margin-bottom:10px;flex-wrap:wrap;}
-.mscore{background:transparent;border:none;padding:0;text-align:left;min-width:0;}
-.mscore-val{font-family:var(--serif);font-weight:300;font-size:22px;color:var(--accent);line-height:1;letter-spacing:-0.01em;}
-.mscore-label{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--text3);margin-top:4px;font-weight:300;}
-.modal-overview{font-family:var(--serif);font-size:15px;color:var(--text2);line-height:1.6;font-weight:300;margin-bottom:20px;}
-.modal-section-label{font-family:var(--serif);font-style:italic;font-weight:300;font-size:12px;color:var(--text3);margin-bottom:10px;}
-.modal-section-label::before{content:'— ';}
-.modal-cast{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
-.cast-pill{background:transparent;border:1px solid var(--border);padding:5px 10px;font-family:var(--sans);font-size:12px;color:var(--text2);cursor:pointer;transition:all 0.15s;}
-.cast-pill:hover{border-color:var(--text2);color:var(--text);}
-.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
-.mact-btn{padding:10px;border:1px solid var(--border2);background:transparent;font-family:var(--sans);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;color:var(--text2);}
-.mact-btn:hover{border-color:var(--text);color:var(--text);}
-.btn-seen{background:var(--text);color:var(--bg2);border-color:var(--text);}
-.btn-seen:hover{background:var(--accent);border-color:var(--accent);color:var(--bg2);}
-.btn-seen.inactive{background:transparent;color:var(--text2);border-color:var(--border2);}
-.btn-seen.inactive:hover{border-color:var(--text);color:var(--text);background:transparent;}
-.btn-wl{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
-.btn-wl:hover{background:var(--text);border-color:var(--text);color:var(--bg2);}
-.btn-wl.inactive{background:transparent;color:var(--text2);border-color:var(--border2);}
-.btn-wl.inactive:hover{border-color:var(--text);color:var(--text);}
-.btn-compare{background:transparent;border:1px solid var(--border2);color:var(--text2);width:100%;margin-bottom:20px;}
-.btn-compare:hover{border-color:var(--text);color:var(--text);}
-.star-row{display:flex;gap:4px;margin:12px 0 6px;}
-.star{font-size:24px;cursor:pointer;color:var(--text3);transition:color 0.1s;line-height:1;}
+.modal{background:var(--bg2);border:1px solid var(--border2);max-width:720px;width:100%;position:relative;}
+.modal-close{position:absolute;top:10px;right:12px;font-size:18px;color:var(--bg2);cursor:pointer;z-index:10;line-height:1;background:rgba(0,0,0,0.5);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
+.modal-close:hover{background:rgba(0,0,0,0.7);}
+.modal-backdrop{width:100%;height:auto;max-height:60vh;object-fit:contain;display:block;background:var(--bg3);}
+.modal-backdrop-ph{width:100%;height:180px;background:linear-gradient(135deg,var(--bg3),var(--border));display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--text3);}
+.modal-body{padding:16px;}
+.modal-top{display:flex;gap:14px;margin-bottom:14px;}
+.modal-poster{width:90px;height:135px;flex-shrink:0;object-fit:cover;border:1px solid var(--border);}
+.modal-poster-ph{width:90px;height:135px;flex-shrink:0;background:var(--panel);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.modal-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.modal-meta{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.modal-scores{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.mscore{background:var(--bg3);border:1px solid var(--border);padding:5px 10px;text-align:center;min-width:54px;}
+.mscore-val{font-family:'Russo One',sans-serif;font-size:16px;color:var(--accent);line-height:1;}
+.mscore-label{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
+.modal-overview{font-size:12px;color:var(--text2);line-height:1.55;font-weight:300;margin-bottom:12px;}
+.modal-section-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.modal-cast{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.cast-pill{background:var(--bg3);border:1px solid var(--border);padding:3px 8px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text2);}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;}
+.mact-btn{padding:9px;border:none;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.12s;}
+.mact-btn:hover{opacity:0.85;}
+.btn-seen{background:var(--green);color:#fff;}
+.btn-seen.inactive{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
+.btn-wl{background:var(--accent);color:var(--bg2);}
+.btn-wl.inactive{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
+.btn-compare{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);width:100%;margin-bottom:14px;}
+.btn-compare:hover{border-color:var(--accent);color:var(--accent);}
+.star-row{display:flex;gap:3px;margin:8px 0 4px;}
+.star{font-size:22px;cursor:pointer;color:var(--text3);transition:color 0.1s;line-height:1;}
 .star.lit{color:var(--gold);}
 .star:hover,.star:hover~.star{color:var(--text3);}
 .star-row:hover .star{color:var(--gold);}
 .star-row .star:hover~.star{color:var(--text3);}
-.modal-similar{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:12px;}
-.sim-card{cursor:pointer;transition:opacity 0.15s;}
+.modal-similar{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;}
+.sim-card{cursor:pointer;}
 .sim-card:hover{opacity:0.8;}
-.sim-poster{width:100%;aspect-ratio:2/3;object-fit:cover;}
-.sim-poster-ph{width:100%;aspect-ratio:2/3;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text3);font-family:var(--serif);font-style:italic;}
-.sim-title{font-family:var(--serif);font-size:12px;font-weight:400;color:var(--text);line-height:1.25;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sim-poster{width:100%;aspect-ratio:2/3;object-fit:cover;border:1px solid var(--border);}
+.sim-poster-ph{width:100%;aspect-ratio:2/3;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.sim-title{font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;color:var(--text);line-height:1.2;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-.loading-box{padding:40px;text-align:center;font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text3);font-weight:300;}
-.no-results{padding:30px;text-align:center;font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text3);font-weight:300;}
+.loading-box{padding:40px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.no-results{padding:30px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
 
-.search-section{padding:30px 28px;}
-.search-title{font-family:var(--serif);font-style:italic;font-weight:300;font-size:16px;color:var(--text2);margin-bottom:20px;}
+.search-section{padding:20px;}
+.search-title{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg2);padding:11px 20px;font-family:var(--serif);font-style:italic;font-size:13px;font-weight:300;z-index:300;opacity:0;transition:opacity 0.25s,transform 0.25s;pointer-events:none;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg2);padding:10px 18px;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;z-index:300;opacity:0;transition:opacity 0.25s,transform 0.25s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-footer{background:transparent;border-top:1px solid var(--border);padding:24px 28px;display:flex;align-items:baseline;justify-content:space-between;margin-top:40px;}
-.footer-logo{font-family:var(--serif);font-style:italic;font-weight:300;font-size:15px;color:var(--text2);}
+footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
+.footer-logo{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text2);}
 .footer-logo span{color:var(--accent);}
-.footer-meta{font-family:var(--mono);font-size:10px;color:var(--text3);font-weight:300;}
+.footer-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
 
 /* ===== LOGIN / AUTH ===== */
 .auth-screen{position:fixed;inset:0;background:var(--bg3);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
 .auth-screen.hidden{display:none;}
 .auth-bg{position:absolute;inset:0;background:
-  radial-gradient(circle at 18% 28%,rgba(168,88,56,0.07),transparent 45%),
-  radial-gradient(circle at 82% 72%,rgba(138,106,40,0.05),transparent 50%);
+  radial-gradient(circle at 20% 30%,rgba(176,96,48,0.08),transparent 40%),
+  radial-gradient(circle at 80% 70%,rgba(154,120,48,0.06),transparent 45%),
+  repeating-linear-gradient(45deg,transparent,transparent 35px,rgba(176,96,48,0.025) 35px,rgba(176,96,48,0.025) 36px);
   pointer-events:none;}
-.auth-card{background:var(--bg2);border:1px solid var(--border2);max-width:400px;width:100%;padding:42px 36px;position:relative;z-index:1;}
-.auth-logo{font-family:var(--serif);font-style:italic;font-weight:300;font-size:34px;color:var(--text);text-align:center;margin-bottom:6px;letter-spacing:-0.015em;}
+.auth-card{background:var(--bg2);border:1px solid var(--border2);max-width:380px;width:100%;padding:36px 30px;position:relative;z-index:1;box-shadow:0 8px 30px rgba(26,22,16,0.08);}
+.auth-logo{font-family:'Russo One',sans-serif;font-size:28px;letter-spacing:0.02em;color:var(--text);text-align:center;margin-bottom:4px;}
 .auth-logo span{color:var(--accent);}
-.auth-tagline{font-family:var(--serif);font-style:italic;font-weight:300;font-size:12px;color:var(--text3);text-align:center;margin-bottom:32px;}
-.auth-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:24px;}
-.auth-tab{flex:1;padding:11px 0;text-align:center;font-family:var(--serif);font-style:italic;font-weight:300;font-size:13px;color:var(--text3);cursor:pointer;border-bottom:1px solid transparent;transition:color 0.15s,border-color 0.15s;background:none;border-top:none;border-left:none;border-right:none;}
-.auth-tab.active{color:var(--text);border-bottom:1px solid var(--accent);}
+.auth-tagline{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);text-align:center;margin-bottom:28px;}
+.auth-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.auth-tab{flex:1;padding:9px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;background:none;border-top:none;border-left:none;border-right:none;}
+.auth-tab.active{color:var(--text);border-bottom:2px solid var(--accent);}
 .auth-tab:hover:not(.active){color:var(--text2);}
-.auth-field{margin-bottom:16px;}
-.auth-label{display:block;font-family:var(--serif);font-style:italic;font-weight:300;font-size:12px;color:var(--text3);margin-bottom:6px;}
-.auth-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:15px;padding:8px 2px;outline:none;transition:border-color 0.15s;}
-.auth-input:focus{border-bottom-color:var(--accent);}
-.auth-submit{width:100%;padding:13px;background:var(--text);color:var(--bg2);border:none;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background 0.15s;margin-top:10px;letter-spacing:0.01em;}
-.auth-submit:hover{background:var(--accent);}
-.auth-error{color:var(--red);font-family:var(--serif);font-style:italic;font-size:12px;margin-top:10px;text-align:center;min-height:14px;font-weight:300;}
-.auth-footer{margin-top:22px;text-align:center;font-size:12px;color:var(--text3);font-style:italic;font-weight:300;font-family:var(--serif);}
-.auth-link-btn{background:none;border:none;color:var(--accent);font-family:var(--serif);font-style:italic;font-size:12px;cursor:pointer;padding:4px 8px;font-weight:300;}
+.auth-field{margin-bottom:14px;}
+.auth-label{display:block;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
+.auth-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;padding:9px 11px;outline:none;transition:border-color 0.12s;}
+.auth-input:focus{border-color:var(--accent);}
+.auth-submit{width:100%;padding:12px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:opacity 0.12s;margin-top:6px;}
+.auth-submit:hover{opacity:0.88;}
+.auth-error{color:var(--red);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-top:8px;text-align:center;min-height:14px;}
+.auth-footer{margin-top:18px;text-align:center;font-size:11px;color:var(--text3);font-style:italic;font-weight:300;}
+.auth-link-btn{background:none;border:none;color:var(--accent);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;padding:4px 8px;}
 .auth-link-btn:hover{color:var(--accent2);text-decoration:underline;}
-.auth-info{background:rgba(26,106,42,0.06);border-left:2px solid var(--green);padding:11px 14px;margin-top:14px;font-family:var(--serif);font-size:13px;color:var(--text2);line-height:1.55;font-weight:300;}
-.auth-info strong{color:var(--green);font-weight:500;font-style:italic;}
-.auth-offline-banner{background:rgba(168,88,56,0.06);border-left:2px solid var(--accent);padding:10px 14px;margin-bottom:22px;font-family:var(--serif);font-size:13px;color:var(--text2);line-height:1.5;font-weight:300;}
-.auth-offline-banner strong{color:var(--accent);font-weight:500;font-style:italic;}
-.sync-indicator{position:fixed;bottom:24px;right:24px;background:var(--text);color:var(--bg2);padding:8px 14px;font-family:var(--serif);font-style:italic;font-size:12px;z-index:280;opacity:0;transition:opacity 0.3s,transform 0.3s;pointer-events:none;transform:translateY(10px);font-weight:300;}
-.sync-indicator.show{opacity:0.92;transform:translateY(0);}
+.auth-info{background:rgba(26,106,42,0.08);border-left:3px solid var(--green);padding:9px 11px;margin-top:10px;font-size:12px;color:var(--text2);line-height:1.5;font-weight:300;}
+.auth-info strong{color:var(--green);font-weight:600;}
+.auth-offline-banner{background:rgba(176,96,48,0.1);border-left:3px solid var(--accent);padding:8px 10px;margin-bottom:18px;font-size:11px;color:var(--text2);line-height:1.4;font-weight:300;}
+.auth-offline-banner strong{color:var(--accent);font-weight:600;}
+.sync-indicator{position:fixed;bottom:20px;right:20px;background:var(--text);color:var(--bg2);padding:7px 13px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;z-index:280;opacity:0;transition:opacity 0.3s,transform 0.3s;pointer-events:none;transform:translateY(10px);}
+.sync-indicator.show{opacity:0.9;transform:translateY(0);}
 .sync-indicator.error{background:var(--red);}
-.sync-indicator-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:7px;vertical-align:middle;}
-.auth-existing{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);}
-.auth-existing-label{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--text3);margin-bottom:10px;text-align:center;font-weight:300;}
-.auth-existing-list{display:flex;flex-direction:column;gap:6px;}
-.auth-existing-btn{padding:9px 12px;background:transparent;border:1px solid var(--border);font-family:var(--sans);font-size:13px;color:var(--text2);cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;transition:all 0.15s;}
-.auth-existing-btn:hover{border-color:var(--text);color:var(--text);}
-.auth-existing-name{font-weight:500;}
+.sync-indicator-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;vertical-align:middle;}
+.auth-existing{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.auth-existing-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;text-align:center;}
+.auth-existing-list{display:flex;flex-direction:column;gap:5px;}
+.auth-existing-btn{padding:7px 10px;background:var(--bg3);border:1px solid var(--border);font-family:'Oswald',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;transition:all 0.12s;}
+.auth-existing-btn:hover{border-color:var(--accent);color:var(--accent);}
+.auth-existing-name{font-weight:600;letter-spacing:0.04em;}
 .auth-existing-meta{font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;}
 
 /* ===== LOADING SCREEN with film reel ===== */
@@ -376,92 +360,206 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
 .reel-frame::before,.reel-frame::after{content:'';position:absolute;left:50%;width:6px;height:4px;background:#0d0a07;border-radius:1px;transform:translateX(-50%);}
 .reel-frame::before{top:1px;}
 .reel-frame::after{bottom:1px;}
-.loader-title{font-family:var(--serif);font-style:italic;font-weight:300;font-size:30px;color:var(--bg2);position:relative;z-index:2;text-align:center;letter-spacing:-0.015em;}
+.loader-title{font-family:'Russo One',sans-serif;font-size:22px;letter-spacing:0.04em;color:var(--bg2);position:relative;z-index:2;text-align:center;}
 .loader-title span{color:var(--accent);}
-.loader-status{font-family:var(--serif);font-style:italic;font-weight:300;font-size:12px;color:rgba(250,249,247,0.65);position:relative;z-index:2;animation:blinkText 1.2s ease-in-out infinite;}
-@keyframes blinkText{0%,100%{opacity:0.65;}50%{opacity:1;}}
-.loader-counter{position:absolute;bottom:34px;right:34px;font-family:var(--mono);font-size:54px;color:rgba(168,88,56,0.16);letter-spacing:-0.03em;line-height:1;user-select:none;font-weight:300;}
-.loader-bar{width:220px;height:1px;background:rgba(255,255,255,0.1);position:relative;z-index:2;overflow:hidden;}
+.loader-status{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(250,249,247,0.6);position:relative;z-index:2;animation:blinkText 1.2s ease-in-out infinite;}
+@keyframes blinkText{0%,100%{opacity:0.6;}50%{opacity:1;}}
+.loader-counter{position:absolute;bottom:30px;right:30px;font-family:'Russo One',sans-serif;font-size:60px;color:rgba(176,96,48,0.18);letter-spacing:-0.05em;line-height:1;user-select:none;}
+.loader-bar{width:200px;height:2px;background:rgba(255,255,255,0.08);position:relative;z-index:2;overflow:hidden;}
 .loader-bar-fill{position:absolute;top:0;left:0;height:100%;background:var(--accent);animation:barFill 1.4s ease-out forwards;}
 @keyframes barFill{from{width:0%;}to{width:100%;}}
 
 /* ===== USER MENU (in nav) ===== */
-.user-badge{display:flex;align-items:center;gap:8px;padding:0 12px;height:32px;background:transparent;border:1px solid var(--border);cursor:pointer;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text2);transition:all 0.15s;}
-.user-badge:hover{border-color:var(--text);color:var(--text);}
-.user-badge-avatar{width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--bg2);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:400;font-size:11px;flex-shrink:0;}
-.user-menu{position:absolute;top:54px;right:24px;background:var(--bg2);border:1px solid var(--border2);min-width:200px;z-index:90;display:none;}
+.user-badge{display:flex;align-items:center;gap:7px;padding:0 10px;height:30px;background:var(--bg3);border:1px solid var(--border);cursor:pointer;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text2);transition:all 0.12s;}
+.user-badge:hover{border-color:var(--accent);color:var(--accent);}
+.user-badge-avatar{width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--bg2);display:flex;align-items:center;justify-content:center;font-family:'Russo One',sans-serif;font-size:10px;flex-shrink:0;}
+.user-menu{position:absolute;top:46px;right:20px;background:var(--bg2);border:1px solid var(--border2);min-width:180px;box-shadow:0 6px 20px rgba(26,22,16,0.1);z-index:90;display:none;}
 .user-menu.open{display:block;}
-.user-menu-item{padding:11px 16px;font-family:var(--sans);font-size:13px;color:var(--text2);cursor:pointer;transition:background 0.08s,color 0.08s;border-bottom:1px solid var(--border);}
-.user-menu-item:hover{background:var(--bg3);color:var(--text);}
+.user-menu-item{padding:9px 14px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text2);cursor:pointer;transition:background 0.08s;border-bottom:1px solid var(--border);}
+.user-menu-item:hover{background:var(--bg3);color:var(--accent);}
 .user-menu-item:last-child{border-bottom:none;}
-.user-menu-header{padding:13px 16px;background:transparent;border-bottom:1px solid var(--border);font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text);}
-.user-menu-header strong{font-weight:400;font-style:italic;}
-.user-menu-header div{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:4px;font-weight:300;font-style:normal;}
+.user-menu-header{padding:10px 14px;background:var(--bg3);border-bottom:1px solid var(--border);font-family:'Oswald',sans-serif;font-size:10px;color:var(--text);}
+.user-menu-header strong{font-weight:600;}
+.user-menu-header div{font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;}
 
 /* ===== MY FILMOGRAPHY page ===== */
-.filmography-head{padding:34px 28px 22px;border-bottom:1px solid var(--border);background:transparent;}
-.filmography-eyebrow{font-family:var(--serif);font-style:italic;font-weight:300;font-size:13px;color:var(--accent);margin-bottom:10px;}
-.filmography-eyebrow::before{content:'— ';color:var(--text3);}
-.filmography-title{font-family:var(--serif);font-weight:300;font-size:38px;line-height:1.05;color:var(--text);margin-bottom:6px;letter-spacing:-0.015em;}
-.filmography-sub{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--text2);font-weight:300;}
+.filmography-head{padding:22px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
+.filmography-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.filmography-title{font-family:'Russo One',sans-serif;font-size:28px;line-height:1.0;color:var(--text);margin-bottom:4px;}
+.filmography-sub{font-size:13px;color:var(--text2);font-weight:300;}
 
 /* My Oscars */
-.oscars-wrap{padding:26px 28px;border-bottom:1px solid var(--border);background:transparent;position:relative;}
-.oscars-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;}
-.oscars-title-block{display:flex;align-items:baseline;gap:14px;}
-.oscars-trophy{display:none;}
-.oscars-title{font-family:var(--serif);font-weight:300;font-size:24px;color:var(--text);line-height:1;letter-spacing:-0.01em;}
-.oscars-sub{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--gold);margin-top:0;font-weight:300;}
-.oscars-sub::before{content:'— ';color:var(--text3);}
-.oscars-edit-btn{padding:7px 14px;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:var(--sans);font-size:11px;cursor:pointer;transition:all 0.15s;}
+.oscars-wrap{padding:18px 20px;border-bottom:1px solid var(--border);background:
+  linear-gradient(180deg,rgba(154,120,48,0.08),rgba(154,120,48,0.02));
+  position:relative;}
+.oscars-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.oscars-title-block{display:flex;align-items:center;gap:10px;}
+.oscars-trophy{font-size:24px;filter:drop-shadow(0 1px 1px rgba(154,120,48,0.3));}
+.oscars-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);line-height:1;letter-spacing:0.02em;}
+.oscars-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-top:2px;}
+.oscars-edit-btn{padding:6px 12px;background:var(--bg2);border:1px solid var(--gold);color:var(--gold);font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;transition:all 0.12s;}
 .oscars-edit-btn:hover{background:var(--gold);color:var(--bg2);}
-.oscars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;}
-.oscar-card{background:transparent;border:1px solid var(--gold);position:relative;padding:20px 14px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:all 0.2s;min-height:220px;text-align:center;}
-.oscar-card::before{display:none;}
-.oscar-card:hover{background:rgba(138,106,40,0.04);}
-.oscar-category{font-family:var(--serif);font-style:italic;font-weight:300;font-size:12px;color:var(--gold);position:relative;z-index:1;margin-bottom:4px;}
-.oscar-img{width:84px;height:84px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);position:relative;z-index:1;}
-.oscar-poster{width:72px;height:108px;object-fit:cover;border:1px solid var(--gold);position:relative;z-index:1;}
-.oscar-img-ph,.oscar-poster-ph{background:var(--bg3);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text3);position:relative;z-index:1;font-family:var(--serif);font-style:italic;}
-.oscar-img-ph{width:84px;height:84px;border-radius:50%;}
-.oscar-poster-ph{width:72px;height:108px;}
-.oscar-winner{font-family:var(--serif);font-weight:400;font-size:15px;color:var(--text);line-height:1.2;position:relative;z-index:1;padding:0 4px;letter-spacing:-0.005em;}
-.oscar-empty-icon{font-size:22px;color:var(--border2);position:relative;z-index:1;margin-top:8px;font-family:var(--serif);font-style:italic;}
-.oscar-empty-text{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--text3);position:relative;z-index:1;font-weight:300;}
+.oscars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
+.oscar-card{background:var(--bg2);border:1px solid var(--gold);position:relative;padding:14px 12px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.18s;min-height:200px;text-align:center;}
+.oscar-card::before{content:'';position:absolute;top:6px;left:6px;right:6px;bottom:6px;border:1px dashed rgba(154,120,48,0.4);pointer-events:none;}
+.oscar-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(154,120,48,0.18);}
+.oscar-category{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:600;position:relative;z-index:1;margin-bottom:2px;}
+.oscar-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);position:relative;z-index:1;}
+.oscar-poster{width:70px;height:105px;object-fit:cover;border:2px solid var(--gold);position:relative;z-index:1;}
+.oscar-img-ph,.oscar-poster-ph{background:var(--bg3);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text3);position:relative;z-index:1;}
+.oscar-img-ph{width:80px;height:80px;border-radius:50%;}
+.oscar-poster-ph{width:70px;height:105px;}
+.oscar-winner{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);line-height:1.15;position:relative;z-index:1;padding:0 4px;}
+.oscar-empty-icon{font-size:32px;color:var(--border2);position:relative;z-index:1;margin-top:8px;}
+.oscar-empty-text{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);position:relative;z-index:1;}
 
 /* Oscar picker modal */
-.picker-search{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:15px;padding:9px 2px;outline:none;margin-bottom:14px;transition:border-color 0.15s;}
-.picker-search:focus{border-bottom-color:var(--accent);}
-.picker-search::placeholder{font-style:italic;color:var(--text3);}
-.picker-list{max-height:340px;overflow-y:auto;}
-.picker-row{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;}
+.picker-search{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;padding:8px 11px;outline:none;margin-bottom:12px;}
+.picker-search:focus{border-color:var(--accent);}
+.picker-list{max-height:340px;overflow-y:auto;border-top:1px solid var(--border);}
+.picker-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;padding-left:6px;padding-right:6px;}
 .picker-row:hover{background:var(--bg3);}
-.picker-row img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;}
-.picker-row .picker-poster-thumb{width:36px;height:52px;border-radius:0;}
-.picker-row-ph{width:40px;height:40px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:var(--text3);font-family:var(--serif);font-style:italic;}
-.picker-row-name{font-family:var(--serif);font-size:15px;font-weight:400;color:var(--text);letter-spacing:-0.005em;}
-.picker-row-meta{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:2px;font-weight:300;}
-.picker-clear{padding:8px 12px;background:transparent;border:1px solid var(--border);color:var(--text3);font-family:var(--sans);font-size:12px;cursor:pointer;margin-top:14px;width:100%;transition:all 0.15s;}
+.picker-row img{width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.picker-row .picker-poster-thumb{width:34px;height:50px;border-radius:0;}
+.picker-row-ph{width:38px;height:38px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.picker-row-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--text);}
+.picker-row-meta{font-size:10px;color:var(--text3);}
+.picker-clear{padding:7px 10px;background:transparent;border:1px solid var(--border);color:var(--text3);font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;margin-top:10px;width:100%;}
 .picker-clear:hover{color:var(--red);border-color:var(--red);}
 
 /* Filmography section tabs */
-.fg-tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 18px;}
-.fg-tab{flex:1;padding:13px 0;text-align:center;font-family:var(--serif);font-style:italic;font-weight:300;font-size:14px;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:1px solid transparent;transition:color 0.15s,border-color 0.15s;}
-.fg-tab.active{color:var(--text);border-bottom:1px solid var(--accent);}
+.fg-tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);}
+.fg-tab{flex:1;padding:10px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;}
+.fg-tab.active{color:var(--text);border-bottom:2px solid var(--accent);}
 .fg-tab:hover:not(.active){color:var(--text2);}
-.fg-tab-count{display:inline-block;background:transparent;color:var(--text3);font-family:var(--mono);font-size:10px;padding:0;margin-left:6px;font-style:normal;font-weight:300;}
-.fg-tab.active .fg-tab-count{color:var(--accent);}
-.fg-body{padding:24px 28px;}
+.fg-tab-count{display:inline-block;background:var(--bg3);color:var(--text3);font-size:9px;padding:1px 5px;margin-left:4px;border-radius:8px;}
+.fg-tab.active .fg-tab-count{background:var(--accent);color:var(--bg2);}
+.fg-body{padding:18px 20px;}
 
 @media (max-width:740px){
-  .hero{grid-template-columns:1fr;}
-  .nav-search{width:130px;}
+  /* Nav restructured: logo+search top row, tabs scroll horizontally below */
+  nav{flex-wrap:wrap;height:auto;padding:0;align-items:stretch;}
+  .nav-logo{padding:10px 14px 8px;font-size:17px;flex:0 0 auto;display:flex;align-items:center;}
+  nav > div:last-child{order:0;padding:8px 14px;flex:1 1 auto;justify-content:flex-end;gap:6px !important;align-items:center;display:flex;}
+  .nav-search{width:100%;max-width:none;font-size:13px;padding:6px 10px;}
+  .user-badge{flex-shrink:0;height:28px;}
+  .nav-tabs{order:2;flex:1 1 100%;width:100%;overflow-x:auto;overflow-y:hidden;border-top:1px solid var(--border);-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .nav-tab{height:38px;padding:0 14px;font-size:10px;letter-spacing:0.1em;flex-shrink:0;white-space:nowrap;}
+  .nav-tab.active{border-bottom-width:2px;}
+
+  /* Hero stacks */
+  .hero{grid-template-columns:1fr;padding:16px 14px 12px;gap:16px;}
+  .hero-title{font-size:24px;line-height:1.05;}
+  .hero-desc{font-size:13px;}
+  .hero-cta{flex-wrap:wrap;}
+  .hero-cta-btn{font-size:9px;padding:7px 10px;}
+  .hero-eyebrow{font-size:9px;letter-spacing:0.16em;}
+
+  /* Now Showing — pad in tighter */
+  .ns-head{padding:6px 10px;}
+  .ns-head-title{font-size:9px;}
+  .ns-row{padding:6px 10px;gap:8px;grid-template-columns:20px 1fr auto auto;}
+  .ns-title{font-size:12px;max-width:140px;}
+  .ns-meta{font-size:9px;}
+  .ns-score{font-size:13px;}
+
+  /* Section wrap padding tighter */
+  .section-wrap{padding:14px 14px 0;}
+  .film-grid{grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
+  .film-title{font-size:11px;}
+  .film-meta{font-size:9px;}
+  .film-score-badge{font-size:10px;padding:1px 4px;}
+
+  /* Genre bar */
+  .genre-bar{-webkit-overflow-scrolling:touch;}
+  .genre-btn{padding:8px 12px;font-size:10px;letter-spacing:0.1em;}
+
+  /* Rankings */
+  .rank-controls{padding:0;}
+  .rank-btn{padding:9px 14px;min-width:0;font-size:9px;letter-spacing:0.1em;}
+  .rank-table thead{display:none;}
+  .rank-table td{padding:8px 10px;}
+  .r-poster,.r-poster-ph{width:32px;height:48px;}
+  .r-name{font-size:12px;}
+  .r-meta{font-size:9px;}
+  .r-score{font-size:13px;}
+
+  /* Debate */
+  .debate-head{padding:16px 14px 12px;}
+  .debate-title{font-size:22px;}
+  .debate-sub{font-size:12px;}
+  .debate-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .debate-tab{min-width:auto;padding:9px 14px;font-size:9px;letter-spacing:0.1em;}
+  .takes-grid{grid-template-columns:1fr;padding:14px;gap:10px;}
+  .take-card{padding:12px;}
+  .take-headline{font-size:15px;}
+
+  /* Compare */
+  .compare-wrap{padding:14px;}
   .compare-grid{grid-template-columns:1fr;}
-  .compare-vs{padding:8px 0;}
-  .nav-tab{padding:0 10px;font-size:10px;letter-spacing:0.08em;}
-  .hero-title{font-size:26px;}
-  .oscars-grid{grid-template-columns:repeat(2,1fr);}
-  .auth-card{padding:24px 18px;}
+  .compare-vs{padding:8px 0;font-size:20px;}
+  .compare-slot{min-height:auto;padding:12px;}
+
+  /* Filmography */
+  .filmography-head{padding:16px 14px 12px;}
+  .filmography-title{font-size:22px;}
+  .filmography-sub{font-size:12px;}
+  .oscars-wrap{padding:14px;}
+  .oscars-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
+  .oscar-card{padding:10px 8px 10px;min-height:170px;gap:6px;}
+  .oscar-img,.oscar-img-ph{width:64px;height:64px;}
+  .oscar-poster,.oscar-poster-ph{width:56px;height:84px;}
+  .oscar-winner{font-size:11px;}
+  .oscar-category{font-size:8px;letter-spacing:0.16em;}
+  .fg-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .fg-tab{min-width:0;padding:10px 12px;font-size:9px;letter-spacing:0.1em;flex-shrink:0;flex-basis:auto;}
+  .fg-body{padding:14px;}
+
+  /* Modal */
+  .modal-overlay{padding:0;}
+  .modal{max-width:100%;}
+  .modal-backdrop{max-height:50vh;}
+  .modal-body{padding:14px;}
+  .modal-top{gap:12px;}
+  .modal-poster,.modal-poster-ph{width:78px;height:117px;}
+  .modal-title{font-size:18px;}
+  .modal-meta{font-size:9px;}
+  .mscore{padding:4px 8px;min-width:48px;}
+  .mscore-val{font-size:14px;}
+  .modal-actions{grid-template-columns:1fr 1fr;}
+  .mact-btn{padding:10px 8px;font-size:9px;letter-spacing:0.1em;}
+  .modal-similar{grid-template-columns:repeat(3,1fr);gap:6px;}
+
+  /* Auth */
+  .auth-card{padding:24px 18px;max-width:none;}
+  .auth-logo{font-size:24px;}
+
+  /* Search */
+  .search-section{padding:14px;}
+
+  /* Footer */
+  footer{padding:10px 14px;flex-wrap:wrap;gap:6px;}
+  .footer-meta{font-size:8px;}
+
+  /* User badge text hidden on tiny screens — just avatar */
+  .user-badge span{display:none;}
+  .user-menu{top:auto;right:14px;}
+
+  /* Loader scales down */
+  .reel-stage{width:160px;height:160px;}
+  .reel-filmstrip{left:-110px;right:-110px;height:34px;}
+  .reel-frame{width:46px;margin:0 4px;}
+  .loader-title{font-size:18px;}
+  .loader-counter{font-size:42px;bottom:18px;right:18px;}
+  .loader-bar{width:150px;}
+}
+
+@media (max-width:380px){
+  .hero-title{font-size:21px;}
+  .film-grid{grid-template-columns:repeat(2,1fr);}
+  .oscars-grid{grid-template-columns:1fr;}
+  .ns-title{max-width:110px;}
 }
 </style>
 </head>
@@ -471,8 +569,8 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
 <div class="auth-screen" id="auth-screen">
   <div class="auth-bg"></div>
   <div class="auth-card">
-    <div class="auth-logo">Film <span>Club</span></div>
-    <div class="auth-tagline">A personal repertory.</div>
+    <div class="auth-logo">FILM <span>CLUB</span></div>
+    <div class="auth-tagline">Know What To Watch · Win Every Debate</div>
 
     <div class="auth-offline-banner" id="auth-offline-banner" style="display:none;">
       <strong>Offline mode</strong> — Supabase not configured. Data stays on this device.
@@ -609,8 +707,8 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
     </svg>
   </div>
   <div style="text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;">
-    <div class="loader-title">Film <span>Club</span></div>
-    <div class="loader-status" id="loader-status">Threading the projector…</div>
+    <div class="loader-title">FILM <span>CLUB</span></div>
+    <div class="loader-status" id="loader-status">Loading Print · Reel 1 of 1</div>
     <div class="loader-bar"><div class="loader-bar-fill"></div></div>
   </div>
 </div>
@@ -631,17 +729,16 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
 <div id="app-wrap" style="display:none;">
 
 <nav>
-  <div class="nav-logo" onclick="showPage('discover',document.querySelectorAll('.nav-tab')[0])">Film <span>Club</span></div>
+  <div class="nav-logo" onclick="showPage('discover',document.querySelectorAll('.nav-tab')[0])">FILM <span>CLUB</span></div>
   <div class="nav-tabs">
     <div class="nav-tab active" onclick="showPage('discover',this)">Discover</div>
     <div class="nav-tab" onclick="showPage('rankings',this)">Rankings</div>
-    <div class="nav-tab" onclick="showPage('debate',this)">Criticism</div>
-    <div class="nav-tab" onclick="showPage('compare',this)">Side by side</div>
-    <div class="nav-tab" onclick="showPage('filmography',this)">My filmography</div>
-    <div class="nav-tab" onclick="showPage('people',this)">People</div>
+    <div class="nav-tab" onclick="showPage('debate',this)">The Debate</div>
+    <div class="nav-tab" onclick="showPage('compare',this)">Compare</div>
+    <div class="nav-tab" onclick="showPage('filmography',this)">My Filmography</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
-    <input type="text" class="nav-search" id="nav-search" placeholder="Search films, people…" oninput="handleSearch(this.value)">
+    <input type="text" class="nav-search" id="nav-search" placeholder="Search films, people..." oninput="handleSearch(this.value)">
     <div class="user-badge" id="user-badge" onclick="toggleUserMenu(event)">
       <div class="user-badge-avatar" id="user-avatar">?</div>
       <span id="user-name">Guest</span>
@@ -653,31 +750,26 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
     <strong id="um-name"></strong>
     <div id="um-meta"></div>
   </div>
-  <div class="user-menu-item" onclick="goToFilmography()">My filmography</div>
-  <div class="user-menu-item" onclick="switchAccount()">Switch account</div>
-  <div class="user-menu-item" onclick="doLogout()" style="color:var(--red);">Sign out</div>
-</div>
-
-<div class="ticker">
-  <span class="ticker-tag">Now playing</span>
-  <div class="ticker-track" id="ticker-track"><span class="ticker-item">Loading top films...</span></div>
+  <div class="user-menu-item" onclick="goToFilmography()">📽 My Filmography</div>
+  <div class="user-menu-item" onclick="switchAccount()">↻ Switch Account</div>
+  <div class="user-menu-item" onclick="doLogout()" style="color:var(--red);">⎋ Sign Out</div>
 </div>
 
 <!-- DISCOVER -->
 <div class="page active" id="page-discover">
   <div class="hero">
     <div>
-      <div class="hero-eyebrow">A personal repertory</div>
-      <div class="hero-title">Films <em>worth</em><br>defending.</div>
-      <div class="hero-desc">A quiet shelf for the films you've seen, the directors you trust, and the ones you keep meaning to get to. Weighted toward the canon — not last month's hits.</div>
+      <div class="hero-eyebrow">Film Rankings · Built On Real Votes · No Algorithm</div>
+      <div class="hero-title">Know Your <em>Taste.</em><br>Win Every Debate.</div>
+      <div class="hero-desc">Rate films, build your ranked list, and follow directors down every rabbit hole. Community scores from millions of votes — no algorithm, no nonsense.</div>
       <div class="hero-cta">
-        <button class="hero-cta-btn hero-cta-primary" onclick="showPage('rankings',document.querySelectorAll('.nav-tab')[1])">Browse rankings</button>
-        <button class="hero-cta-btn hero-cta-secondary" onclick="showPage('debate',document.querySelectorAll('.nav-tab')[2])">Criticism</button>
+        <button class="hero-cta-btn hero-cta-primary" onclick="showPage('debate',document.querySelectorAll('.nav-tab')[2])">Today's Debates →</button>
+        <button class="hero-cta-btn hero-cta-secondary" onclick="showPage('rankings',document.querySelectorAll('.nav-tab')[1])">Rankings</button>
       </div>
     </div>
     <div class="now-showing">
       <div class="ns-head">
-        <span class="ns-head-title">Today's program</span>
+        <span class="ns-head-title">Now Showing — Top 6 This Week</span>
         <span class="ns-head-meta" id="ns-date"></span>
       </div>
       <div id="ns-list"><div class="loading-box">Loading</div></div>
@@ -699,13 +791,13 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
   </div>
 
   <div class="section-wrap">
-    <div class="section-bar"><span class="section-title"><strong>Now playing</strong> this week</span></div>
+    <div class="section-bar"><span class="section-title"><strong>Trending</strong> · This Week</span></div>
     <div class="film-grid" id="grid-trending"><div class="loading-box">Loading</div></div>
-    <div class="section-bar"><span class="section-title"><strong>The canon</strong> films cinephiles defend</span></div>
-    <div class="section-sub">Weighted toward the proven, against the merely popular.</div>
+    <div class="section-bar"><span class="section-title"><strong>All-Time Classics</strong> · The Canon</span></div>
+    <div class="section-sub">Films cinephiles defend — weighted toward proven classics, not last month's hits.</div>
     <div class="film-grid" id="grid-classics"><div class="loading-box">Loading</div></div>
-    <div class="section-bar"><span class="section-title"><strong>Rep cinema</strong> the high-score, low-profile shelf</span></div>
-    <div class="section-sub">Rated 7.5 or higher, but rarely talked about.</div>
+    <div class="section-bar"><span class="section-title"><strong>Hidden Gems</strong> · High Score, Low Profile</span></div>
+    <div class="section-sub">Rated 7.5+ but flying under the radar — few people have seen them, fewer talk about them.</div>
     <div class="film-grid" id="grid-gems"><div class="loading-box">Loading</div></div>
   </div>
 </div>
@@ -714,7 +806,7 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
 <div class="page" id="page-rankings">
   <div class="rankings-panel">
     <div class="rank-controls">
-      <button class="rank-btn active" onclick="setRankMode('top_rated',this)">The Canon</button>
+      <button class="rank-btn active" onclick="setRankMode('top_rated',this)">Top Rated</button>
       <button class="rank-btn" onclick="setRankMode('popular',this)">Most Popular</button>
       <button class="rank-btn" onclick="setRankMode('2020s',this)">2020s</button>
       <button class="rank-btn" onclick="setRankMode('2010s',this)">2010s</button>
@@ -730,15 +822,15 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
 <!-- DEBATE -->
 <div class="page" id="page-debate">
   <div class="debate-head">
-    <div class="debate-eyebrow">Criticism</div>
-    <div class="debate-title">Films worth arguing about.</div>
-    <div class="debate-sub">Overrated darlings, sleeper hits the algorithm forgot, and recent releases still dividing the room. Pick an angle.</div>
+    <div class="debate-eyebrow">The Hot Takes Desk</div>
+    <div class="debate-title">Today's Debates</div>
+    <div class="debate-sub">Films generating arguments right now — overrated darlings, sleeper hits the algorithm forgot, and recent releases dividing the room. Click any take to open the case file.</div>
   </div>
   <div class="debate-tabs">
     <button class="debate-tab active" onclick="setDebateMode('underrated',this)">Underrated</button>
     <button class="debate-tab" onclick="setDebateMode('overrated',this)">Overrated</button>
-    <button class="debate-tab" onclick="setDebateMode('recent',this)">Recent &amp; divisive</button>
-    <button class="debate-tab" onclick="setDebateMode('cult',this)">Cult status</button>
+    <button class="debate-tab" onclick="setDebateMode('recent',this)">Recent &amp; Divisive</button>
+    <button class="debate-tab" onclick="setDebateMode('cult',this)">Cult Status</button>
   </div>
   <div id="debate-body"><div class="loading-box">Loading</div></div>
 </div>
@@ -747,13 +839,13 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
 <div class="page" id="page-compare">
   <div class="compare-wrap">
     <div class="compare-head">
-      <div class="debate-eyebrow">Side by side</div>
-      <div class="debate-title">Two films, in conversation.</div>
-      <div class="debate-sub" style="margin:0 auto;">Open any film and add it to the comparison. We'll line up the numbers.</div>
+      <div class="debate-eyebrow">Head To Head</div>
+      <div class="debate-title">Compare Films</div>
+      <div class="debate-sub" style="margin:0 auto;">Pick two films. We line up the numbers and call the winners. Open any film and hit <em>Compare</em> to add it.</div>
     </div>
     <div class="compare-grid">
       <div class="compare-slot" id="compare-a"></div>
-      <div class="compare-vs">vs.</div>
+      <div class="compare-vs">VS</div>
       <div class="compare-slot" id="compare-b"></div>
     </div>
   </div>
@@ -762,19 +854,19 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
 <!-- MY FILMOGRAPHY (merges Watchlist + Taste + My Oscars) -->
 <div class="page" id="page-filmography">
   <div class="filmography-head">
-    <div class="filmography-eyebrow">Personal archive</div>
-    <div class="filmography-title">My filmography.</div>
-    <div class="filmography-sub">Everything seen, rated, and crowned.</div>
+    <div class="filmography-eyebrow">Personal Archive</div>
+    <div class="filmography-title">My Filmography</div>
+    <div class="filmography-sub">Everything you've seen, rated, and crowned.</div>
   </div>
 
   <!-- MY OSCARS -->
   <div class="oscars-wrap">
     <div class="oscars-header">
       <div class="oscars-title-block">
-        <span class="oscars-trophy"></span>
+        <span class="oscars-trophy">🏆</span>
         <div>
           <div class="oscars-title">My Oscars</div>
-          <div class="oscars-sub">A lifetime achievement ballot</div>
+          <div class="oscars-sub">The Lifetime Achievement Ballot</div>
         </div>
       </div>
     </div>
@@ -787,46 +879,15 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
     <button class="fg-tab" onclick="setFgTab('seen',this)">Seen <span class="fg-tab-count" id="fgc-seen">0</span></button>
     <button class="fg-tab" onclick="setFgTab('rated',this)">Rated <span class="fg-tab-count" id="fgc-rated">0</span></button>
     <button class="fg-tab" onclick="setFgTab('watchlist',this)">Watchlist <span class="fg-tab-count" id="fgc-wl">0</span></button>
-    <button class="fg-tab" onclick="setFgTab('stats',this)">Taste</button>
+    <button class="fg-tab" onclick="setFgTab('stats',this)">Stats</button>
   </div>
   <div class="fg-body" id="fg-body"></div>
-</div>
-
-<!-- PEOPLE -->
-<div class="page" id="page-people">
-  <div style="padding:14px 28px;border-bottom:1px solid var(--border);background:var(--bg2);">
-    <input type="text" id="people-input" placeholder="Search any director or actor…" oninput="searchPeople(this.value)"
-      style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:15px;padding:8px 2px;outline:none;transition:border-color 0.15s;" onfocus="this.style.borderBottomColor='var(--accent)'" onblur="this.style.borderBottomColor='var(--border)'">
-  </div>
-  <div id="people-suggestions">
-    <!-- Main mode tabs: Canon vs Trending -->
-    <div class="fg-tabs">
-      <button class="fg-tab active" id="people-mode-canon" onclick="setPeopleMode('canon',this)">The canon</button>
-      <button class="fg-tab" id="people-mode-trending" onclick="setPeopleMode('trending',this)">Trending this week</button>
-    </div>
-    <!-- Canon section with sub-tabs for role -->
-    <div id="people-canon-block" class="section-wrap" style="padding-top:18px;">
-      <div class="section-sub" style="margin-bottom:14px;">Ranked by the cinephile weight of their filmography — body of work, not weekly buzz.</div>
-      <div class="debate-tabs" style="margin-bottom:6px;">
-        <button class="debate-tab active" id="canon-role-director" onclick="setCanonRole('director',this)">Directors</button>
-        <button class="debate-tab" id="canon-role-actor" onclick="setCanonRole('actor',this)">Actors</button>
-        <button class="debate-tab" id="canon-role-actress" onclick="setCanonRole('actress',this)">Actresses</button>
-      </div>
-      <div id="people-canon-list"><div class="loading-box">Crunching the canon…</div></div>
-    </div>
-    <!-- Trending section (TMDB weekly) -->
-    <div id="people-trending-block" class="section-wrap" style="display:none;padding-top:24px;">
-      <div id="people-trending"><div class="loading-box">Loading</div></div>
-    </div>
-  </div>
-  <div id="people-results"></div>
-  <div id="person-detail" style="display:none;"></div>
 </div>
 
 <!-- SEARCH -->
 <div class="page" id="page-search">
   <div class="search-section">
-    <div class="search-title" id="search-label">Search results</div>
+    <div class="search-title" id="search-label">Search Results</div>
     <div class="film-grid" id="search-grid"></div>
   </div>
 </div>
@@ -842,8 +903,8 @@ footer{background:transparent;border-top:1px solid var(--border);padding:24px 28
 <div class="toast" id="toast"></div>
 
 <footer>
-  <div class="footer-logo">Film <span>Club</span></div>
-  <div class="footer-meta">Source: TMDB · community scores</div>
+  <div class="footer-logo">FILM <span>CLUB</span></div>
+  <div class="footer-meta">Source: TMDB · 900k+ Titles · Community Scores</div>
 </footer>
 
 </div><!-- /#app-wrap -->
@@ -903,7 +964,7 @@ function initSupabase(){
       if(inRecovery) return;
       sb.auth.getSession().then(({data})=>{
         if(inRecovery) return;
-        if(data.session) handleLoggedIn(data.session.user);
+        if(data.session) handleLoggedIn(data.session.user,{skipLoader:true});
         else showAuthScreen();
       });
     },50);
@@ -916,7 +977,7 @@ function initSupabase(){
       if(accts[last]){
         currentUser={id:last,email:last,displayName:accts[last].name};
         loadUserDataLocal();
-        handleLoggedIn();
+        handleLoggedIn(null,{skipLoader:true});
       } else {
         showAuthScreen();
       }
@@ -1181,7 +1242,8 @@ async function doLogout(){
 }
 function switchAccount(){doLogout();}
 
-async function handleLoggedIn(supabaseUser){
+async function handleLoggedIn(supabaseUser,opts={}){
+  const {skipLoader=false}=opts;
   // Populate currentUser
   if(supabaseUser){
     const meta=supabaseUser.user_metadata||{};
@@ -1200,11 +1262,22 @@ async function handleLoggedIn(supabaseUser){
   document.getElementById('um-name').textContent=currentUser.displayName;
   document.getElementById('um-meta').textContent=isOffline?'Offline · '+currentUser.email:currentUser.email;
 
-  // Hide auth, show loader
+  // Hide auth, show app
   document.getElementById('auth-screen').classList.add('hidden');
-  showLoader();
 
-  // Load data (cloud or local) in parallel with loader animation
+  if(skipLoader){
+    // Session restore — go straight into the app, no film reel
+    document.getElementById('app-wrap').style.display='';
+    if(!window._loadedOnce){
+      loadDiscover();
+      window._loadedOnce=true;
+    }
+  } else {
+    // Fresh login/signup — show the film reel
+    showLoader();
+  }
+
+  // Load data (cloud or local)
   if(!isOffline){
     loadUserDataLocal(); // instant local cache for snappy UI
     await loadUserDataCloud(); // then refresh from cloud
@@ -1221,7 +1294,7 @@ function showLoader(){
   screen.classList.remove('hidden');
   const counter=document.getElementById('loader-counter');
   const status=document.getElementById('loader-status');
-  const statuses=['Threading the projector…','Loading print · reel one','Cueing first frame…','Lights down.'];
+  const statuses=['Threading Projector...','Loading Print · Reel 1 of 1','Cueing First Frame...','Lights Down.'];
   let n=1;
   counter.textContent=String(n).padStart(2,'0');
   status.textContent=statuses[0];
@@ -1276,6 +1349,12 @@ async function api(path,params={}){
   const r=await fetch(u);
   if(!r.ok) throw new Error('API error');
   return r.json();
+}
+
+// Snap a 0-10 score to the nearest 0.5 and format as a single-decimal string.
+function fmt05(n){
+  if(n===null||n===undefined||isNaN(n)) return '—';
+  return (Math.round(Number(n)*2)/2).toFixed(1);
 }
 
 // Bayesian weighted score: WR = (v/(v+m))*R + (m/(v+m))*C
@@ -1359,10 +1438,10 @@ function toast(msg){
 function filmCard(f){
   const t=f.title||f.name||'Untitled';
   const yr=(f.release_date||f.first_air_date||'').slice(0,4);
-  const score=f.vote_average?f.vote_average.toFixed(1):'—';
+  const score=fmt05(f.vote_average);
   const poster=f.poster_path
     ?`<img src="${IMG}w342${f.poster_path}" alt="${t}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
-    :`<div class="film-poster-ph"><span style="font-family:var(--serif);font-style:italic;font-size:18px;">—</span></div>`;
+    :`<div class="film-poster-ph">🎬</div>`;
   const mt=f.media_type||'movie';
   return `<div class="film-card" onclick="openFilm(${f.id},'${mt}')">
     <div class="film-poster">${poster}<div class="film-score-badge">${score}</div></div>
@@ -1376,11 +1455,11 @@ function filmCard(f){
 function rankRow(f,i){
   const t=f.title||'Untitled';
   const yr=(f.release_date||'').slice(0,4);
-  const score=f.vote_average?f.vote_average.toFixed(1):'—';
+  const score=fmt05(f.vote_average);
   const gnames=(f.genre_ids||[]).map(id=>GENRES[id]).filter(Boolean).slice(0,2).join(' · ');
   const poster=f.poster_path
     ?`<img class="r-poster" src="${IMG}w92${f.poster_path}" alt="">`
-    :`<div class="r-poster-ph"><span style="font-family:var(--serif);font-style:italic;font-size:18px;">—</span></div>`;
+    :`<div class="r-poster-ph">🎬</div>`;
   return `<tr onclick="openFilm(${f.id},'movie')">
     <td class="r-num">${i+1}</td>
     <td style="width:44px;">${poster}</td>
@@ -1392,7 +1471,7 @@ function rankRow(f,i){
 function nowShowingRow(f,i){
   const t=f.title||f.name||'Untitled';
   const yr=(f.release_date||f.first_air_date||'').slice(0,4);
-  const score=f.vote_average?f.vote_average.toFixed(1):'—';
+  const score=fmt05(f.vote_average);
   const isTop=i===0;
   const trend=f.popularity>200?'up':'flat';
   const trendTxt=trend==='up'?'▲':'▬';
@@ -1441,10 +1520,11 @@ async function loadDiscover(){
 
     const tickerItems=tr.results.slice(0,15).map(f=>{
       const t=f.title||f.name;
-      const s=f.vote_average?f.vote_average.toFixed(1):'—';
+      const s=fmt05(f.vote_average);
       return `<span class="ticker-item">${t}<span class="tk-score">${s}</span></span>`;
     }).join('<span class="tk-sep">·</span>');
-    document.getElementById('ticker-track').innerHTML=tickerItems+'<span class="tk-sep">·</span>'+tickerItems;
+    const tickerEl=document.getElementById('ticker-track');
+    if(tickerEl) tickerEl.innerHTML=tickerItems+'<span class="tk-sep">·</span>'+tickerItems;
   }catch(e){
     ['grid-trending','grid-classics','grid-gems'].forEach(id=>{
       const el=document.getElementById(id);
@@ -1507,14 +1587,14 @@ async function loadDebate(){
       cards=d.results.slice(0,12).map(f=>({
         label:'Underrated',
         headline:`Only ${(f.vote_count/1000).toFixed(1)}k people have rated this`,
-        film:f,stat:f.vote_average.toFixed(1),statLbl:'Score'
+        film:f,stat:fmt05(f.vote_average),statLbl:'Score'
       }));
     } else if(m==='overrated'){
       const d=await api('/discover/movie',{sort_by:'popularity.desc','vote_count.gte':5000,'vote_average.lte':6.5});
       cards=d.results.slice(0,12).map(f=>({
         label:'Overrated',
         headline:`Everyone watched it. Most weren't impressed.`,
-        film:f,stat:f.vote_average.toFixed(1),statLbl:'Score'
+        film:f,stat:fmt05(f.vote_average),statLbl:'Score'
       }));
     } else if(m==='recent'){
       const yr=new Date().getFullYear();
@@ -1524,7 +1604,7 @@ async function loadDebate(){
         return {
           label:verdict,
           headline:`${(f.vote_count/1000).toFixed(0)}k votes in. The verdict is in.`,
-          film:f,stat:f.vote_average.toFixed(1),statLbl:'Score'
+          film:f,stat:fmt05(f.vote_average),statLbl:'Score'
         };
       });
     } else if(m==='cult'){
@@ -1532,7 +1612,7 @@ async function loadDebate(){
       cards=d.results.slice(0,12).map(f=>({
         label:'Cult Classic',
         headline:`The ${(f.release_date||'').slice(0,4)} sleeper still defended by its fans`,
-        film:f,stat:f.vote_average.toFixed(1),statLbl:'Score'
+        film:f,stat:fmt05(f.vote_average),statLbl:'Score'
       }));
     }
     el.innerHTML='<div class="takes-grid">'+cards.map(c=>{
@@ -1558,7 +1638,7 @@ async function loadCompare(){
     const id=compareList[i];
     if(!id){
       el.innerHTML=`<div class="compare-empty">
-        <div style="font-size:32px;"><span style="font-family:var(--serif);font-style:italic;font-size:18px;">—</span></div>
+        <div style="font-size:32px;">🎬</div>
         <div>Slot ${i+1} empty</div>
         <button class="compare-empty-btn" onclick="showPage('discover',document.querySelectorAll('.nav-tab')[0])">Browse Films →</button>
       </div>`;
@@ -1570,7 +1650,7 @@ async function loadCompare(){
       filmCache[id]=film;
       const t=film.title||'Untitled';
       const yr=(film.release_date||'').slice(0,4);
-      const poster=film.poster_path?`<img class="compare-poster" src="${IMG}w342${film.poster_path}">`:`<div class="compare-poster-ph"><span style="font-family:var(--serif);font-style:italic;font-size:18px;">—</span></div>`;
+      const poster=film.poster_path?`<img class="compare-poster" src="${IMG}w342${film.poster_path}">`:`<div class="compare-poster-ph">🎬</div>`;
       el.innerHTML=`${poster}
         <div class="compare-film-title">${t}</div>
         <div class="compare-film-meta">${yr} · ${film.runtime||'—'} min · ${(film.genres||[]).map(g=>g.name).slice(0,2).join(' · ')}</div>
@@ -1581,7 +1661,7 @@ async function loadCompare(){
   if(compareList[0]&&compareList[1]&&filmCache[compareList[0]]&&filmCache[compareList[1]]){
     const a=filmCache[compareList[0]],b=filmCache[compareList[1]];
     const stats=[
-      {lbl:'Score',a:a.vote_average?.toFixed(1)||'—',b:b.vote_average?.toFixed(1)||'—',aNum:a.vote_average||0,bNum:b.vote_average||0,higher:true},
+      {lbl:'Score',a:fmt05(a.vote_average),b:fmt05(b.vote_average),aNum:a.vote_average||0,bNum:b.vote_average||0,higher:true},
       {lbl:'Votes',a:(a.vote_count||0).toLocaleString(),b:(b.vote_count||0).toLocaleString(),aNum:a.vote_count||0,bNum:b.vote_count||0,higher:true},
       {lbl:'Popularity',a:Math.round(a.popularity||0),b:Math.round(b.popularity||0),aNum:a.popularity||0,bNum:b.popularity||0,higher:true},
       {lbl:'Runtime',a:(a.runtime||0)+' min',b:(b.runtime||0)+' min',aNum:a.runtime||0,bNum:b.runtime||0,higher:null},
@@ -1644,13 +1724,13 @@ async function openFilm(id,mt='movie'){
     const stars=[1,2,3,4,5].map(n=>`<span class="star${myR>=n?' lit':''}" onclick="rateFilm(${id},${n})" data-n="${n}">★</span>`).join('');
     const backdrop=film.backdrop_path
       ?`<img class="modal-backdrop" src="${IMG}w780${film.backdrop_path}" alt="">`
-      :`<div class="modal-backdrop-ph"><span style="font-family:var(--serif);font-style:italic;font-size:18px;">—</span></div>`;
+      :`<div class="modal-backdrop-ph">🎬</div>`;
     const poster=film.poster_path
       ?`<img class="modal-poster" src="${IMG}w185${film.poster_path}" alt="">`
-      :`<div class="modal-poster-ph"><span style="font-family:var(--serif);font-style:italic;font-size:18px;">—</span></div>`;
+      :`<div class="modal-poster-ph">🎬</div>`;
     const simFilms=(similar.results||[]).filter(s=>s.poster_path).slice(0,6);
     const simHtml=simFilms.length?`
-      <div class="modal-section-label">In conversation with</div>
+      <div class="modal-section-label">If You Liked This</div>
       <div class="modal-similar">${simFilms.map(s=>`
         <div class="sim-card" onclick="openFilm(${s.id},'movie')">
           <img class="sim-poster" src="${IMG}w185${s.poster_path}" loading="lazy">
@@ -1666,21 +1746,21 @@ async function openFilm(id,mt='movie'){
             <div class="modal-title">${t}</div>
             <div class="modal-meta">${yr}${rt?' · '+rt:''}${gnames?' · '+gnames:''}</div>
             <div class="modal-scores">
-              <div class="mscore"><div class="mscore-val">${film.vote_average?film.vote_average.toFixed(1):'—'}</div><div class="mscore-label">Score</div></div>
+              <div class="mscore"><div class="mscore-val">${fmt05(film.vote_average)}</div><div class="mscore-label">Score</div></div>
               <div class="mscore"><div class="mscore-val">${film.vote_count?(film.vote_count/1000).toFixed(0)+'k':'—'}</div><div class="mscore-label">Votes</div></div>
               ${myR?`<div class="mscore"><div class="mscore-val" style="color:var(--gold);">${myR}★</div><div class="mscore-label">Yours</div></div>`:''}
             </div>
             <div class="star-row" id="stars-${id}">${stars}</div>
-            ${dirs.length?`<div class="modal-section-label" style="margin-top:8px;">Directed by</div><div style="display:flex;gap:5px;flex-wrap:wrap;">${dirs.map(d=>`<span class="cast-pill" onclick="openPerson(${d.id})">${d.name}</span>`).join('')}</div>`:''}
+            ${dirs.length?`<div class="modal-section-label" style="margin-top:8px;">Directed by</div><div style="display:flex;gap:5px;flex-wrap:wrap;">${dirs.map(d=>`<span class="cast-pill">${d.name}</span>`).join('')}</div>`:''}
           </div>
         </div>
         ${film.overview?`<div class="modal-overview">${film.overview}</div>`:''}
-        ${cast.length?`<div class="modal-section-label">Cast</div><div class="modal-cast">${cast.map(c=>`<span class="cast-pill" onclick="openPerson(${c.id})">${c.name}</span>`).join('')}</div>`:''}
+        ${cast.length?`<div class="modal-section-label">Cast</div><div class="modal-cast">${cast.map(c=>`<span class="cast-pill">${c.name}</span>`).join('')}</div>`:''}
         <div class="modal-actions">
-          <button class="mact-btn ${isSeen?'btn-seen':'btn-seen inactive'}" onclick="toggleSeen(${id})">${isSeen?'Seen':'Mark as seen'}</button>
-          <button class="mact-btn ${isWL?'btn-wl':'btn-wl inactive'}" onclick="toggleWL(${id})">${isWL?'On watchlist':'Add to watchlist'}</button>
+          <button class="mact-btn ${isSeen?'btn-seen':'btn-seen inactive'}" onclick="toggleSeen(${id})">${isSeen?'✓ Seen':'Mark Seen'}</button>
+          <button class="mact-btn ${isWL?'btn-wl':'btn-wl inactive'}" onclick="toggleWL(${id})">${isWL?'✓ On Watchlist':'+ Watchlist'}</button>
         </div>
-        <button class="mact-btn btn-compare" onclick="addToCompare(${id});">Add to comparison</button>
+        <button class="mact-btn btn-compare" onclick="addToCompare(${id});">⚖ Add to Compare</button>
         ${simHtml}
       </div>`;
   }catch(e){content.innerHTML='<div class="loading-box">Failed to load film.</div>';}
@@ -1699,7 +1779,7 @@ function rateFilm(id,n){
   syncToCloud();
   const row=document.getElementById(`stars-${id}`);
   if(row) row.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('lit',i<n));
-  toast(n?`Rated ${n}★`:'Rating cleared');
+  toast(n?`Rated ${fmt05(n*2)} / 10`:'Rating cleared');
 }
 
 function toggleSeen(id){
@@ -1740,7 +1820,7 @@ async function openPerson(id){
     const [p,cr]=await Promise.all([api(`/person/${id}`),api(`/person/${id}/combined_credits`)]);
     const photo=p.profile_path
       ?`<img class="person-photo" src="${IMG}w185${p.profile_path}" alt="">`
-      :`<div class="person-photo-ph"><span style="font-family:var(--serif);font-style:italic;">·</span></div>`;
+      :`<div class="person-photo-ph">👤</div>`;
     const dept=p.known_for_department||'Acting';
 
     let raw=[];
@@ -1760,7 +1840,7 @@ async function openPerson(id){
     const chrono=[...films].filter(f=>f.release_date||f.first_air_date)
       .sort((a,b)=>(a.release_date||a.first_air_date||'').localeCompare(b.release_date||b.first_air_date||''));
 
-    const avg=films.length?(films.reduce((s,f)=>s+(f.vote_average||0),0)/films.length).toFixed(1):'—';
+    const avg=films.length?fmt05(films.reduce((s,f)=>s+(f.vote_average||0),0)/films.length):'—';
     const best=films.length?films[0]:null;
 
     let arcSvg='';
@@ -1774,7 +1854,7 @@ async function openPerson(id){
         const yr=(f.release_date||f.first_air_date||'').slice(0,4);
         const isHigh=(f.vote_average||0)>=7.5;
         return `<circle cx="${x.toFixed(1)}" cy="${ys[i].toFixed(1)}" r="${isHigh?4:3}" fill="${isHigh?'#b06030':'#8a7e72'}" stroke="#faf9f7" stroke-width="1.5" style="cursor:pointer;" onclick="openFilm(${f.id},'${f.media_type||'movie'}')">
-          <title>${(f.title||f.name||'').replace(/"/g,'')} (${yr}) — ${(f.vote_average||0).toFixed(1)}</title></circle>`;
+          <title>${(f.title||f.name||'').replace(/"/g,'')} (${yr}) — ${fmt05(f.vote_average||0)}</title></circle>`;
       }).join('');
       const refY=H-P-0.7*(H-P*2);
       arcSvg=`<div class="career-arc">
@@ -1798,7 +1878,7 @@ async function openPerson(id){
           <div class="person-stats">
             <div class="pstat"><div class="pstat-val">${films.length}</div><div class="pstat-label">Films</div></div>
             <div class="pstat"><div class="pstat-val">${avg}</div><div class="pstat-label">Avg Score</div></div>
-            ${best?`<div class="pstat"><div class="pstat-val">${(best.vote_average||0).toFixed(1)}</div><div class="pstat-label">Best</div></div>`:''}
+            ${best?`<div class="pstat"><div class="pstat-val">${fmt05(best.vote_average||0)}</div><div class="pstat-label">Best</div></div>`:''}
             ${p.birthday?`<div class="pstat"><div class="pstat-val">${new Date().getFullYear()-parseInt(p.birthday.slice(0,4))}</div><div class="pstat-label">Age</div></div>`:''}
           </div>
         </div>
@@ -1892,7 +1972,7 @@ function renderCanonPeople(list,role){
   el.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;">'+top.map((p,i)=>{
     const img=p.person.profile_path
       ?`<img src="${IMG}w185${p.person.profile_path}" style="width:100%;aspect-ratio:1;border-radius:50%;object-fit:cover;border:2px solid var(--border);transition:border-color 0.15s;">`
-      :`<div style="width:100%;aspect-ratio:1;border-radius:50%;background:var(--panel);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--text3);"><span style="font-family:var(--serif);font-style:italic;">·</span></div>`;
+      :`<div style="width:100%;aspect-ratio:1;border-radius:50%;background:var(--panel);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--text3);">👤</div>`;
     const topFilms=p.films.slice(0,3).map(f=>f.film.title||f.film.name).filter(Boolean).slice(0,2).join(' · ');
     return `<div onclick="openPerson(${p.person.id})" style="cursor:pointer;text-align:center;position:relative;" onmouseover="this.querySelector('img,div[style*=\\'border-radius:50%\\']').style.borderColor='var(--accent)'" onmouseout="this.querySelector('img,div[style*=\\'border-radius:50%\\']').style.borderColor='var(--border)'">
       <div style="position:absolute;top:4px;left:4px;background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:11px;padding:2px 6px;z-index:2;line-height:1;">${i+1}</div>
@@ -1961,7 +2041,7 @@ async function searchPeople(q){
     const data=await api('/search/person',{query:q});
     res.innerHTML=data.results.slice(0,10).map(p=>`
       <div onclick="openPerson(${p.id})" style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;" onmouseover="this.style.background='var(--panel)'" onmouseout="this.style.background=''">
-        ${p.profile_path?`<img src="${IMG}w92${p.profile_path}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;">`:`<div style="width:38px;height:38px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:16px;"><span style="font-family:var(--serif);font-style:italic;">·</span></div>`}
+        ${p.profile_path?`<img src="${IMG}w92${p.profile_path}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;">`:`<div style="width:38px;height:38px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>`}
         <div>
           <div style="font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--text);">${p.name}</div>
           <div style="font-size:10px;color:var(--text3);">${p.known_for_department||'Actor'} · ${(p.known_for||[]).map(f=>f.title||f.name).slice(0,2).join(' · ')}</div>
@@ -2020,7 +2100,7 @@ async function renderFgTabContent(){
         <div class="taste-card">
           <div class="taste-card-head">Films Rated</div>
           <div class="taste-big">${Object.keys(myRatings).length}</div>
-          <div class="taste-big-sub">${getMyAvgRating()}★ average</div>
+          <div class="taste-big-sub">${getMyAvgRating()} / 10 average</div>
         </div>
         <div class="taste-card">
           <div class="taste-card-head">Oscars Awarded</div>
@@ -2060,7 +2140,7 @@ async function renderFgTabContent(){
       const r=myRatings[f.id];
       const t=f.title||f.name||'Untitled';
       const yr=(f.release_date||'').slice(0,4);
-      const poster=f.poster_path?`<img src="${IMG}w342${f.poster_path}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`:`<div class="film-poster-ph"><span style="font-family:var(--serif);font-style:italic;font-size:18px;">—</span></div>`;
+      const poster=f.poster_path?`<img src="${IMG}w342${f.poster_path}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`:`<div class="film-poster-ph">🎬</div>`;
       return `<div class="film-card" onclick="openFilm(${f.id},'movie')">
         <div class="film-poster">${poster}<div class="film-score-badge" style="background:rgba(154,120,48,0.95);color:var(--bg2);">${'★'.repeat(r)}</div></div>
         <div class="film-info"><div class="film-title">${t}</div><div class="film-meta">${yr}</div></div>
@@ -2110,9 +2190,9 @@ async function renderFgTabContent(){
       const topDecades=Object.entries(decadeCount).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
       const maxD=Math.max(...Object.values(decadeCount),1);
 
-      const avgScore=valid.length?(valid.reduce((s,f)=>s+(f.vote_average||0),0)/valid.length).toFixed(1):'—';
+      const avgScore=valid.length?fmt05(valid.reduce((s,f)=>s+(f.vote_average||0),0)/valid.length):'—';
       const ratedFilms=Object.values(myRatings);
-      const myAvg=ratedFilms.length?(ratedFilms.reduce((a,b)=>a+b,0)/ratedFilms.length).toFixed(1):'—';
+      const myAvg=ratedFilms.length?fmt05((ratedFilms.reduce((a,b)=>a+b,0)/ratedFilms.length)*2):'—';
       const myFavs=Object.entries(myRatings).sort((a,b)=>b[1]-a[1]).slice(0,1);
       const favFilm=myFavs.length?valid.find(f=>f.id===parseInt(myFavs[0][0])):null;
 
@@ -2165,7 +2245,7 @@ async function renderFgTabContent(){
 
 function getMyAvgRating(){
   const r=Object.values(myRatings);
-  return r.length?(r.reduce((a,b)=>a+b,0)/r.length).toFixed(1):'—';
+  return r.length?fmt05((r.reduce((a,b)=>a+b,0)/r.length)*2):'—';
 }
 
 function countOscars(){
@@ -2187,9 +2267,9 @@ function renderOscars(){
     if(o){
       let img;
       if(cat.type==='film'){
-        img=o.poster_path?`<img class="oscar-poster" src="${IMG}w185${o.poster_path}" alt="">`:`<div class="oscar-poster-ph"><span style="font-family:var(--serif);font-style:italic;font-size:18px;">—</span></div>`;
+        img=o.poster_path?`<img class="oscar-poster" src="${IMG}w185${o.poster_path}" alt="">`:`<div class="oscar-poster-ph">🎬</div>`;
       } else {
-        img=o.profile_path?`<img class="oscar-img" src="${IMG}w185${o.profile_path}" alt="">`:`<div class="oscar-img-ph"><span style="font-family:var(--serif);font-style:italic;">·</span></div>`;
+        img=o.profile_path?`<img class="oscar-img" src="${IMG}w185${o.profile_path}" alt="">`:`<div class="oscar-img-ph">👤</div>`;
       }
       const yr=cat.type==='film'&&o.release_date?` (${o.release_date.slice(0,4)})`:'';
       return `<div class="oscar-card" onclick="openOscarPicker('${cat.key}')">
@@ -2260,10 +2340,10 @@ function renderPickerFilms(films){
   list.innerHTML=films.length?films.map(f=>{
     const t=f.title||f.name||'Untitled';
     const yr=(f.release_date||'').slice(0,4);
-    const poster=f.poster_path?`<img class="picker-poster-thumb" src="${IMG}w92${f.poster_path}">`:`<div class="picker-row-ph" style="width:34px;height:50px;border-radius:0;"><span style="font-family:var(--serif);font-style:italic;font-size:18px;">—</span></div>`;
+    const poster=f.poster_path?`<img class="picker-poster-thumb" src="${IMG}w92${f.poster_path}">`:`<div class="picker-row-ph" style="width:34px;height:50px;border-radius:0;">🎬</div>`;
     return `<div class="picker-row" onclick='setOscar(${JSON.stringify({id:f.id,title:t,poster_path:f.poster_path||null,release_date:f.release_date||""}).replace(/'/g,"&apos;")})'>
       ${poster}
-      <div><div class="picker-row-name">${t}</div><div class="picker-row-meta">${yr}${f.vote_average?' · '+f.vote_average.toFixed(1):''}</div></div>
+      <div><div class="picker-row-name">${t}</div><div class="picker-row-meta">${yr}${f.vote_average?' · '+fmt05(f.vote_average):''}</div></div>
     </div>`;
   }).join(''):'<div class="no-results" style="padding:14px;">No results</div>';
 }
@@ -2271,7 +2351,7 @@ function renderPickerFilms(films){
 function renderPickerPeople(people){
   const list=document.getElementById('picker-list');
   list.innerHTML=people.length?people.map(p=>{
-    const img=p.profile_path?`<img src="${IMG}w92${p.profile_path}">`:`<div class="picker-row-ph"><span style="font-family:var(--serif);font-style:italic;">·</span></div>`;
+    const img=p.profile_path?`<img src="${IMG}w92${p.profile_path}">`:`<div class="picker-row-ph">👤</div>`;
     const known=(p.known_for||[]).map(f=>f.title||f.name).slice(0,2).join(' · ');
     return `<div class="picker-row" onclick='setOscar(${JSON.stringify({id:p.id,name:p.name,profile_path:p.profile_path||null}).replace(/'/g,"&apos;")})'>
       ${img}
@@ -2333,15 +2413,6 @@ function showPage(id,el){
   if(id==='rankings') loadRankings();
   if(id==='debate') loadDebate();
   if(id==='compare') loadCompare();
-  if(id==='people'){
-    document.getElementById('person-detail').style.display='none';
-    document.getElementById('people-results').style.display='none';
-    document.getElementById('people-suggestions').style.display='';
-    // Load canon people on first visit (cached after)
-    if(currentPeopleMode==='canon'&&!_cinephilePeopleCache){
-      loadCanonPeople();
-    }
-  }
   window.scrollTo(0,0);
 }
 
