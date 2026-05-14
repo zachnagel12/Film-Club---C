@@ -7591,13 +7591,17 @@ async function renderProfileClubsTab(d){
   function clubRow(c){
     const youAreIn=myMemberIds.has(c.id);
     const isCreator=c.created_by===currentUser.id; // not loaded; safe-default false
+    // event.stopPropagation() prevents the click from bubbling to the
+    // parent .profile-club-info which also calls openClub — without this
+    // tapping the button fires its handler AND the parent's, racing two
+    // openClub calls and producing weird half-renders.
     let actionBtn='';
     if(youAreIn){
-      actionBtn=`<button class="profile-club-action" onclick="openClub('${c.id}','${escapeJs(c.name)}')">Open</button>`;
+      actionBtn=`<button class="profile-club-action" onclick="event.stopPropagation();openClub('${c.id}','${escapeJs(c.name)}')">Open</button>`;
     } else if(myPendingRequestIds.has(c.id)){
-      actionBtn=`<button class="profile-club-action pending" onclick="cancelJoinRequest('${c.id}')" title="Tap to cancel your request">Pending</button>`;
+      actionBtn=`<button class="profile-club-action pending" onclick="event.stopPropagation();cancelJoinRequest('${c.id}')" title="Tap to cancel your request">Pending</button>`;
     } else {
-      actionBtn=`<button class="profile-club-action primary" onclick="requestJoinClub('${c.id}','${escapeJs(c.name)}')">Request to join</button>`;
+      actionBtn=`<button class="profile-club-action primary" onclick="event.stopPropagation();requestJoinClub('${c.id}','${escapeJs(c.name)}')">Request to join</button>`;
     }
     const subLine=c.is_public?'Public':(d.areFriends?'Private \u2014 visible because you\u2019re friends':'Private');
     return `<div class="profile-club-card">
@@ -8038,6 +8042,22 @@ async function submitJoinClubAsRequest(){
 // --- Club detail view ---
 async function openClub(clubId,clubName){
   _currentClubId=clubId;
+  // Make sure we're actually viewing the Clubs page — openClub can be invoked
+  // from elsewhere in the app (e.g. a friend's profile, the user-search modal,
+  // an invite link). Without this jump, openClub silently writes its content
+  // into the hidden #page-clubs and the user sees nothing change.
+  if(typeof showPage==='function'){
+    const tabs=document.querySelectorAll('.nav-tab');
+    showPage('clubs', tabs && tabs[2]);
+  }
+  // Default to the Clubs sub-tab (not Friends) so the back-arrow lands the
+  // user on their clubs grid, which is the expected back-target when they're
+  // viewing a club's detail.
+  _clubsSubtab='clubs';
+  // Sync the visual state of the sub-tab buttons in case they're in the DOM
+  document.querySelectorAll('.clubs-subtab').forEach(b=>b.classList.remove('active'));
+  const clubsTabBtn=document.getElementById('clubs-subtab-clubs');
+  if(clubsTabBtn) clubsTabBtn.classList.add('active');
   const body=document.getElementById('clubs-body');
   body.innerHTML='<div class="loading-box">Loading club…</div>';
   try{
