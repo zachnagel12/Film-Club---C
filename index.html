@@ -1206,6 +1206,20 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .club-settings-hint{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text3);font-weight:300;letter-spacing:0;text-transform:none;margin-left:8px;font-style:italic;}
 .club-settings-error{color:var(--red);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.06em;min-height:14px;margin-bottom:10px;}
 .club-settings-actions{margin-bottom:8px;}
+
+/* Manage members list inside settings — compact row per member with
+   their avatar, name, join date, and a kick button. The creator's own
+   row has no kick button (use Delete club instead) and a "(you)" tag. */
+.cs-member-list{display:grid;gap:6px;}
+.cs-member-empty{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text3);font-style:italic;padding:8px 0;}
+.cs-member-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);}
+.cs-member-avatar{width:32px;height:32px;background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cs-member-info{flex:1;min-width:0;}
+.cs-member-name{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);line-height:1.15;}
+.cs-member-self{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-left:6px;}
+.cs-member-joined{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-top:2px;font-weight:600;}
+.cs-member-remove{flex-shrink:0;width:30px;height:30px;background:transparent;border:1px solid var(--border2);color:var(--text3);font-family:'Russo One',sans-serif;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all 0.12s;}
+.cs-member-remove:hover{border-color:var(--red);color:var(--red);}
 @media (max-width:740px){
   .club-settings-wrap{padding:14px;}
   .club-settings-section{margin-bottom:18px;}
@@ -8376,6 +8390,13 @@ async function openClubSettings(clubId){
         </div>
       </div>
 
+      <!-- MANAGE MEMBERS -->
+      <div class="club-settings-section">
+        <div class="club-settings-label">Members</div>
+        <div class="club-perm-hint">Tap \u00d7 to remove a member. Their ratings in this club will be cleared. Films they posted stay.</div>
+        <div class="cs-member-list" id="cs-member-list"></div>
+      </div>
+
       <div class="club-settings-error" id="cs-error"></div>
       <div class="club-settings-actions">
         <button class="club-modal-submit" id="cs-save" onclick="saveClubSettings('${c.id}')">Save changes</button>
@@ -8391,6 +8412,80 @@ async function openClubSettings(clubId){
   `;
   // Local mirror of the toggle state — read by saveClubSettings
   _csIsPublic = !!c.is_public;
+  // Render the manage-members list
+  renderCsMemberList();
+}
+
+// Render the kickable member list inside the settings page. The current
+// user (the creator) appears with a "(you)" tag and no remove button.
+// Everyone else gets a small \u00d7 button.
+function renderCsMemberList(){
+  const list = document.getElementById('cs-member-list');
+  if(!list) return;
+  const members = _currentClubData?.members || [];
+  const clubId = _currentClubData?.club?.id;
+  if(!members.length){
+    list.innerHTML = '<div class="cs-member-empty">No members yet.</div>';
+    return;
+  }
+  // Stable order: creator first (you), then others alphabetical by name
+  const me = currentUser.id;
+  const sorted = members.slice().sort((a,b)=>{
+    if(a.user_id===me) return -1;
+    if(b.user_id===me) return 1;
+    return (a.display_name||'').localeCompare(b.display_name||'');
+  });
+  list.innerHTML = sorted.map(m=>{
+    const isMe = m.user_id===me;
+    const removeBtn = isMe ? '' :
+      `<button class="cs-member-remove" title="Remove from club" onclick="kickClubMember('${clubId}','${m.user_id}','${escapeJs(m.display_name||'this member')}')">\u00d7</button>`;
+    return `<div class="cs-member-row">
+      <div class="cs-member-avatar">${initialsFor(m.display_name||'?')}</div>
+      <div class="cs-member-info">
+        <div class="cs-member-name">${escapeHtml(m.display_name||'Member')}${isMe?' <span class="cs-member-self">(you)</span>':''}</div>
+        <div class="cs-member-joined">Joined ${formatRelative(m.joined_at)}</div>
+      </div>
+      ${removeBtn}
+    </div>`;
+  }).join('');
+}
+
+// Kick a member. Confirmation required. The RPC enforces creator-only and
+// also clears the kicked user's ratings in this club so their scores don't
+// keep skewing the group average.
+async function kickClubMember(clubId, userId, name){
+  if(!confirm(`Remove "${name}" from this club?\n\nTheir ratings in this club will be cleared. Films they posted will stay.`)) return;
+  try{
+    const {data,error} = await sb.rpc('remove_club_member', {
+      p_club_id: clubId,
+      p_user_id: userId,
+    });
+    if(error){
+      if(isMissingFunctionError(error)){
+        toast('Member-kick needs the latest schema. Re-run clubs-schema.sql in Supabase.');
+        return;
+      }
+      throw error;
+    }
+    const cleared = data || 0;
+    toast(`Removed ${name}${cleared>0?` (${cleared} rating${cleared===1?'':'s'} cleared)`:''}`);
+    // Re-fetch the club so the members strip + settings list update.
+    // Re-open the settings page (not the club detail) so the creator
+    // stays in the management flow.
+    try{
+      const [{data:members},{data:films},{data:ratings}] = await Promise.all([
+        sb.from('club_members').select('user_id,display_name,joined_at').eq('club_id',clubId),
+        sb.from('club_films').select('film_id,posted_by_id,posted_by_name,film_title,film_year,film_poster,posted_at').eq('club_id',clubId),
+        sb.from('club_ratings').select('film_id,user_id,user_name,rating').eq('club_id',clubId),
+      ]);
+      _currentClubData.members = members || [];
+      _currentClubData.films = films || [];
+      _currentClubData.ratings = ratings || [];
+      renderCsMemberList();
+    }catch(e){/* page is still useful even if refresh fails */}
+  }catch(e){
+    toast('Could not remove: '+((e&&e.message)||''));
+  }
 }
 
 // Local visibility toggle state for the settings page (NOT to be confused
