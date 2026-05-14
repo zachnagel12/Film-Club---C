@@ -3886,9 +3886,20 @@ async function renderTasteMode(body){
       </div>`;
     return;
   }
+  // Compute the same top-15% subset that generateTasteRecs will use, just
+  // so the intro text honestly states what's driving the recommendations.
+  const ratedSorted=Object.entries(myRatings).filter(([,r])=>r>0).sort((a,b)=>b[1]-a[1]);
+  const cutoffIdx=Math.max(0,Math.floor(ratedSorted.length*0.15)-1);
+  const cutoffRating=ratedSorted[cutoffIdx]?ratedSorted[cutoffIdx][1]:0;
+  let seedCount=ratedSorted.filter(([,r])=>r>=cutoffRating).length;
+  if(seedCount<5) seedCount=Math.min(5,ratedSorted.length);
+  if(seedCount>20) seedCount=20;
+  const driverText=ratedSorted.length>=7
+    ? `Built from your <b>top ${seedCount}</b> rated film${seedCount===1?'':'s'} (the top 15% of your ${ratedSorted.length} ratings), weighted heavily toward your absolute favorites.`
+    : `Built from your <b>${ratedSorted.length}</b> rated film${ratedSorted.length===1?'':'s'}, weighted heavily toward your favorites. Rate more films to get sharper recommendations.`;
   body.innerHTML=`
     <div class="foryou-intro">
-      <div class="foryou-intro-text">Built from your <b>${ratedIds.length}</b> rated film${ratedIds.length===1?'':'s'}, weighted toward what you scored highest. Anything you've already seen or have on your watchlist is filtered out.</div>
+      <div class="foryou-intro-text">${driverText} Anything you've already seen or have on your watchlist is filtered out.</div>
       <button class="foryou-refresh" onclick="generateTasteRecs(true)">\u21BB Regenerate</button>
     </div>
     <div id="foryou-results"><div class="loading-box">Building recommendations\u2026</div></div>`;
@@ -3906,13 +3917,40 @@ async function generateTasteRecs(force){
     const res=document.getElementById('foryou-results');
     if(res) res.innerHTML='<div class="loading-box">Building recommendations\u2026</div>';
   }
-  // Take top 8 rated films by rating (descending)
-  const ratedSorted=Object.entries(myRatings)
+  // HEAVY skew toward the top 15% of personal ratings.
+  //
+  // Strategy: pick seeds whose rating is at or above the 85th-percentile of
+  // the user's own rated films, then weight each seed by rating CUBED so the
+  // absolute favorites dominate the recommendation signal. This means the
+  // user's 9.5 doesn't just barely outweigh their 7.5 — it's about 2x as
+  // influential. Films rated below the user's personal "great" line don't
+  // factor in at all.
+  //
+  // Bounds: floor of 5 seeds (so a user with only 6 ratings still has a
+  // workable signal), ceiling of 20 (so a power user with 500 ratings
+  // doesn't trigger 60+ TMDB calls).
+  const allRated=Object.entries(myRatings)
     .filter(([,r])=>r>0)
-    .sort((a,b)=>b[1]-a[1])
-    .slice(0,8);
-  if(!ratedSorted.length){return;}
-  const sources=ratedSorted.map(([id,rating])=>({id:parseInt(id),weight:rating/10}));
+    .sort((a,b)=>b[1]-a[1]);
+  if(!allRated.length){return;}
+
+  // Compute the 85th-percentile rating. With sorted-descending values,
+  // the 85th-percentile cutoff is at index floor(N * 0.15).
+  const ratings=allRated.map(([,r])=>r);
+  const cutoffIdx=Math.max(0,Math.floor(ratings.length*0.15)-1);
+  const cutoffRating=ratings[cutoffIdx];
+  // Films at or above this rating are in the top 15%
+  let topSeeds=allRated.filter(([,r])=>r>=cutoffRating);
+  // Enforce floor (5) and ceiling (20)
+  if(topSeeds.length<5) topSeeds=allRated.slice(0,Math.min(5,allRated.length));
+  if(topSeeds.length>20) topSeeds=topSeeds.slice(0,20);
+
+  // CUBIC weighting: 9.5 → 0.857, 9.0 → 0.729, 8.0 → 0.512, 7.5 → 0.422.
+  // Heavily compresses lower-rated seeds, lets the top film dominate.
+  const sources=topSeeds.map(([id,rating])=>({
+    id:parseInt(id),
+    weight:Math.pow(rating/10,3),
+  }));
   const recs=await accumulateRecs(sources);
   _foryouCache.taste=recs;
   renderRecResults(recs);
