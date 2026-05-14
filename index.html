@@ -1265,6 +1265,21 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .import-summary{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:10px;}
 .import-summary-stat{font-family:'Russo One',sans-serif;font-size:15px;color:var(--accent);}
 .import-summary-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-left:4px;}
+
+/* Unmatched-titles callout — shown after match completes when one or more
+   titles failed to resolve. Surfaces the exact strings so users can see
+   which entries in their source data need correction. */
+.import-unmatched{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:12px 14px;margin-bottom:12px;}
+.import-unmatched-head{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;}
+.import-unmatched-count{font-family:'Russo One',sans-serif;font-size:20px;color:var(--red);line-height:1.0;}
+.import-unmatched-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text);font-weight:600;}
+.import-unmatched-help{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text2);line-height:1.45;font-weight:300;margin-bottom:10px;}
+.import-unmatched-list{max-height:200px;overflow-y:auto;border-top:1px solid var(--border);}
+.import-unmatched-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);}
+.import-unmatched-row:last-child{border-bottom:none;}
+.import-unmatched-title{flex:1;font-family:'Oswald',sans-serif;font-size:12px;color:var(--text);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.import-unmatched-year{font-family:'Oswald',sans-serif;font-size:10px;color:var(--text3);letter-spacing:0.04em;flex-shrink:0;}
+.import-unmatched-rating{font-family:'Russo One',sans-serif;font-size:12px;color:var(--text3);flex-shrink:0;}
 .import-actions{display:flex;gap:8px;margin-top:12px;}
 .import-actions .btn-secondary{flex:1;padding:9px;background:transparent;border:1px solid var(--border2);color:var(--text2);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;}
 .import-actions .btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
@@ -6269,6 +6284,7 @@ async function runImport(items){
   }
 
   const matched=matches.filter(m=>m.film);
+  const unmatched=matches.filter(m=>!m.film);
   const withRating=matched.filter(m=>m.rating!=null);
   // Detect ratings that got snapped to 0.5
   const snapped=matched.filter(m=>
@@ -6276,17 +6292,46 @@ async function runImport(items){
     Math.abs(m.rating-m.originalRating)>1e-9
   );
   document.getElementById('ix-status').textContent=
-    `${matched.length} matched · ${matches.length-matched.length} unmatched · ${withRating.length} with ratings${truncated?` · (capped at ${CAP})`:''}`;
+    `${matched.length} matched · ${unmatched.length} unmatched · ${withRating.length} with ratings${truncated?` · (capped at ${CAP})`:''}`;
 
   // Build summary + confirm buttons
   const summary=document.createElement('div');
   summary.style.marginTop='14px';
   const snapNotice=snapped.length?`<div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--text2);letter-spacing:0.04em;margin-bottom:10px;font-style:italic;font-weight:300;">${snapped.length} rating${snapped.length===1?'':'s'} rounded to the nearest 0.5 (e.g. 8.34 → 8.5)</div>`:'';
+
+  // Dedicated unmatched callout. When the import has failures, we list every
+  // unmatched title here so the user can see exactly what didn't resolve —
+  // instead of having to scroll back through the streaming results.
+  // Strict exact-match means punctuation, accents, or article-position
+  // differences cause misses, and the user benefits from seeing the literal
+  // strings to fix in their source data.
+  const unmatchedPanel=unmatched.length?`
+    <div class="import-unmatched">
+      <div class="import-unmatched-head">
+        <span class="import-unmatched-count">${unmatched.length}</span>
+        <span class="import-unmatched-label">title${unmatched.length===1?'':'s'} couldn\u2019t be matched on TMDB</span>
+      </div>
+      <div class="import-unmatched-help">
+        These titles will be skipped. The matcher requires an exact name match (case- and whitespace-insensitive). If a title here is close to what you meant, it may differ from TMDB by punctuation (\u201CMad Max Fury Road\u201D vs \u201CMad Max: Fury Road\u201D), an accent (\u201CAmelie\u201D vs \u201CAm\u00e9lie\u201D), or article position.
+      </div>
+      <div class="import-unmatched-list">
+        ${unmatched.map(m=>`
+          <div class="import-unmatched-row">
+            <span class="import-unmatched-title">${escapeHtml(m.title)}</span>
+            ${m.year?`<span class="import-unmatched-year">${m.year}</span>`:''}
+            ${m.rating!=null?`<span class="import-unmatched-rating">${fmt1(m.rating)}</span>`:''}
+          </div>
+        `).join('')}
+      </div>
+    </div>`:'';
+
   summary.innerHTML=`
     ${snapNotice}
+    ${unmatchedPanel}
     <div class="import-summary">
       <div><span class="import-summary-stat">${matched.length}</span><span class="import-summary-lbl">Will add to seen</span></div>
       <div><span class="import-summary-stat">${withRating.length}</span><span class="import-summary-lbl">With ratings</span></div>
+      ${unmatched.length?`<div><span class="import-summary-stat" style="color:var(--text3);">${unmatched.length}</span><span class="import-summary-lbl">Skipped</span></div>`:''}
     </div>
     <div class="import-actions">
       <button class="btn-secondary" onclick="closeImportModal()">Cancel</button>
