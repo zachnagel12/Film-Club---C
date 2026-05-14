@@ -842,11 +842,19 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 
 /* USER PROFILE PAGE */
 .profile-head{padding:20px 20px 0;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
+/* Compact mode used when the page is structured like My Filmography
+   (Oscars at the top, then tabs). Without compact, the head's padding
+   sits awkwardly next to the trophy card. */
+.profile-head.compact{padding:18px 20px 18px;}
 .profile-subtabs{display:flex;margin-top:14px;border-top:1px solid var(--border);}
 .profile-subtab{flex:1;padding:11px 14px;background:transparent;border:none;border-bottom:2px solid transparent;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;font-weight:600;transition:color 0.12s,border-color 0.12s;}
 .profile-subtab:hover{color:var(--text2);}
 .profile-subtab.active{color:var(--text);border-bottom-color:var(--accent);}
 .profile-subtab-count{display:inline-block;margin-left:4px;color:var(--text3);font-weight:400;}
+/* The 5-tab strip on the profile uses the same fg-tabs class as My Filmography.
+   This wrapper just scopes any tweaks we might want without affecting the
+   user's own filmography page. */
+.profile-oscars-wrap{margin:0 20px;}
 .profile-back{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;margin-bottom:14px;display:inline-block;}
 .profile-back:hover{color:var(--accent);}
 .profile-hero{display:flex;align-items:center;gap:16px;}
@@ -880,6 +888,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   .friends-strip{padding:12px 14px 4px;}
   .friends-list{grid-template-columns:1fr;}
   .profile-head{padding:14px 14px 12px;}
+  .profile-head.compact{padding:14px 14px 14px;}
+  .profile-oscars-wrap{margin:0 14px;}
   .profile-avatar{width:60px;height:60px;font-size:22px;}
   .profile-name{font-size:20px;}
   .profile-hero{gap:12px;}
@@ -7292,32 +7302,81 @@ async function openUserProfile(userId, opts){
     const topRated=Object.entries(ratings).sort((a,b)=>b[1]-a[1]).slice(0,1)[0];
     const clubs=(allClubs.data||[]).map(m=>m.clubs).filter(Boolean);
 
-    // Privacy framing for the Filmography tab. Friends + self see the
-    // full browsable list. Strangers see a privacy note.
+    // Privacy framing for the personal-data tabs (Seen / Rated / Watchlist).
+    // Aggregate views (Overview, Stats) are visible to everyone.
     const filmographyVisible = isSelf || areFriends;
+    const watchlistArr = Array.isArray(p.watchlist)?p.watchlist:[];
+
+    // First name for possessive labels — "Alice's Oscars" / "Alice's Activity"
+    const firstName = isSelf ? 'Your' : escapeHtml((p.display_name||'').split(' ')[0] || 'Their');
+    const possessive = isSelf ? 'Your' : `${firstName}\u2019s`;
+
+    // Oscar items to render in the trophy-header card at the top — same
+    // categories as My Filmography's My Oscars block.
+    const oscarCats=[
+      {key:'bestFilm',label:'Best Picture'},
+      {key:'bestDirector',label:'Best Director'},
+      {key:'bestActor',label:'Best Actor'},
+      {key:'bestActress',label:'Best Actress'},
+      {key:'bestCinematography',label:'Best Cinematography'},
+      {key:'bestSound',label:'Best Sound'},
+    ];
+    const oscarItems = oscarCats.filter(c=>oscars[c.key]).map(c=>({label:c.label,pick:oscars[c.key]}));
 
     body.innerHTML=`
-      <div class="profile-head">
+      <div class="profile-head compact">
         <div class="profile-back" onclick="showPage('clubs',document.querySelectorAll('.nav-tab')[2])">\u2190 Back to Clubs</div>
         <div class="profile-hero">
           <div class="profile-avatar">${initialsFor(p.display_name||'?')}</div>
           <div class="profile-hero-info">
             <div class="profile-name">${escapeHtml(p.display_name||'Unnamed user')}</div>
             <div class="profile-meta">${profileSeen.length} seen \u00b7 ${ratedCount} rated \u00b7 avg ${avgRating}/10</div>
-            <div class="profile-actions">${friendBtn}</div>
+            ${friendBtn?`<div class="profile-actions">${friendBtn}</div>`:''}
           </div>
         </div>
-        <div class="profile-subtabs">
-          <button class="profile-subtab ${_profileSubtab==='overview'?'active':''}" onclick="setProfileSubtab('overview')">Overview</button>
-          <button class="profile-subtab ${_profileSubtab==='filmography'?'active':''}" onclick="setProfileSubtab('filmography')">Filmography</button>
-          <button class="profile-subtab ${_profileSubtab==='clubs'?'active':''}" onclick="setProfileSubtab('clubs')">Clubs <span class="profile-subtab-count">${clubs.length}</span></button>
-        </div>
       </div>
-      <div id="profile-content"></div>
+
+      <!-- OSCARS — at the top, same trophy-card layout as My Filmography's My Oscars block -->
+      <div class="oscars-wrap profile-oscars-wrap">
+        <div class="oscars-header">
+          <div class="oscars-title-block">
+            <span class="oscars-trophy">\ud83c\udfc6</span>
+            <div>
+              <div class="oscars-title">${possessive} Oscars</div>
+              <div class="oscars-sub">${oscarItems.length?'The Lifetime Achievement Ballot':'No picks yet'}</div>
+            </div>
+          </div>
+        </div>
+        <div class="oscars-grid" id="profile-oscars-grid"></div>
+      </div>
+
+      <!-- TABS — match the 5 from My Filmography exactly: Overview / Seen / Rated / Watchlist / Stats -->
+      <div class="fg-tabs profile-fg-tabs">
+        <button class="fg-tab ${_profileSubtab==='overview'?'active':''}" data-tab="overview" onclick="setProfileSubtab('overview',this)">Overview</button>
+        <button class="fg-tab ${_profileSubtab==='seen'?'active':''}" data-tab="seen" onclick="setProfileSubtab('seen',this)">Seen <span class="fg-tab-count">${profileSeen.length}</span></button>
+        <button class="fg-tab ${_profileSubtab==='rated'?'active':''}" data-tab="rated" onclick="setProfileSubtab('rated',this)">Rated <span class="fg-tab-count">${ratedCount}</span></button>
+        <button class="fg-tab ${_profileSubtab==='watchlist'?'active':''}" data-tab="watchlist" onclick="setProfileSubtab('watchlist',this)">Watchlist <span class="fg-tab-count">${watchlistArr.length}</span></button>
+        <button class="fg-tab ${_profileSubtab==='stats'?'active':''}" data-tab="stats" onclick="setProfileSubtab('stats',this)">Stats</button>
+      </div>
+      <div class="fg-body" id="profile-content"></div>
     `;
 
+    // Render the Oscars grid at the top
+    document.getElementById('profile-oscars-grid').innerHTML = oscarItems.length
+      ? oscarItems.map(o=>{
+          const pick=o.pick;
+          const name=pick.name||pick.title||'\u2014';
+          const sub=pick.year||(pick.release_date||'').slice(0,4)||'';
+          return `<div class="profile-oscar-card">
+            <div class="profile-oscar-cat">${o.label}</div>
+            <div class="profile-oscar-pick">${escapeHtml(name)}</div>
+            <div class="profile-oscar-sub">${escapeHtml(sub)}</div>
+          </div>`;
+        }).join('')
+      : `<div class="profile-empty-sub" style="grid-column:1/-1;padding:14px 0;text-align:center;">${isSelf?'You haven\u2019t voted on any categories yet.':'Nothing voted on yet.'}</div>`;
+
     // Stash for sub-tab switches without refetching
-    _currentProfileData={p,isSelf,areFriends,profileSeen,ratings,oscars,topRated,clubs,filmographyVisible};
+    _currentProfileData={p,isSelf,areFriends,profileSeen,ratings,oscars,topRated,clubs,filmographyVisible,watchlist:watchlistArr,firstName,possessive,avgRating};
 
     renderProfileSubtab();
   }catch(e){
@@ -7327,169 +7386,127 @@ async function openUserProfile(userId, opts){
 
 let _currentProfileData=null;
 
-function setProfileSubtab(name){
+function setProfileSubtab(name, btn){
   _profileSubtab=name;
-  document.querySelectorAll('.profile-subtab').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.profile-subtab').forEach(b=>{
-    if(b.textContent.trim().toLowerCase().startsWith(name)) b.classList.add('active');
-  });
+  // Sync active class on tabs (data-tab attribute, not text matching)
+  document.querySelectorAll('.profile-fg-tabs .fg-tab').forEach(b=>b.classList.remove('active'));
+  const target = btn || document.querySelector(`.profile-fg-tabs .fg-tab[data-tab="${name}"]`);
+  if(target) target.classList.add('active');
   renderProfileSubtab();
 }
 
-function renderProfileSubtab(){
+// Render whichever sub-tab is active. Mirrors renderFgTabContent from
+// My Filmography in shape: same grids, score badges, loading box pattern,
+// and tab-by-tab content split. Seen / Rated / Watchlist are gated to
+// friends; Overview + Stats are visible to anyone (aggregate only).
+async function renderProfileSubtab(){
   const content=document.getElementById('profile-content');
   if(!content||!_currentProfileData) return;
   const d=_currentProfileData;
+  const ratedEntries=Object.entries(d.ratings).filter(([,r])=>r>0).sort((a,b)=>b[1]-a[1]);
+  const oscarsAwarded=Object.values(d.oscars||{}).filter(Boolean).length;
+
   if(_profileSubtab==='overview'){
-    // Two sections: their stats body + their Oscar picks
+    // Same 3-card Quick View shape as My Filmography → Overview
     content.innerHTML=`
-      <div id="profile-stats-body"><div class="loading-box">Crunching their taste\u2026</div></div>
-      <div id="profile-oscars-body"></div>`;
+      <div class="section-bar"><span class="section-title"><strong>Quick View</strong> \u00b7 ${d.possessive} Activity</span></div>
+      <div class="taste-grid">
+        <div class="taste-card">
+          <div class="taste-card-head">Films Seen</div>
+          <div class="taste-big">${d.profileSeen.length}</div>
+          <div class="taste-big-sub">${d.watchlist.length} on watchlist</div>
+        </div>
+        <div class="taste-card">
+          <div class="taste-card-head">Films Rated</div>
+          <div class="taste-big">${ratedEntries.length}</div>
+          <div class="taste-big-sub">${d.avgRating} / 10 average</div>
+        </div>
+        <div class="taste-card">
+          <div class="taste-card-head">Oscars Awarded</div>
+          <div class="taste-big">${oscarsAwarded}<span style="font-size:14px;color:var(--gold);"> / 6</span></div>
+          <div class="taste-big-sub">See the ballot above \u2191</div>
+        </div>
+      </div>
+      ${d.filmographyVisible?`
+        <div class="section-bar" style="margin-top:24px;"><span class="section-title"><strong>Recently Seen</strong></span></div>
+        <div id="profile-recent"><div class="loading-box">Loading\u2026</div></div>
+      `:''}`;
+    if(d.filmographyVisible){
+      const recent=d.profileSeen.slice(-12).reverse();
+      if(recent.length){
+        const films=await hydrateFilmList(recent);
+        document.getElementById('profile-recent').innerHTML=
+          `<div class="film-grid">${films.filter(Boolean).map(filmCard).join('')||'<div class="no-results">No films yet.</div>'}</div>`;
+      } else {
+        document.getElementById('profile-recent').innerHTML='<div class="watchlist-empty">Nothing seen yet.</div>';
+      }
+    }
+    return;
+  }
+
+  if(_profileSubtab==='seen'){
+    if(!d.filmographyVisible){content.innerHTML=privacyNote(d.firstName);return;}
+    if(!d.profileSeen.length){content.innerHTML='<div class="watchlist-empty">Nothing seen yet.</div>';return;}
+    content.innerHTML='<div class="film-grid"><div class="loading-box">Loading\u2026</div></div>';
+    const films=await hydrateFilmList(d.profileSeen.slice().reverse());
+    content.innerHTML=`<div class="film-grid">${films.filter(Boolean).map(filmCard).join('')}</div>`;
+    return;
+  }
+
+  if(_profileSubtab==='rated'){
+    if(!d.filmographyVisible){content.innerHTML=privacyNote(d.firstName);return;}
+    if(!ratedEntries.length){content.innerHTML='<div class="watchlist-empty">Nothing rated yet.</div>';return;}
+    content.innerHTML='<div class="film-grid"><div class="loading-box">Loading\u2026</div></div>';
+    const films=await hydrateFilmList(ratedEntries.map(([id])=>parseInt(id)));
+    content.innerHTML=`<div class="film-grid">${films.filter(Boolean).map(f=>{
+      const r=d.ratings[f.id];
+      const t=f.title||f.name||'Untitled';
+      const yr=(f.release_date||'').slice(0,4);
+      const poster=f.poster_path?`<img src="${IMG}w342${f.poster_path}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`:`<div class="film-poster-ph">\ud83c\udfac</div>`;
+      return `<div class="film-card" onclick="openFilm(${f.id},'movie')">
+        <div class="film-poster">${poster}<div class="film-score-badge" style="background:rgba(244,185,82,0.95);color:#1a1410;font-family:'Russo One',sans-serif;">${fmt1(r)}</div></div>
+        <div class="film-info"><div class="film-title">${t}</div><div class="film-meta">${yr}</div></div>
+      </div>`;
+    }).join('')}</div>`;
+    return;
+  }
+
+  if(_profileSubtab==='watchlist'){
+    if(!d.filmographyVisible){content.innerHTML=privacyNote(d.firstName);return;}
+    if(!d.watchlist.length){content.innerHTML='<div class="watchlist-empty">Nothing on the watchlist yet.</div>';return;}
+    content.innerHTML='<div class="film-grid"><div class="loading-box">Loading\u2026</div></div>';
+    const films=await hydrateFilmList(d.watchlist);
+    content.innerHTML=`<div class="film-grid">${films.filter(Boolean).map(filmCard).join('')}</div>`;
+    return;
+  }
+
+  if(_profileSubtab==='stats'){
+    if(!d.profileSeen.length && !ratedEntries.length){
+      content.innerHTML=`<div class="taste-empty">No activity to crunch yet.</div>`;
+      return;
+    }
+    // Reuse the existing stats crunch — it renders into #profile-stats-body
+    content.innerHTML='<div id="profile-stats-body"><div class="loading-box">Crunching their taste\u2026</div></div>';
     crunchProfileStats(d.p.user_id, d.profileSeen, d.ratings, d.topRated, d.oscars);
-    renderProfileOscars(d);
-  } else if(_profileSubtab==='filmography'){
-    renderProfileFilmography(d);
-  } else if(_profileSubtab==='clubs'){
-    renderProfileClubs(d);
-  }
-}
-
-function renderProfileOscars(d){
-  const body=document.getElementById('profile-oscars-body');
-  if(!body) return;
-  const oscarCats=[
-    {key:'bestFilm',label:'Best Picture'},
-    {key:'bestDirector',label:'Best Director'},
-    {key:'bestActor',label:'Best Actor'},
-    {key:'bestActress',label:'Best Actress'},
-    {key:'bestCinematography',label:'Best Cinematography'},
-    {key:'bestSound',label:'Best Sound'},
-  ];
-  const oscarItems=oscarCats.filter(c=>d.oscars[c.key]).map(c=>({label:c.label,pick:d.oscars[c.key]}));
-  if(!oscarItems.length){body.innerHTML='';return;}
-  body.innerHTML=`
-    <div class="profile-section">
-      <div class="profile-section-title">${d.isSelf?'Your':escapeHtml((d.p.display_name||'Their').split(' ')[0]+'\u2019s')} Oscars</div>
-      <div class="profile-oscars-grid">
-        ${oscarItems.map(o=>{
-          const pick=o.pick;
-          const name=pick.name||pick.title||'\u2014';
-          const sub=pick.year||(pick.release_date||'').slice(0,4)||'';
-          return `<div class="profile-oscar-card">
-            <div class="profile-oscar-cat">${o.label}</div>
-            <div class="profile-oscar-pick">${escapeHtml(name)}</div>
-            <div class="profile-oscar-sub">${escapeHtml(sub)}</div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-}
-
-function renderProfileClubs(d){
-  const content=document.getElementById('profile-content');
-  if(!content) return;
-  if(!d.clubs.length){
-    content.innerHTML=`<div class="profile-section">
-      <div class="profile-empty-sub">${d.isSelf?'You aren\u2019t in any clubs yet.':d.areFriends?'They aren\u2019t in any clubs yet.':'No public clubs to show.'}</div>
-    </div>`;
     return;
   }
-  // Friends + self see all clubs (public + private). Strangers see only
-  // the public ones (RLS enforces this; the array is already filtered).
-  const publicClubs=d.clubs.filter(c=>c.is_public);
-  const privateClubs=d.clubs.filter(c=>!c.is_public);
-  const sections=[];
-  if(publicClubs.length){
-    sections.push(`<div class="profile-section">
-      <div class="profile-section-title">Public Clubs (${publicClubs.length})</div>
-      <div class="profile-clubs-grid">
-        ${publicClubs.map(c=>`<div class="profile-club-card" onclick="openClub('${c.id}','${escapeJs(c.name)}')">
-          <div class="profile-club-name">${escapeHtml(c.name)}</div>
-          <div class="profile-club-meta">Public</div>
-        </div>`).join('')}
-      </div>
-    </div>`);
-  }
-  if(privateClubs.length){
-    sections.push(`<div class="profile-section">
-      <div class="profile-section-title">Private Clubs (${privateClubs.length})</div>
-      <div class="profile-clubs-grid">
-        ${privateClubs.map(c=>`<div class="profile-club-card" onclick="openClub('${c.id}','${escapeJs(c.name)}')">
-          <div class="profile-club-name">${escapeHtml(c.name)}</div>
-          <div class="profile-club-meta">Private \u2014 you can see this because you\u2019re friends</div>
-        </div>`).join('')}
-      </div>
-    </div>`);
-  }
-  content.innerHTML=sections.join('');
 }
 
-async function renderProfileFilmography(d){
-  const content=document.getElementById('profile-content');
-  if(!content) return;
-  if(!d.filmographyVisible){
-    content.innerHTML=`<div class="profile-section">
-      <div class="profile-empty-sub">Their filmography is only visible to friends. ${d.isSelf?'':'Send a friend request to see what they\u2019ve watched.'}</div>
-    </div>`;
-    return;
-  }
-  // Build three poster strips: Seen / Rated / Watchlist.
-  // We hydrate film details from cache or TMDB in batches.
-  content.innerHTML=`
-    <div class="profile-section">
-      <div class="profile-section-title">Recently Rated (${Object.keys(d.ratings).length})</div>
-      <div id="profile-rated-grid"><div class="loading-box">Loading\u2026</div></div>
+// Privacy gate shown on Seen / Rated / Watchlist when the viewer isn't
+// a friend yet. Aggregate views (Overview, Stats, Oscars) still work;
+// the per-film lists are gated.
+function privacyNote(firstName){
+  return `<div class="watchlist-empty" style="padding:36px 20px;">
+    <div style="font-family:'Russo One',sans-serif;font-size:16px;color:var(--text);margin-bottom:6px;">For friends only</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text2);font-weight:300;">
+      ${firstName}\u2019s film list is visible to accepted friends. Send a friend request to see what they\u2019ve watched.
     </div>
-    <div class="profile-section">
-      <div class="profile-section-title">Seen (${d.profileSeen.length})</div>
-      <div id="profile-seen-grid"><div class="loading-box">Loading\u2026</div></div>
-    </div>
-  `;
-
-  // Show top 24 by rating
-  const ratedSorted=Object.entries(d.ratings).filter(([,r])=>r>0)
-    .sort((a,b)=>b[1]-a[1]).slice(0,24);
-  const ratedIds=ratedSorted.map(([id])=>parseInt(id));
-  // Show last 24 seen (since seenList is appended-in-order, take the tail)
-  const seenTail=d.profileSeen.slice(-24).reverse();
-
-  // Hydrate both lists in parallel
-  const [ratedFilms,seenFilms]=await Promise.all([
-    hydrateFilmList(ratedIds),
-    hydrateFilmList(seenTail),
-  ]);
-
-  // Render rated with score badges
-  const ratedHTML=ratedFilms.map((f,i)=>{
-    if(!f) return '';
-    const r=ratedSorted[i][1];
-    return `<div class="stat-detail-card" onclick="openFilm(${f.id},'movie')">
-      ${f.poster_path?`<img src="${IMG}w185${f.poster_path}" alt="">`:'<div class="stat-detail-ph"></div>'}
-      <div class="stat-detail-rating">${fmt1(r)}</div>
-      <div class="stat-detail-card-info">
-        <div class="stat-detail-card-title">${escapeHtml(f.title||'')}</div>
-        <div class="stat-detail-card-meta">${(f.release_date||'').slice(0,4)}</div>
-      </div>
-    </div>`;
-  }).join('');
-  document.getElementById('profile-rated-grid').innerHTML=ratedHTML
-    ? `<div class="stat-detail-grid">${ratedHTML}</div>`
-    : `<div class="profile-empty-sub">Nothing rated yet.</div>`;
-
-  const seenHTML=seenFilms.map(f=>{
-    if(!f) return '';
-    return `<div class="stat-detail-card" onclick="openFilm(${f.id},'movie')">
-      ${f.poster_path?`<img src="${IMG}w185${f.poster_path}" alt="">`:'<div class="stat-detail-ph"></div>'}
-      <div class="stat-detail-card-info">
-        <div class="stat-detail-card-title">${escapeHtml(f.title||'')}</div>
-        <div class="stat-detail-card-meta">${(f.release_date||'').slice(0,4)}</div>
-      </div>
-    </div>`;
-  }).join('');
-  document.getElementById('profile-seen-grid').innerHTML=seenHTML
-    ? `<div class="stat-detail-grid">${seenHTML}</div>`
-    : `<div class="profile-empty-sub">Nothing logged yet.</div>`;
+  </div>`;
 }
+
+// (renderProfileFilmography and renderProfileClubs from the previous
+// iteration are no longer wired in — the 5-tab structure above handles
+// every view inline.)
 
 // Hydrate a list of film IDs to full TMDB objects. Cached where possible.
 async function hydrateFilmList(ids){
