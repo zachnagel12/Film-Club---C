@@ -143,6 +143,24 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .nav-search:focus{border-color:var(--accent2);}
 .nav-search::placeholder{color:var(--text3);}
 
+/* Search dropdown (top-3 autocomplete) — appears below nav-search input */
+.nav-search-wrap{position:relative;display:inline-block;}
+.search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;min-width:280px;background:var(--bg2);border:1px solid var(--accent2);box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:120;max-height:340px;overflow-y:auto;}
+.search-dropdown.open{display:block;}
+.search-dropdown-hint{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);padding:14px;text-align:center;}
+.search-dropdown-row{display:flex;align-items:center;gap:10px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.08s;}
+.search-dropdown-row:last-child{border-bottom:none;}
+.search-dropdown-row:hover{background:var(--bg3);}
+.search-dropdown-row img,.search-dropdown-poster-ph{width:38px;height:57px;object-fit:cover;background:var(--bg3);border:1px solid var(--border);flex-shrink:0;}
+.search-dropdown-info{flex:1;min-width:0;}
+.search-dropdown-title{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.search-dropdown-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.06em;color:var(--text3);margin-top:3px;font-weight:600;}
+
+@media (max-width:740px){
+  .nav-search-wrap{flex:1;}
+  .search-dropdown{min-width:0;left:0;right:0;}
+}
+
 .ticker{background:var(--accent);padding:0;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--bg2);display:flex;align-items:center;white-space:nowrap;overflow:hidden;position:relative;}
 .ticker-tag{background:var(--bg2);color:var(--accent);padding:4px 9px;font-size:9px;letter-spacing:0.2em;flex-shrink:0;font-weight:600;align-self:stretch;display:flex;align-items:center;}
 .ticker-track{display:flex;gap:24px;padding:4px 18px;animation:tickerScroll 80s linear infinite;}
@@ -236,6 +254,7 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .taste-empty-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);margin-bottom:6px;}
 .taste-empty-desc{font-size:13px;color:var(--text2);font-weight:300;max-width:340px;margin:0 auto;line-height:1.5;}
 .taste-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px;}
+.taste-gap-notice{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text2);font-style:italic;background:var(--bg3);border-left:3px solid var(--border2);padding:8px 12px;margin-bottom:14px;line-height:1.5;font-weight:300;}
 .taste-card{background:var(--panel);border:1px solid var(--border);padding:14px;}
 .taste-card-head{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
 .taste-big{font-family:'Russo One',sans-serif;font-size:26px;color:var(--accent);line-height:1;}
@@ -523,6 +542,83 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .clubs-btn-secondary{background:transparent;color:var(--accent);}
 .clubs-btn-secondary:hover{background:var(--accent);color:var(--bg2);}
 .clubs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;padding:20px;}
+
+/* FRIENDS STRIP on Clubs home */
+.friends-strip{padding:14px 20px 4px;border-bottom:1px solid var(--border);background:var(--bg2);}
+.friends-section{margin-bottom:12px;}
+.friends-section:last-child{margin-bottom:6px;}
+.friends-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;font-weight:600;}
+.friends-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;}
+.friend-card{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);cursor:pointer;transition:border-color 0.12s;}
+.friend-card:hover{border-color:var(--accent);}
+.friend-card.pending{cursor:default;border-left:3px solid var(--accent);}
+.friend-card.pending:hover{border-left-color:var(--accent);}
+.friend-avatar{width:32px;height:32px;background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.friend-info{flex:1;min-width:0;}
+.friend-name{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;}
+.friend-name:hover{color:var(--accent);}
+.friend-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.06em;color:var(--text3);margin-top:2px;}
+.friend-actions{display:flex;gap:4px;}
+.friend-btn-accept,.friend-btn-reject{padding:5px 9px;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border2);background:transparent;font-weight:600;}
+.friend-btn-accept{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
+.friend-btn-accept:hover{opacity:0.88;}
+.friend-btn-reject{color:var(--text2);}
+.friend-btn-reject:hover{border-color:var(--red);color:var(--red);}
+
+/* USER SEARCH MODAL results */
+.user-search-hint{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);padding:18px;text-align:center;}
+.user-search-result{display:flex;align-items:center;gap:10px;padding:9px 10px;border-bottom:1px solid var(--border);}
+.user-search-result:last-child{border-bottom:none;}
+.user-search-avatar{width:36px;height:36px;background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.user-search-name{flex:1;font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);cursor:pointer;line-height:1.15;}
+.user-search-name:hover{color:var(--accent);}
+.user-search-action{padding:6px 10px;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--text2);font-weight:600;}
+.user-search-action:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+.user-search-action:disabled{opacity:0.5;cursor:default;}
+.user-search-action.accent{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
+.user-search-action.accent:hover{opacity:0.88;}
+
+/* USER PROFILE PAGE */
+.profile-head{padding:20px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
+.profile-back{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;margin-bottom:14px;display:inline-block;}
+.profile-back:hover{color:var(--accent);}
+.profile-hero{display:flex;align-items:center;gap:16px;}
+.profile-avatar{width:80px;height:80px;background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid var(--gold);}
+.profile-hero-info{flex:1;min-width:0;}
+.profile-name{font-family:'Russo One',sans-serif;font-size:26px;color:var(--text);line-height:1.0;margin-bottom:6px;}
+.profile-meta{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-bottom:10px;font-weight:600;}
+.profile-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.profile-friend-btn{padding:8px 14px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--text2);font-weight:600;}
+.profile-friend-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+.profile-friend-btn.primary{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
+.profile-friend-btn.primary:hover{opacity:0.88;}
+.profile-friend-btn:disabled{opacity:0.6;cursor:default;}
+
+.profile-section{padding:18px 20px;border-bottom:1px solid var(--border);}
+.profile-section-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;font-weight:600;}
+.profile-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
+.profile-clubs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+.profile-club-card{padding:11px 13px;background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:border-color 0.12s;}
+.profile-club-card:hover{border-color:var(--accent);}
+.profile-club-name{font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);line-height:1.15;margin-bottom:3px;}
+.profile-club-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.profile-oscars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
+.profile-oscar-card{padding:12px;background:var(--bg2);border:1px solid var(--gold);border-left:3px solid var(--gold);}
+.profile-oscar-cat{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;font-weight:600;}
+.profile-oscar-pick{font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);line-height:1.15;margin-bottom:3px;}
+.profile-oscar-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text3);}
+.profile-empty-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text3);font-style:italic;}
+
+@media (max-width:740px){
+  .friends-strip{padding:12px 14px 4px;}
+  .friends-list{grid-template-columns:1fr;}
+  .profile-head{padding:14px 14px 12px;}
+  .profile-avatar{width:60px;height:60px;font-size:22px;}
+  .profile-name{font-size:20px;}
+  .profile-hero{gap:12px;}
+  .profile-section{padding:14px;}
+  .profile-stats-grid{grid-template-columns:1fr;}
+}
 .club-card{background:var(--bg2);border:1px solid var(--border);padding:16px 16px 14px;cursor:pointer;transition:border-color 0.12s,transform 0.12s;}
 .club-card:hover{border-color:var(--accent);transform:translateY(-1px);}
 .club-card-name{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);line-height:1.1;margin-bottom:6px;}
@@ -1360,7 +1456,14 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <div class="nav-tab" onclick="showPage('history',this)">Film History</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
-    <input type="text" class="nav-search" id="nav-search" placeholder="Search films, people..." oninput="handleSearch(this.value)">
+    <div class="nav-search-wrap" id="nav-search-wrap">
+      <input type="text" class="nav-search" id="nav-search" placeholder="Search films, people..."
+        oninput="handleSearch(this.value);handleNavSearchSuggest(this.value)"
+        onkeydown="if(event.key==='Enter'){closeNavSearchDropdown();this.blur();}"
+        onblur="setTimeout(closeNavSearchDropdown,180)"
+        onfocus="if(this.value.trim()) handleNavSearchSuggest(this.value)">
+      <div class="search-dropdown" id="nav-search-dropdown"></div>
+    </div>
     <div class="user-badge" id="user-badge" onclick="toggleUserMenu(event)">
       <div class="user-badge-avatar" id="user-avatar">?</div>
       <span id="user-name">Guest</span>
@@ -1506,9 +1609,28 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <div class="clubs-actions">
       <button class="clubs-btn-primary" onclick="openClubModal('create')">+ Create a club</button>
       <button class="clubs-btn-secondary" onclick="openClubModal('join')">Join with password</button>
+      <button class="clubs-btn-secondary" onclick="openUserSearch()">\u{1F50D} Find people</button>
     </div>
   </div>
   <div id="clubs-body"><div class="loading-box">Loading your clubs…</div></div>
+</div>
+
+<!-- USER PROFILE PAGE — viewing someone else's stats (or your own) -->
+<div class="page" id="page-profile">
+  <div id="profile-body"><div class="loading-box">Loading profile…</div></div>
+</div>
+
+<!-- USER SEARCH MODAL -->
+<div class="modal-overlay" id="user-search-modal" onclick="if(event.target===this) closeUserSearch()">
+  <div class="modal" style="max-width:460px;">
+    <span class="modal-close" onclick="closeUserSearch()">\u00d7</span>
+    <div class="club-modal-title">Find people</div>
+    <div class="club-modal-sub">Search by display name. Tap a result to see their profile and public clubs.</div>
+    <div class="club-input-row">
+      <input class="club-input" id="user-search-input" type="text" placeholder="Type a name\u2026" autocomplete="off" oninput="userSearchDebounced(this.value)">
+    </div>
+    <div id="user-search-results"></div>
+  </div>
 </div>
 
 <!-- CLUB CREATE/JOIN MODAL -->
@@ -2255,60 +2377,84 @@ function weightedScore(f){
 // 2. Higher vote floor m (2500 vs 500) — needs serious vote count to break through
 // 3. Recency adjustment — recent films get downweighted (scores haven't settled),
 //    older films that maintained high scores get a small bonus for staying power
+// Cinephile score: a Bayesian-adjusted rating that rewards films that have
+// genuinely stood the test of time, not just recent crowd-pleasers. Three
+// components blended:
+//   1. Bayesian smoothing toward C=7.5 with m=2500 votes prior weight.
+//      This pulls down films with high ratings but few votes (e.g. niche
+//      releases with 200 ratings averaging 8.0) toward the global mean.
+//   2. Age modifier: pre-1980 films get a substantial boost; recent films
+//      get penalized because their scores are still hype-inflated. This is
+//      the most important component for matching cinephile sensibility.
+//   3. Vote-count saturation: a film with 80,000 votes shouldn't outrank
+//      one with 8,000 votes purely on engagement. Past ~10k votes the
+//      "many-people-rated-this" signal saturates.
 function cinephileScore(f){
   const v=f.vote_count||0;
   const R=f.vote_average||0;
   const C=7.5,m=2500;
-  // Bayesian core
+  // Bayesian core — true rating regressed toward C
   const bayes=(v/(v+m))*R+(m/(v+m))*C;
-  // Recency adjustment
+  // Age modifier — the canon almost by definition is old films
   const yr=parseInt((f.release_date||'').slice(0,4))||new Date().getFullYear();
   const thisYr=new Date().getFullYear();
   const age=thisYr-yr;
-  let recencyMod=0;
-  if(age<3) recencyMod=-0.25;            // Brand new — scores still inflated by hype
-  else if(age<8) recencyMod=-0.08;        // Recent — still settling
-  else if(age>=25&&age<50) recencyMod=0.10; // Has stood the test of time
-  else if(age>=50) recencyMod=0.15;       // Bona fide canon
-  return bayes+recencyMod;
+  let ageMod=0;
+  if(age<3) ageMod=-0.40;        // Brand new — scores inflated by hype
+  else if(age<8) ageMod=-0.15;    // Recent — still settling
+  else if(age<20) ageMod=0;       // Modern but not new
+  else if(age<35) ageMod=+0.15;   // Modern classic era
+  else if(age<55) ageMod=+0.30;   // Mid-century proven canon
+  else ageMod=+0.40;              // Truly old — bona fide history
+  // Vote-count saturation — past ~10k votes, more votes don't mean more canon
+  // (just more audience reach). Use log scaling so 1k -> 0.5, 10k -> 1.0, 100k -> 1.0
+  const voteSat=Math.min(Math.log10(Math.max(v,1)+10)/4, 1.0);
+  return bayes + ageMod + (voteSat-0.7)*0.3;
 }
 
-// Fetch a deep pool of high-vote, high-score films and rerank by cinephile score.
-// Returns enough films for both Discover ("All-Time Classics") and Rankings ("Top Rated").
-let _cinephileCache=null;
+// Fetch a deep pool of films likely to contain the genre's real canon.
+// Cache key is the genreId — different genres get different TMDB queries
+// so the candidate set is large enough to rerank meaningfully.
+let _cinephileCacheByGenre={};
 async function loadCinephileTopRated(genreId){
-  // Cache the un-filtered pool so genre switching is instant
-  if(!_cinephileCache){
-    // Pull 3 pages of films with strict thresholds — captures the real canon
-    // (Casablanca, 2001, Seven Samurai, etc) instead of just recent crowd-pleasers
-    const pages=await Promise.all([1,2,3].map(p=>api('/discover/movie',{
-      sort_by:'vote_count.desc',          // Most-evaluated films first
-      'vote_average.gte':7.5,              // Canonical territory
-      'vote_count.gte':2000,               // Has to be seriously rated
-      page:p
-    })));
-    // Dedupe and rerank
-    const seen=new Set();
-    const pool=[];
-    pages.forEach(pg=>(pg.results||[]).forEach(f=>{
-      if(seen.has(f.id)) return;
-      seen.add(f.id);
-      pool.push(f);
-    }));
-    pool.sort((a,b)=>cinephileScore(b)-cinephileScore(a));
-    _cinephileCache=pool;
-  }
-  // Apply genre filter if requested. STRICT primary-only — films with empty
-  // genre_ids never appear in a genre subcategory, only under "All".
-  if(genreId){
-    const g=parseInt(genreId);
-    return _cinephileCache.filter(f=>{
+  const cacheKey=genreId||'all';
+  if(_cinephileCacheByGenre[cacheKey]) return _cinephileCacheByGenre[cacheKey];
+
+  // Build TMDB query: scope to genre at the query layer so we get a broad
+  // genre-specific candidate set (5 pages = up to 100 films per genre).
+  // Lower vote_count floor (800) than before so older classics with smaller
+  // vote pools can surface. Sort by vote_average so the top-rated films
+  // in the genre populate the pool, then cinephile rerank handles ordering.
+  const params={
+    sort_by:'vote_average.desc',
+    'vote_average.gte':7.2,        // Just above "great" floor; rerank handles fine-grained ordering
+    'vote_count.gte':800,           // Minimum critical mass to be in canon discussion
+    'without_genres':'10770',       // Exclude TV Movie genre — not theatrical canon
+  };
+  if(genreId) params.with_genres=parseInt(genreId);
+
+  const pages=await Promise.all([1,2,3,4,5].map(p=>
+    api('/discover/movie',{...params,page:p}).catch(()=>({results:[]}))
+  ));
+  const seen=new Set();
+  const pool=[];
+  pages.forEach(pg=>(pg.results||[]).forEach(f=>{
+    if(seen.has(f.id)) return;
+    seen.add(f.id);
+    // For genre-specific views, also require the genre to be the FIRST
+    // (primary) listed — a film whose primary genre is Action shouldn't
+    // appear as a "Drama classic" just because it has a Drama secondary tag.
+    if(genreId){
+      const g=parseInt(genreId);
       const ids=f.genre_ids;
-      if(!Array.isArray(ids)||ids.length===0) return false; // no genres on TMDB → exclude from genre views
-      return ids[0]===g;
-    });
-  }
-  return _cinephileCache;
+      if(!Array.isArray(ids)||ids.length===0) return;
+      if(ids[0]!==g) return;
+    }
+    pool.push(f);
+  }));
+  pool.sort((a,b)=>cinephileScore(b)-cinephileScore(a));
+  _cinephileCacheByGenre[cacheKey]=pool;
+  return pool;
 }
 
 function toast(msg){
@@ -3014,6 +3160,59 @@ function handleSearch(q){
   },400);
 }
 
+// ============================================================
+// NAV SEARCH DROPDOWN — top-3 most-voted candidates as user types.
+// Runs in parallel with the full-page search; this is the quick-pick
+// affordance, the page is the full-results view.
+// ============================================================
+let _navSuggestTimer=null;
+function handleNavSearchSuggest(q){
+  clearTimeout(_navSuggestTimer);
+  const dropdown=document.getElementById('nav-search-dropdown');
+  if(!dropdown) return;
+  if(!q||q.trim().length<2){
+    closeNavSearchDropdown();
+    return;
+  }
+  _navSuggestTimer=setTimeout(()=>fetchNavSuggestions(q.trim()),180);
+}
+async function fetchNavSuggestions(q){
+  const dropdown=document.getElementById('nav-search-dropdown');
+  if(!dropdown) return;
+  dropdown.classList.add('open');
+  dropdown.innerHTML='<div class="search-dropdown-hint">Searching\u2026</div>';
+  try{
+    const data=await api('/search/movie',{query:q});
+    let results=(data?.results||[]).filter(r=>r.id);
+    // Sort by vote_count desc — "top 3 most voted on TMDB"
+    results.sort((a,b)=>(b.vote_count||0)-(a.vote_count||0));
+    const top=results.slice(0,3);
+    if(!top.length){
+      dropdown.innerHTML='<div class="search-dropdown-hint">No matches</div>';
+      return;
+    }
+    dropdown.innerHTML=top.map(r=>{
+      const yr=(r.release_date||'').slice(0,4);
+      const poster=r.poster_path
+        ? `<img src="${IMG}w92${r.poster_path}" alt="">`
+        : '<div class="search-dropdown-poster-ph"></div>';
+      return `<div class="search-dropdown-row" onmousedown="event.preventDefault();" onclick="openFilm(${r.id},'movie');closeNavSearchDropdown();document.getElementById('nav-search').value='';">
+        ${poster}
+        <div class="search-dropdown-info">
+          <div class="search-dropdown-title">${escapeHtml(r.title||'')}</div>
+          <div class="search-dropdown-meta">${yr}${r.vote_average?' \u00b7 '+fmt1(r.vote_average)+'/10':''} \u00b7 ${(r.vote_count||0).toLocaleString()} votes</div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    dropdown.innerHTML='<div class="search-dropdown-hint">Search unavailable</div>';
+  }
+}
+function closeNavSearchDropdown(){
+  const dropdown=document.getElementById('nav-search-dropdown');
+  if(dropdown){dropdown.classList.remove('open');}
+}
+
 // ===== MY FILMOGRAPHY =====
 async function renderFilmography(){
   // Render Oscars first (always visible at top)
@@ -3117,23 +3316,45 @@ async function renderFgTabContent(){
     body.innerHTML='<div class="loading-box">Crunching your taste...</div>';
     try{
       const allIds=[...new Set([...seenList,...Object.keys(myRatings).map(Number)])];
-      const films=await Promise.all(allIds.slice(0,60).map(id=>filmCache[id]?Promise.resolve(filmCache[id]):api(`/movie/${id}`).then(f=>{filmCache[id]=f;return f;}).catch(()=>null)));
-      const valid=films.filter(Boolean);
+      // No cap — load ALL seen+rated films so every one factors into stats.
+      // Cached films return instantly. For uncached, we batch the requests
+      // in groups of 25 so TMDB doesn't rate-limit us on first-time loads.
+      const films=[];
+      const BATCH=25;
+      for(let i=0;i<allIds.length;i+=BATCH){
+        const chunk=allIds.slice(i,i+BATCH);
+        const got=await Promise.all(chunk.map(id=>
+          filmCache[id]&&filmCache[id].genres
+            ?Promise.resolve(filmCache[id])
+            :api(`/movie/${id}`).then(f=>{filmCache[id]=f;return f;}).catch(()=>null)
+        ));
+        for(const f of got) if(f) films.push(f);
+        // Tiny pacing so a 200-film load doesn't bang TMDB all at once
+        if(i+BATCH<allIds.length) await new Promise(r=>setTimeout(r,40));
+      }
+      const valid=films;
+      const missingCount=allIds.length-valid.length;
 
-      // Primary genre count — use first genre as primary
+      // Primary genre count — STRICT count of films, not rating-weighted.
+      // Every seen film contributes exactly 1 to its first-listed genre.
+      // Unrated-but-seen films count just as much as rated ones.
       const genreCount={};
+      const noGenreFilms=[];
       valid.forEach(f=>{
-        const w=myRatings[f.id]||3;
         const primary=(f.genres||[])[0]?.name;
-        if(primary) genreCount[primary]=(genreCount[primary]||0)+w;
+        if(primary) genreCount[primary]=(genreCount[primary]||0)+1;
+        else noGenreFilms.push(f.id);
       });
-      const topGenres=Object.entries(genreCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
+      const topGenres=Object.entries(genreCount).sort((a,b)=>b[1]-a[1]).slice(0,8);
       const maxG=topGenres[0]?topGenres[0][1]:1;
 
+      // Decade allocation — strict bucketing by release year.
       const decadeCount={};
+      const noYearFilms=[];
       valid.forEach(f=>{
         const yr=parseInt((f.release_date||'').slice(0,4));
         if(yr){const d=Math.floor(yr/10)*10;decadeCount[d+'s']=(decadeCount[d+'s']||0)+1;}
+        else noYearFilms.push(f.id);
       });
       const topDecades=Object.entries(decadeCount).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
       const maxD=Math.max(...Object.values(decadeCount),1);
@@ -3144,7 +3365,17 @@ async function renderFgTabContent(){
       const myFavs=Object.entries(myRatings).sort((a,b)=>b[1]-a[1]).slice(0,1);
       const favFilm=myFavs.length?valid.find(f=>f.id===parseInt(myFavs[0][0])):null;
 
+      // Build a small "X films couldn't be categorized" notice if relevant —
+      // surfacing data gaps is honest. Usually 0 when all films have details.
+      const dataGapNotice=(missingCount>0 || noGenreFilms.length || noYearFilms.length)?`
+        <div class="taste-gap-notice">
+          ${missingCount>0?`${missingCount} film${missingCount===1?'':'s'} couldn't be loaded from TMDB.`:''}
+          ${noGenreFilms.length?`${noGenreFilms.length} film${noGenreFilms.length===1?'':'s'} have no genre data.`:''}
+          ${noYearFilms.length?`${noYearFilms.length} film${noYearFilms.length===1?'':'s'} have no release date.`:''}
+        </div>`:'';
+
       body.innerHTML=`
+        ${dataGapNotice}
         <div class="taste-grid">
           <div class="taste-card">
             <div class="taste-card-head">Films Logged</div>
@@ -3749,7 +3980,13 @@ async function doSeedSearch(q){
   results.innerHTML='<div class="seed-search-loading">Searching\u2026</div>';
   try{
     const data=await api('/search/movie',{query:q});
-    const items=(data.results||[]).slice(0,8);
+    // Top 3 by vote_count — "most-evaluated films" first, matching how
+    // people typically expect search to work (Heat → Heat 1995, not the
+    // 2008 short film that happens to share the title)
+    const items=(data.results||[])
+      .filter(f=>f.id)
+      .sort((a,b)=>(b.vote_count||0)-(a.vote_count||0))
+      .slice(0,3);
     if(!items.length){results.innerHTML='<div class="seed-search-loading">No matches</div>';return;}
     results.innerHTML=items.map(f=>{
       const y=(f.release_date||'').slice(0,4);
@@ -3763,7 +4000,7 @@ async function doSeedSearch(q){
         ${poster}
         <div class="seed-search-info">
           <div class="seed-search-title">${escapeHtml(f.title||'')}</div>
-          <div class="seed-search-meta">${y} \u00b7 ${fmt1(f.vote_average||0)} avg${already?' \u00b7 already picked':full?' \u00b7 slots full':''}</div>
+          <div class="seed-search-meta">${y} \u00b7 ${fmt1(f.vote_average||0)} avg \u00b7 ${(f.vote_count||0).toLocaleString()} votes${already?' \u00b7 already picked':full?' \u00b7 slots full':''}</div>
         </div>
       </div>`;
     }).join('');
@@ -3856,7 +4093,7 @@ async function accumulateRecs(sources){
   const wlSet=new Set(watchlist);
   const ratedSet=new Set(Object.keys(myRatings).map(k=>parseInt(k)));
 
-  // ---- Step 1: Enrich each source with genres, keywords, director ----
+  // ---- Step 1: Enrich each source with genres, keywords, director, year, vote_avg ----
   const enriched=await Promise.all(sources.map(async (src)=>{
     try{
       const [details,keywords,credits]=await Promise.all([
@@ -3864,74 +4101,106 @@ async function accumulateRecs(sources){
         fetchFilmKeywords(src.id),
         fetchFilmCredits(src.id),
       ]);
+      const yr=parseInt((details?.release_date||'').slice(0,4))||null;
       return {
         id:src.id,
         weight:src.weight,
         genres:(details?.genres||[]).map(g=>g.id),
-        keywords:(keywords||[]).slice(0,20).map(k=>k.id),  // cap per source
+        primaryGenre:(details?.genres||[])[0]?.id||null,  // first-listed = most defining
+        keywords:(keywords||[]).slice(0,20).map(k=>k.id),
         director:(credits?.crew||[]).find(c=>c.job==='Director')?.id||null,
+        year:yr,
+        voteAvg:details?.vote_average||null,
       };
     }catch(e){
-      return {id:src.id,weight:src.weight,genres:[],keywords:[],director:null};
+      return {id:src.id,weight:src.weight,genres:[],primaryGenre:null,keywords:[],director:null,year:null,voteAvg:null};
     }
   }));
 
-  // ---- Step 2: Build aggregate profiles ----
-  const genreWeights={};   // genreId -> total weight
-  const keywordWeights={}; // keywordId -> total weight
-  const directorWeights={};// directorId -> total weight
+  // ---- Step 2: Build aggregate profile ----
+  // Tier 1 — Genre profile, with primary genre weighted heavier
+  const genreWeights={};
   for(const src of enriched){
     for(const g of src.genres) genreWeights[g]=(genreWeights[g]||0)+src.weight;
+    // Primary genre gets a 2x boost so the user's dominant taste dominates
+    if(src.primaryGenre) genreWeights[src.primaryGenre]=(genreWeights[src.primaryGenre]||0)+src.weight;
+  }
+  const sortedGenres=Object.entries(genreWeights).sort((a,b)=>b[1]-a[1]);
+  // Primary set: top 2 genres (the user's dominant tastes)
+  const primaryGenres=new Set(sortedGenres.slice(0,2).map(e=>e[0]));
+  // Secondary set: any genre that appeared at all (used for partial credit)
+  const allUserGenres=new Set(sortedGenres.map(e=>e[0]));
+
+  // Tier 2 — Director style: keywords + recurring directors
+  const keywordWeights={};
+  const directorWeights={};
+  for(const src of enriched){
     for(const k of src.keywords) keywordWeights[k]=(keywordWeights[k]||0)+src.weight;
     if(src.director) directorWeights[src.director]=(directorWeights[src.director]||0)+src.weight;
   }
-  // Pick top N of each profile
-  const topGenres=Object.entries(genreWeights).sort((a,b)=>b[1]-a[1]).slice(0,3).map(e=>e[0]);
   const topKeywords=Object.entries(keywordWeights).sort((a,b)=>b[1]-a[1]).slice(0,25).map(e=>e[0]);
   const recurringDirectors=Object.entries(directorWeights).filter(([,w])=>w>=0.4).map(e=>e[0]);
 
-  // Indexed sets for fast scoring
-  const userGenres=new Set(topGenres);
-  const userKeywords=new Set(topKeywords);
+  // Tier 3 — Year + acclaim profile (weighted mean & std-dev)
+  function weightedStats(arr){
+    if(!arr.length) return {mean:null,stdev:null};
+    const totalW=arr.reduce((s,x)=>s+x.w,0);
+    if(!totalW) return {mean:null,stdev:null};
+    const mean=arr.reduce((s,x)=>s+x.v*x.w,0)/totalW;
+    const variance=arr.reduce((s,x)=>s+x.w*Math.pow(x.v-mean,2),0)/totalW;
+    return {mean,stdev:Math.sqrt(variance)};
+  }
+  const yearData=enriched.filter(s=>s.year!=null).map(s=>({v:s.year,w:s.weight}));
+  const voteData=enriched.filter(s=>s.voteAvg!=null).map(s=>({v:s.voteAvg,w:s.weight}));
+  const yearStats=weightedStats(yearData);
+  const voteStats=weightedStats(voteData);
+  // If the seeds span a wide range of years or acclaim, those signals are
+  // too noisy to use. Disable them by setting mean to null.
+  if(yearStats.stdev!=null && yearStats.stdev>25) yearStats.mean=null;
+  if(voteStats.stdev!=null && voteStats.stdev>1.5) voteStats.mean=null;
 
   // ---- Step 3: Generate candidate pool ----
-  const candidates={};   // filmId -> {film, scoreGenres, scoreKeywords, scoreDirector, scoreRecs}
+  const candidates={};
 
-  // (a) Discover by genre + keyword overlap
-  async function discover(params,bucket){
-    try{
-      const data=await api('/discover/movie',{...params,sort_by:'vote_count.desc','vote_count.gte':200,page:1});
-      for(const f of (data.results||[])){
-        if(!ingestCandidate(f,bucket)) continue;
-      }
-      // Also page 2 for breadth
-      const data2=await api('/discover/movie',{...params,sort_by:'vote_count.desc','vote_count.gte':200,page:2});
-      for(const f of (data2.results||[])) ingestCandidate(f,bucket);
-    }catch(e){/* skip */}
-  }
   function ingestCandidate(f,bucket){
     if(!f||!f.id||!f.poster_path) return false;
     if(sourceIds.has(f.id)||seenSet.has(f.id)||wlSet.has(f.id)||ratedSet.has(f.id)) return false;
-    if(!candidates[f.id]) candidates[f.id]={film:f,scoreGenres:0,scoreKeywords:0,scoreDirector:0,scoreRecs:0};
-    candidates[f.id][bucket]=1;  // marker that this candidate came from this source
+    // Hard floor on critical mass — niche films with <200 votes are too
+    // unreliable to recommend, regardless of how acclaimed their average is
+    if((f.vote_count||0)<200) return false;
+    if(!candidates[f.id]) candidates[f.id]={
+      film:f,
+      genreTier:0,directorTier:0,acclaimTier:0,recsScore:0,
+      _matchedDirector:false,_matchedKeyword:false,_matchedGenreBoth:false,
+    };
+    candidates[f.id][bucket]=true;
     filmCache[f.id]={...(filmCache[f.id]||{}),...f,media_type:'movie'};
     return true;
   }
 
-  // Run discover calls in parallel: one query for genre overlap (broad),
-  // one for keyword overlap (tighter), one for the combination (tightest)
+  // (a) Discover by primary genres (broad) and primary genres + keywords (tightest)
+  async function discover(params,bucket){
+    try{
+      const data=await api('/discover/movie',{...params,sort_by:'vote_count.desc','vote_count.gte':200,page:1});
+      for(const f of (data.results||[])) ingestCandidate(f,bucket);
+      const data2=await api('/discover/movie',{...params,sort_by:'vote_count.desc','vote_count.gte':200,page:2});
+      for(const f of (data2.results||[])) ingestCandidate(f,bucket);
+    }catch(e){}
+  }
+
+  const primaryGenresList=Array.from(primaryGenres);
   const discoverCalls=[];
-  if(topGenres.length){
-    discoverCalls.push(discover({with_genres:topGenres.join(',')},'_seenInGenre'));
+  if(primaryGenresList.length){
+    discoverCalls.push(discover({with_genres:primaryGenresList.join(',')},'_seenInGenre'));
   }
   if(topKeywords.length){
     discoverCalls.push(discover({with_keywords:topKeywords.join('|')},'_seenInKeyword'));
   }
-  if(topGenres.length && topKeywords.length){
+  if(primaryGenresList.length && topKeywords.length){
     discoverCalls.push(discover({
-      with_genres:topGenres.join(','),
+      with_genres:primaryGenresList.join(','),
       with_keywords:topKeywords.slice(0,10).join('|'),
-    },'_seenInBoth'));
+    },'_matchedGenreBoth'));
   }
 
   // (b) Director filmographies for repeat-favorite directors
@@ -3940,25 +4209,20 @@ async function accumulateRecs(sources){
       try{
         const data=await api(`/person/${dirId}/movie_credits`);
         for(const f of (data?.crew||[]).filter(c=>c.job==='Director')){
-          if(ingestCandidate(f,'_directorMatch')){
-            // Mark director hit explicitly
-            if(candidates[f.id]) candidates[f.id]._directorMatch=true;
-          }
+          if(ingestCandidate(f,'_matchedDirector')) candidates[f.id]._matchedDirector=true;
         }
       }catch(e){}
     })());
   }
 
-  // (c) Collaborative /recommendations as a smaller weighted signal
+  // (c) Collaborative /recommendations as a smaller fallback signal
   for(const src of sources){
     discoverCalls.push((async()=>{
       try{
         const data=await api(`/movie/${src.id}/recommendations`);
         (data.results||[]).forEach((f,i)=>{
           if(!ingestCandidate(f,'_seenInRecs')) return;
-          // Position weight inside this source's rec list
-          const pos=1/(i+2);
-          candidates[f.id].scoreRecs+=src.weight*pos;
+          candidates[f.id].recsScore+=src.weight/(i+2);
         });
       }catch(e){}
     })());
@@ -3966,36 +4230,82 @@ async function accumulateRecs(sources){
 
   await Promise.all(discoverCalls);
 
-  // ---- Step 4: Score each candidate by metadata overlap ----
+  // ---- Step 4: Score with strict tier priority ----
+  // Tier 1 (genre) score range: 0 to ~12. Dominant signal.
+  // Tier 2 (director style) score range: 0 to ~5. Within-tier tiebreaks.
+  // Tier 3 (acclaim + period) score range: 0 to ~1.5. Fine-grained tiebreaks.
+  // The gaps ensure a genre-matching film always beats a non-genre-matching one,
+  // a director-matching film beats one without director signal *within* equal
+  // genre tier, and acclaim/period only matter for ties further down.
   for(const c of Object.values(candidates)){
     const f=c.film;
-    // Genre overlap — count how many of the candidate's genres are in the user's top genres
     const fGenres=(f.genre_ids||[]).map(String);
-    const genreHits=fGenres.filter(g=>userGenres.has(g)).length;
-    c.scoreGenres=genreHits*2.0;  // each genre match is worth 2
-    // Keyword overlap is the strongest signal but expensive to fetch per
-    // candidate. Skip it at this layer — we already filtered via /discover
-    // with_keywords, so candidates surfacing through that path already
-    // implicitly match. Reward the _seenInKeyword / _seenInBoth markers.
-    c.scoreKeywords=(c._seenInKeyword?1.5:0) + (c._seenInBoth?2.0:0);
-    c.scoreDirector=c._directorMatch?4.0:0;  // direct director match is a strong vote
-    // Quality bonus — slightly favor well-rated films
-    c.scoreQuality=(f.vote_average||0)*0.15;
-    c.score=c.scoreGenres + c.scoreKeywords + c.scoreDirector + c.scoreRecs + c.scoreQuality;
+
+    // ---- TIER 1: Genre ----
+    let primaryHits=0;
+    let secondaryHits=0;
+    for(const g of fGenres){
+      if(primaryGenres.has(g)) primaryHits++;
+      else if(allUserGenres.has(g)) secondaryHits++;
+    }
+    // Primary genre matches are worth a lot (4 each), secondary half that
+    c.genreTier=primaryHits*4 + secondaryHits*1.5;
+
+    // ---- TIER 2: Director style ----
+    let directorTier=0;
+    if(c._matchedDirector) directorTier+=3;     // repeat director = strong signal
+    if(c._matchedGenreBoth) directorTier+=1.2;  // surfaced by genre+keyword combined query
+    else if(c._seenInKeyword) directorTier+=0.8;// surfaced via keyword match alone
+    c.directorTier=directorTier;
+
+    // ---- TIER 3: Critical acclaim + period ----
+    let acclaimScore=0;
+    if(voteStats.mean!=null && f.vote_average){
+      // How far is this candidate's quality from the seed average?
+      // Within 1 point = full credit. Falls off via Gaussian.
+      const delta=Math.abs(f.vote_average - voteStats.mean);
+      const acclaimMatch=Math.exp(-(delta/1.2)*(delta/1.2));  // 1 at exact, 0.5 at delta=1, ~0.1 at delta=2.5
+      acclaimScore+=acclaimMatch*0.8;
+    } else {
+      // No usable acclaim profile — give a small flat bonus by vote_average
+      // so well-loved films edge out poorly-loved ones, but only marginally
+      acclaimScore+=Math.min((f.vote_average||0)/10, 0.4);
+    }
+    let periodScore=0;
+    if(yearStats.mean!=null){
+      const fYear=parseInt((f.release_date||'').slice(0,4));
+      if(fYear){
+        const yearDiff=Math.abs(fYear - yearStats.mean);
+        // Gaussian falloff: full credit at exact year, 0.5 at 15 years away, ~0.1 at 30
+        periodScore=Math.exp(-(yearDiff/15)*(yearDiff/15))*0.5;
+      }
+    }
+    c.acclaimTier=acclaimScore+periodScore;
+
+    // Final score
+    c.score=c.genreTier + c.directorTier + c.acclaimTier + c.recsScore*0.1;
+
+    // ---- Hard penalty: genre-zero films should rarely surface ----
+    // A film matching zero of the user's genres can only win on director
+    // (still legit — auteur-driven discovery). Otherwise it's basically noise.
+    if(c.genreTier===0 && !c._matchedDirector){
+      c.score=c.score*0.15;  // 85% penalty
+    }
   }
 
   // ---- Step 5: Sort, take top 30 ----
   const ranked=Object.values(candidates).sort((a,b)=>b.score-a.score);
 
-  // Build the result with explanation fields so the UI can show "matched by X"
   return ranked.slice(0,30).map(c=>{
+    // Build a human-readable "matched by" string. Order reflects priority.
     const matchedBy=[];
-    if(c._directorMatch) matchedBy.push('director');
-    if(c.scoreGenres>=4) matchedBy.push('genres');
-    else if(c.scoreGenres>=2) matchedBy.push('genre');
-    if(c._seenInBoth) matchedBy.push('keywords');
-    else if(c._seenInKeyword) matchedBy.push('keyword');
-    if(c.scoreRecs>0 && !matchedBy.length) matchedBy.push('similar viewers');
+    if(c._matchedDirector) matchedBy.push('director');
+    if(c.genreTier>=8) matchedBy.push('genres');
+    else if(c.genreTier>=4) matchedBy.push('genre');
+    if(c._matchedGenreBoth) matchedBy.push('keywords');
+    else if(c._seenInKeyword && !matchedBy.includes('keywords')) matchedBy.push('keyword');
+    if(c.acclaimTier>=0.6 && voteStats.mean!=null) matchedBy.push('era + acclaim');
+    if(!matchedBy.length && c.recsScore>0) matchedBy.push('similar viewers');
     return {
       film:c.film,
       score:c.score,
@@ -4343,6 +4653,135 @@ async function extractPdfText(file){
 
 // --- TMDB matching + import execution ---
 let _importRunning=false;
+// ============================================================
+// IMPORT TITLE MATCHING — forgiving multi-pass search
+//
+// When a title doesn't match cleanly on the first try, try variants:
+//   - Stripped trailing year ("Heat 1995" → "Heat")
+//   - Stripped parenthetical metadata ("Heat (Director's Cut)" → "Heat")
+//   - Article reordering ("Lord of the Rings, The" → "The Lord of the Rings")
+//   - Diacritics removed ("Amélie" → "Amelie")
+//   - Apostrophe normalization (curly → straight)
+// Among candidates, prefer year matches and best similarity.
+// ============================================================
+
+// Strip diacritics: "Amélie" → "Amelie", "Frahre" → "Frahre"
+function stripDiacritics(s){
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+// Normalize for comparison: lowercase, strip punctuation, collapse whitespace
+function normalizeTitle(s){
+  return stripDiacritics(String(s||''))
+    .toLowerCase()
+    .replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"')
+    .replace(/&/g,' and ')
+    .replace(/[.,!?:;\u2026\u2013\u2014\-_/\\()[\]{}'"]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+// Levenshtein-ish similarity (0..1). Cheap to compute on short title strings.
+function titleSim(a,b){
+  a=normalizeTitle(a); b=normalizeTitle(b);
+  if(!a||!b) return 0;
+  if(a===b) return 1;
+  // Levenshtein
+  const m=a.length,n=b.length;
+  if(Math.abs(m-n)>Math.max(m,n)/2) return 0;
+  const dp=Array.from({length:m+1},()=>new Array(n+1).fill(0));
+  for(let i=0;i<=m;i++) dp[i][0]=i;
+  for(let j=0;j<=n;j++) dp[0][j]=j;
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++){
+    const cost=a[i-1]===b[j-1]?0:1;
+    dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+cost);
+  }
+  const dist=dp[m][n];
+  return 1 - dist/Math.max(m,n);
+}
+
+// Try a single query against TMDB and return the best candidate based on
+// year alignment and title similarity. Returns null if no usable match.
+async function searchAndPickBest(query,yearHint,wantedNormalized){
+  try{
+    const params={query};
+    if(yearHint) params.year=yearHint;
+    const data=await api('/search/movie',params);
+    const results=data?.results||[];
+    if(!results.length) return null;
+    // Score each candidate
+    const scored=results.map(r=>{
+      let s=0;
+      const candYear=r.release_date?parseInt(r.release_date.slice(0,4)):null;
+      // Year alignment: strong signal when provided
+      if(yearHint && candYear){
+        const diff=Math.abs(candYear-yearHint);
+        if(diff===0) s+=3.0;
+        else if(diff===1) s+=2.0;
+        else if(diff<=3) s+=0.5;
+        else s-=0.5;
+      }
+      // Title similarity against the wanted normalized title
+      const sim=titleSim(r.title||r.original_title||'',wantedNormalized);
+      s+=sim*4.0;
+      // Slight popularity bonus (TMDB returns mostly by popularity already)
+      s+=Math.log10((r.vote_count||0)+1)*0.1;
+      return {film:r,score:s,sim};
+    });
+    scored.sort((a,b)=>b.score-a.score);
+    const best=scored[0];
+    // Require minimum similarity OR exact-year + good similarity to accept
+    if(best.sim>=0.78) return best.film;
+    if(yearHint && best.sim>=0.55){
+      const cy=best.film.release_date?parseInt(best.film.release_date.slice(0,4)):null;
+      if(cy && Math.abs(cy-yearHint)<=1) return best.film;
+    }
+    return null;
+  }catch(e){return null;}
+}
+
+// Multi-pass matcher. Tries the literal title first, then progressively
+// looser variants only if the previous variant failed. Most items match on
+// the first try, so the average cost stays at 1 API call per item.
+async function matchTitleWithFallbacks(title,yearHint){
+  if(!title||!title.trim()) return null;
+  const wanted=normalizeTitle(title);
+
+  // Pass 1: literal title. Most items match here.
+  let match=await searchAndPickBest(title,yearHint,wanted);
+  if(match) return match;
+
+  // Only build and try fallback variants if literal didn't match
+  const variants=[];
+  // Drop trailing year ("Heat 1995", "Heat (1995)")
+  const t1=title.replace(/\s*[\(\[]\s*\d{4}\s*[\)\]]\s*$/,'').replace(/\s+\d{4}\s*$/,'').trim();
+  if(t1 && t1!==title) variants.push(t1);
+  // Drop trailing parenthetical ("Heat (Director's Cut)")
+  const t2=title.replace(/\s*[\(\[][^)\]]*[\)\]]\s*$/,'').trim();
+  if(t2 && t2!==title && !variants.includes(t2)) variants.push(t2);
+  // Drop after colon/em-dash ("Mission: Impossible — Fallout" → "Mission")
+  const t3=title.split(/\s+[:\u2014\u2013\-]\s+/)[0].trim();
+  if(t3 && t3!==title && t3.length>=3 && !variants.includes(t3)) variants.push(t3);
+  // Article reordering ("Godfather, The" → "The Godfather")
+  const articleMatch=title.match(/^(.+),\s+(the|a|an)\s*$/i);
+  if(articleMatch){
+    const t4=articleMatch[2]+' '+articleMatch[1];
+    if(!variants.includes(t4)) variants.push(t4);
+  }
+  // Stripped diacritics + normalized apostrophes
+  const t5=stripDiacritics(title).replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"');
+  if(t5!==title && !variants.includes(t5)) variants.push(t5);
+
+  for(const variant of variants){
+    match=await searchAndPickBest(variant,yearHint,wanted);
+    if(match) return match;
+  }
+  // Last-ditch: try original title WITHOUT year filter (some TMDB dates are off)
+  if(yearHint){
+    match=await searchAndPickBest(title,null,wanted);
+    if(match) return match;
+  }
+  return null;
+}
+
 async function runImport(items){
   if(_importRunning) return;
   if(!items||!items.length){setImportError('No film titles detected.');return;}
@@ -4392,20 +4831,7 @@ async function runImport(items){
   for(const item of items){
     let film=null;
     try{
-      const params={query:item.title};
-      if(item.year) params.year=item.year;
-      const data=await api('/search/movie',params);
-      if(data.results&&data.results.length){
-        film=data.results[0];
-        // If we have a year and the first result is far off, try to find a closer match
-        if(item.year&&film.release_date){
-          const fy=parseInt(film.release_date.slice(0,4));
-          if(Math.abs(fy-item.year)>2){
-            const better=data.results.find(r=>r.release_date&&Math.abs(parseInt(r.release_date.slice(0,4))-item.year)<=1);
-            if(better) film=better;
-          }
-        }
-      }
+      film=await matchTitleWithFallbacks(item.title,item.year);
     } catch(e){/* keep going on a single failure */}
     matches.push({...item,film});
     done++;
@@ -4645,11 +5071,68 @@ async function renderClubsHome(){
   }
   body.innerHTML='<div class="loading-box">Loading your clubs…</div>';
   try{
-    // Pull clubs I'm a member of
-    const {data:members,error:e1}=await sb.from('club_members')
-      .select('club_id, joined_at, clubs(id,name,created_at)')
-      .eq('user_id',currentUser.id);
+    // Pull clubs I'm a member of AND my friends data in parallel
+    const [
+      {data:members,error:e1},
+      friendsResult,
+      pendingResult,
+    ]=await Promise.all([
+      sb.from('club_members')
+        .select('club_id, joined_at, clubs(id,name,created_at)')
+        .eq('user_id',currentUser.id),
+      sb.rpc('list_friends',{p_user:null}).catch(()=>({data:null})),
+      sb.from('friendships').select('requester,recipient,status,created_at')
+        .eq('recipient',currentUser.id).eq('status','pending').catch(()=>({data:null})),
+    ]);
     if(e1) throw e1;
+    const friends=(friendsResult&&friendsResult.data)||[];
+    const pendingReqs=(pendingResult&&pendingResult.data)||[];
+
+    // Resolve names for pending requesters
+    let pendingWithNames=[];
+    if(pendingReqs.length){
+      const reqIds=pendingReqs.map(r=>r.requester);
+      const {data:names}=await sb.from('user_data')
+        .select('user_id,display_name').in('user_id',reqIds);
+      const nameMap={};
+      (names||[]).forEach(n=>nameMap[n.user_id]=n.display_name);
+      pendingWithNames=pendingReqs.map(r=>({...r,name:nameMap[r.requester]||'Someone'}));
+    }
+
+    const friendsStrip=(friends.length||pendingWithNames.length)?`
+      <div class="friends-strip">
+        ${pendingWithNames.length?`
+          <div class="friends-section">
+            <div class="friends-label">Friend requests \u00b7 ${pendingWithNames.length}</div>
+            <div class="friends-list">
+              ${pendingWithNames.map(p=>`
+                <div class="friend-card pending">
+                  <div class="friend-avatar">${initialsFor(p.name)}</div>
+                  <div class="friend-info">
+                    <div class="friend-name" onclick="openUserProfile('${p.requester}')">${escapeHtml(p.name)}</div>
+                    <div class="friend-meta">wants to be friends</div>
+                  </div>
+                  <div class="friend-actions">
+                    <button class="friend-btn-accept" onclick="respondToFriendRequest('${p.requester}','accepted')">Accept</button>
+                    <button class="friend-btn-reject" onclick="respondToFriendRequest('${p.requester}','rejected')">Decline</button>
+                  </div>
+                </div>`).join('')}
+            </div>
+          </div>`:''}
+        ${friends.length?`
+          <div class="friends-section">
+            <div class="friends-label">Friends \u00b7 ${friends.length}</div>
+            <div class="friends-list">
+              ${friends.map(f=>`
+                <div class="friend-card" onclick="openUserProfile('${f.friend_id}')">
+                  <div class="friend-avatar">${initialsFor(f.display_name||'?')}</div>
+                  <div class="friend-info">
+                    <div class="friend-name">${escapeHtml(f.display_name||'Unnamed user')}</div>
+                  </div>
+                </div>`).join('')}
+            </div>
+          </div>`:''}
+      </div>`:'';
 
     // Locally cached create attempts the user can retry
     const pending=loadPendingClubs();
@@ -4669,6 +5152,7 @@ async function renderClubsHome(){
 
     if(!members||!members.length){
       body.innerHTML=`
+        ${friendsStrip}
         ${pendingStrip}
         <div class="clubs-empty">
           You haven't joined any clubs yet.<br><br>
@@ -4695,7 +5179,7 @@ async function renderClubsHome(){
       film_count:filmCounts[m.club_id]||0,
     })).sort((a,b)=>new Date(b.joined_at)-new Date(a.joined_at));
 
-    body.innerHTML=`${pendingStrip}<div class="clubs-grid">${_myClubs.map(clubCard).join('')}</div>`;
+    body.innerHTML=`${friendsStrip}${pendingStrip}<div class="clubs-grid">${_myClubs.map(clubCard).join('')}</div>`;
   } catch(e){
     console.error('clubs home error',e);
     if(e&&e.message&&/relation .* does not exist/i.test(e.message)){
@@ -4734,6 +5218,352 @@ function formatRelative(iso){
   if(months<12) return months+' month'+(months===1?'':'s')+' ago';
   const years=Math.floor(months/12);
   return years+' year'+(years===1?'':'s')+' ago';
+}
+
+// Compact initials for an avatar circle, used in chat and friends list
+function initialsFor(name){
+  if(!name) return '?';
+  return name.trim().split(/\s+/).map(p=>p[0]||'').slice(0,2).join('').toUpperCase()||'?';
+}
+
+// ============================================================
+// USER SEARCH + FRIENDS + PROFILE
+// ============================================================
+
+function openUserSearch(){
+  document.getElementById('user-search-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('user-search-input')?.focus(),50);
+  document.getElementById('user-search-results').innerHTML='';
+}
+function closeUserSearch(){
+  document.getElementById('user-search-modal').classList.remove('open');
+  document.getElementById('user-search-input').value='';
+}
+
+let _userSearchTimer=null;
+function userSearchDebounced(q){
+  clearTimeout(_userSearchTimer);
+  const results=document.getElementById('user-search-results');
+  if(!q||q.trim().length<2){
+    if(results) results.innerHTML='<div class="user-search-hint">Type at least 2 characters\u2026</div>';
+    return;
+  }
+  _userSearchTimer=setTimeout(()=>doUserSearch(q.trim()),250);
+}
+
+async function doUserSearch(query){
+  const results=document.getElementById('user-search-results');
+  if(!results) return;
+  results.innerHTML='<div class="user-search-hint">Searching\u2026</div>';
+  try{
+    const {data,error}=await sb.rpc('search_users',{p_query:query});
+    if(error) throw error;
+    // search_users already orders by relevance (prefix match > substring match,
+    // then alphabetical). Top 3 is plenty for an autocomplete affordance.
+    const top=(data||[]).slice(0,3);
+    if(!top.length){
+      results.innerHTML='<div class="user-search-hint">No matches</div>';
+      return;
+    }
+    // Fetch existing friendship status for the displayed results so the action
+    // buttons can show the right label (Add Friend / Pending / Friends)
+    const ids=top.map(r=>r.user_id);
+    const {data:fr}=await sb.from('friendships')
+      .select('requester,recipient,status')
+      .or(`and(requester.eq.${currentUser.id},recipient.in.(${ids.join(',')})),and(recipient.eq.${currentUser.id},requester.in.(${ids.join(',')}))`);
+    const statusByUser={};
+    (fr||[]).forEach(f=>{
+      const other=f.requester===currentUser.id?f.recipient:f.requester;
+      const direction=f.requester===currentUser.id?'outgoing':'incoming';
+      statusByUser[other]={status:f.status,direction};
+    });
+    results.innerHTML=top.map(u=>renderUserSearchResult(u,statusByUser[u.user_id])).join('');
+  }catch(e){
+    if(e&&e.message&&/relation .* does not exist|function .* does not exist/i.test(e.message)){
+      results.innerHTML='<div class="user-search-hint">User search isn\u2019t set up yet. Run the latest <code>clubs-schema.sql</code> in Supabase to enable it.</div>';
+    } else {
+      results.innerHTML='<div class="user-search-hint">Search failed: '+escapeHtml((e&&e.message)||'')+'</div>';
+    }
+  }
+}
+
+function renderUserSearchResult(u,fStatus){
+  const initials=initialsFor(u.display_name);
+  let actionBtn='';
+  if(!fStatus){
+    actionBtn=`<button class="user-search-action" onclick="addFriend('${u.user_id}','${escapeJs(u.display_name||'')}')">+ Add</button>`;
+  } else if(fStatus.status==='pending'){
+    actionBtn=fStatus.direction==='outgoing'
+      ? `<button class="user-search-action" disabled>Pending</button>`
+      : `<button class="user-search-action accent" onclick="respondToFriendRequest('${u.user_id}','accepted')">Accept</button>`;
+  } else if(fStatus.status==='accepted'){
+    actionBtn=`<button class="user-search-action" disabled>\u2713 Friends</button>`;
+  } else {
+    actionBtn=`<button class="user-search-action" onclick="addFriend('${u.user_id}','${escapeJs(u.display_name||'')}')">+ Add</button>`;
+  }
+  return `<div class="user-search-result">
+    <div class="user-search-avatar">${initials}</div>
+    <div class="user-search-name" onclick="closeUserSearch();openUserProfile('${u.user_id}')">${escapeHtml(u.display_name||'Unnamed')}</div>
+    ${actionBtn}
+  </div>`;
+}
+
+async function addFriend(targetId,targetName){
+  try{
+    const {data,error}=await sb.rpc('send_friend_request',{p_target:targetId});
+    if(error) throw error;
+    const msg={
+      'sent':'Friend request sent to '+(targetName||'user'),
+      'accepted_existing':'You and '+(targetName||'this user')+' are now friends',
+      'already_friends':'You\u2019re already friends',
+      'already_pending':'Request already pending',
+      'resent':'Re-sent friend request',
+    }[data]||'Request sent';
+    toast(msg);
+    // Refresh the search results to reflect the new status
+    const input=document.getElementById('user-search-input');
+    if(input&&input.value) doUserSearch(input.value.trim());
+  }catch(e){
+    toast('Could not send: '+((e&&e.message)||''));
+  }
+}
+
+async function respondToFriendRequest(requesterId,decision){
+  try{
+    if(decision==='accepted'){
+      const {error}=await sb.from('friendships')
+        .update({status:'accepted',responded_at:new Date().toISOString()})
+        .eq('requester',requesterId).eq('recipient',currentUser.id);
+      if(error) throw error;
+      toast('You\u2019re now friends');
+    } else {
+      // Delete the row outright on reject — simpler than tracking 'rejected'
+      const {error}=await sb.from('friendships')
+        .delete().eq('requester',requesterId).eq('recipient',currentUser.id);
+      if(error) throw error;
+      toast('Request declined');
+    }
+    renderClubsHome();
+  }catch(e){
+    toast('Could not update: '+((e&&e.message)||''));
+  }
+}
+
+async function removeFriend(otherId){
+  if(!confirm('Remove this friend? You can re-add them later.')) return;
+  try{
+    const {error}=await sb.from('friendships')
+      .delete()
+      .or(`and(requester.eq.${currentUser.id},recipient.eq.${otherId}),and(requester.eq.${otherId},recipient.eq.${currentUser.id})`);
+    if(error) throw error;
+    toast('Removed friend');
+    if(_currentProfileId===otherId) openUserProfile(otherId);  // refresh
+    else renderClubsHome();
+  }catch(e){
+    toast('Could not remove: '+((e&&e.message)||''));
+  }
+}
+
+// --- Profile page ---
+let _currentProfileId=null;
+
+async function openUserProfile(userId){
+  _currentProfileId=userId;
+  // Switch to profile page (not tied to a nav tab)
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-profile').classList.add('active');
+  window.scrollTo(0,0);
+  const body=document.getElementById('profile-body');
+  body.innerHTML='<div class="loading-box">Loading profile\u2026</div>';
+  try{
+    // Pull all the profile data in parallel
+    const [profile,friendship,publicClubs]=await Promise.all([
+      sb.from('user_data')
+        .select('user_id,display_name,seen,ratings,watchlist,oscars')
+        .eq('user_id',userId).maybeSingle(),
+      // Are we already friends / pending?
+      userId===currentUser.id?Promise.resolve({data:null}):
+        sb.from('friendships').select('requester,recipient,status')
+          .or(`and(requester.eq.${currentUser.id},recipient.eq.${userId}),and(requester.eq.${userId},recipient.eq.${currentUser.id})`)
+          .maybeSingle(),
+      // Their public clubs
+      sb.from('club_members').select('club_id,clubs!inner(id,name,is_public)')
+        .eq('user_id',userId).eq('clubs.is_public',true),
+    ]);
+    if(profile.error) throw profile.error;
+    if(!profile.data){
+      body.innerHTML='<div class="clubs-empty">No profile found for this user.</div>';
+      return;
+    }
+    const p=profile.data;
+    const isSelf=p.user_id===currentUser.id;
+    const fr=friendship&&friendship.data;
+    let friendBtn='';
+    if(isSelf){
+      friendBtn='';
+    } else if(!fr){
+      friendBtn=`<button class="profile-friend-btn primary" onclick="addFriend('${p.user_id}','${escapeJs(p.display_name||'')}')">+ Add friend</button>`;
+    } else if(fr.status==='pending' && fr.requester===currentUser.id){
+      friendBtn=`<button class="profile-friend-btn" disabled>Request pending</button>`;
+    } else if(fr.status==='pending' && fr.recipient===currentUser.id){
+      friendBtn=`<button class="profile-friend-btn primary" onclick="respondToFriendRequest('${p.user_id}','accepted')">Accept request</button>
+        <button class="profile-friend-btn" onclick="respondToFriendRequest('${p.user_id}','rejected')">Decline</button>`;
+    } else if(fr.status==='accepted'){
+      friendBtn=`<button class="profile-friend-btn" onclick="removeFriend('${p.user_id}')">\u2713 Friends \u00b7 Remove</button>`;
+    }
+
+    // Render the profile
+    const profileSeen=Array.isArray(p.seen)?p.seen:[];
+    const ratings=p.ratings||{};
+    const oscars=p.oscars||{};
+    const ratedCount=Object.keys(ratings).length;
+    const ratedVals=Object.values(ratings).filter(v=>v>0);
+    const avgRating=ratedVals.length?fmt1(ratedVals.reduce((a,b)=>a+b,0)/ratedVals.length):'—';
+    const topRated=Object.entries(ratings).sort((a,b)=>b[1]-a[1]).slice(0,1)[0];
+
+    body.innerHTML=`
+      <div class="profile-head">
+        <div class="profile-back" onclick="showPage('clubs',document.querySelectorAll('.nav-tab')[4])">\u2190 Back to Clubs</div>
+        <div class="profile-hero">
+          <div class="profile-avatar">${initialsFor(p.display_name||'?')}</div>
+          <div class="profile-hero-info">
+            <div class="profile-name">${escapeHtml(p.display_name||'Unnamed user')}</div>
+            <div class="profile-meta">${profileSeen.length} seen \u00b7 ${ratedCount} rated \u00b7 avg ${avgRating}/10</div>
+            <div class="profile-actions">${friendBtn}</div>
+          </div>
+        </div>
+      </div>
+      <div id="profile-stats-body"><div class="loading-box">Crunching their taste\u2026</div></div>
+      <div id="profile-clubs-body"></div>
+      <div id="profile-oscars-body"></div>
+    `;
+
+    // Render public clubs immediately (they're already loaded)
+    const clubs=(publicClubs.data||[]).map(m=>m.clubs).filter(Boolean);
+    document.getElementById('profile-clubs-body').innerHTML=clubs.length?`
+      <div class="profile-section">
+        <div class="profile-section-title">Public Clubs (${clubs.length})</div>
+        <div class="profile-clubs-grid">
+          ${clubs.map(c=>`<div class="profile-club-card" onclick="openClub('${c.id}','${escapeJs(c.name)}')">
+            <div class="profile-club-name">${escapeHtml(c.name)}</div>
+            <div class="profile-club-meta">Public</div>
+          </div>`).join('')}
+        </div>
+      </div>`:`
+      <div class="profile-section">
+        <div class="profile-section-title">Public Clubs</div>
+        <div class="profile-empty-sub">No public clubs yet.</div>
+      </div>`;
+
+    // Render oscars summary
+    const oscarCats=[
+      {key:'bestFilm',label:'Best Picture'},
+      {key:'bestDirector',label:'Best Director'},
+      {key:'bestActor',label:'Best Actor'},
+      {key:'bestActress',label:'Best Actress'},
+      {key:'bestCinematography',label:'Best Cinematography'},
+      {key:'bestSound',label:'Best Sound'},
+    ];
+    const oscarItems=oscarCats.filter(c=>oscars[c.key]).map(c=>({label:c.label,pick:oscars[c.key]}));
+    if(oscarItems.length){
+      document.getElementById('profile-oscars-body').innerHTML=`
+        <div class="profile-section">
+          <div class="profile-section-title">${isSelf?'Your':escapeHtml((p.display_name||'Their').split(' ')[0]+'\u2019s')} Oscars</div>
+          <div class="profile-oscars-grid">
+            ${oscarItems.map(o=>{
+              const pick=o.pick;
+              const name=pick.name||pick.title||'\u2014';
+              const sub=pick.year||(pick.release_date||'').slice(0,4)||'';
+              return `<div class="profile-oscar-card">
+                <div class="profile-oscar-cat">${o.label}</div>
+                <div class="profile-oscar-pick">${escapeHtml(name)}</div>
+                <div class="profile-oscar-sub">${escapeHtml(sub)}</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+    } else {
+      document.getElementById('profile-oscars-body').innerHTML='';
+    }
+
+    // Crunch their stats — same logic as own filmography
+    crunchProfileStats(p.user_id,profileSeen,ratings,topRated,oscars);
+  }catch(e){
+    body.innerHTML='<div class="clubs-empty">Could not load profile: '+escapeHtml((e&&e.message)||'')+'</div>';
+  }
+}
+
+// Compute and render genre/decade stats for a profile (own or someone else's)
+async function crunchProfileStats(userId,seen,ratings,topRated,oscars){
+  const body=document.getElementById('profile-stats-body');
+  const allIds=[...new Set([...seen,...Object.keys(ratings).map(Number)])];
+  if(!allIds.length){
+    body.innerHTML=`<div class="profile-section"><div class="profile-empty-sub">Nothing logged yet.</div></div>`;
+    return;
+  }
+  // Load all films in batches, same as own-filmography
+  const films=[];
+  const BATCH=25;
+  for(let i=0;i<allIds.length;i+=BATCH){
+    const chunk=allIds.slice(i,i+BATCH);
+    const got=await Promise.all(chunk.map(id=>
+      filmCache[id]&&filmCache[id].genres
+        ?Promise.resolve(filmCache[id])
+        :api(`/movie/${id}`).then(f=>{filmCache[id]=f;return f;}).catch(()=>null)
+    ));
+    for(const f of got) if(f) films.push(f);
+    if(i+BATCH<allIds.length) await new Promise(r=>setTimeout(r,40));
+  }
+  const valid=films;
+
+  const genreCount={};
+  valid.forEach(f=>{
+    const primary=(f.genres||[])[0]?.name;
+    if(primary) genreCount[primary]=(genreCount[primary]||0)+1;
+  });
+  const topGenres=Object.entries(genreCount).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const maxG=topGenres[0]?topGenres[0][1]:1;
+
+  const decadeCount={};
+  valid.forEach(f=>{
+    const yr=parseInt((f.release_date||'').slice(0,4));
+    if(yr){const d=Math.floor(yr/10)*10;decadeCount[d+'s']=(decadeCount[d+'s']||0)+1;}
+  });
+  const topDecades=Object.entries(decadeCount).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
+  const maxD=Math.max(...Object.values(decadeCount),1);
+
+  const topRatedFilm=topRated?valid.find(f=>f.id===parseInt(topRated[0])):null;
+
+  body.innerHTML=`
+    <div class="profile-section">
+      <div class="profile-stats-grid">
+        <div class="taste-card">
+          <div class="taste-card-head">Primary Genres</div>
+          ${topGenres.map(([n,v])=>`
+            <div class="taste-bar-row">
+              <div class="taste-bar-name">${n}</div>
+              <div class="taste-bar-bar"><div class="taste-bar-fill" style="width:${(v/maxG*100).toFixed(0)}%;"></div></div>
+              <div class="taste-bar-val">${v}</div>
+            </div>`).join('')}
+        </div>
+        <div class="taste-card">
+          <div class="taste-card-head">Decades</div>
+          ${topDecades.map(([n,v])=>`
+            <div class="taste-bar-row">
+              <div class="taste-bar-name">${n}</div>
+              <div class="taste-bar-bar"><div class="taste-bar-fill" style="width:${(v/maxD*100).toFixed(0)}%;"></div></div>
+              <div class="taste-bar-val">${v}</div>
+            </div>`).join('')}
+        </div>
+        ${topRatedFilm?`
+        <div class="taste-card" style="cursor:pointer;" onclick="openFilm(${topRatedFilm.id},'movie')">
+          <div class="taste-card-head">Their Top Rated</div>
+          <div class="taste-big" style="font-size:18px;">${escapeHtml(topRatedFilm.title)}</div>
+          <div class="taste-big-sub">${fmt1(topRated[1])} / 10 \u00b7 ${(topRatedFilm.release_date||'').slice(0,4)}</div>
+        </div>`:''}
+      </div>
+    </div>
+  `;
 }
 
 // --- Create/join modal ---
