@@ -598,6 +598,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .auth-tab:hover:not(.active){color:var(--text2);}
 .auth-field{margin-bottom:14px;}
 .auth-label{display:block;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
+.auth-field-hint{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:300;margin-top:5px;line-height:1.4;min-height:14px;}
+.auth-field-hint.ok{color:var(--green);}
+.auth-field-hint.bad{color:var(--red);}
+.auth-field-hint.neutral{color:var(--text3);font-style:italic;}
 .auth-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;padding:9px 11px;outline:none;transition:border-color 0.12s;}
 .auth-input:focus{border-color:var(--accent);}
 .auth-submit{width:100%;padding:12px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:opacity 0.12s;margin-top:6px;}
@@ -1086,6 +1090,12 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .club-modal-submit{width:100%;padding:11px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;cursor:pointer;}
 .club-modal-submit:hover{opacity:0.88;}
 .club-modal-submit:disabled{background:var(--border2);cursor:not-allowed;}
+.club-modal-actions{display:flex;gap:8px;justify-content:flex-end;}
+.club-modal-actions .btn-secondary{padding:9px 16px;background:transparent;border:1px solid var(--border2);color:var(--text2);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;cursor:pointer;}
+.club-modal-actions .btn-secondary:hover{border-color:var(--text);color:var(--text);}
+.club-modal-actions .btn-danger{padding:9px 16px;background:var(--red);border:1px solid var(--red);color:#fff;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;cursor:pointer;}
+.club-modal-actions .btn-danger:hover{opacity:0.88;}
+.club-modal-actions .btn-danger:disabled{opacity:0.5;cursor:not-allowed;}
 
 /* "Post to club" pulldown on the film modal */
 .club-post-row{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
@@ -1524,8 +1534,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <!-- SIGN IN -->
     <div id="auth-form-login">
       <div class="auth-field">
-        <label class="auth-label">Email</label>
-        <input class="auth-input" id="login-email" type="email" placeholder="you@example.com" autocomplete="email">
+        <label class="auth-label">Username or Email</label>
+        <input class="auth-input" id="login-id" type="text" placeholder="alice  or  alice@example.com" autocomplete="username">
       </div>
       <div class="auth-field">
         <label class="auth-label">Password</label>
@@ -1541,8 +1551,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <!-- CREATE ACCOUNT -->
     <div id="auth-form-create" style="display:none;">
       <div class="auth-field">
-        <label class="auth-label">Display Name</label>
-        <input class="auth-input" id="create-name" type="text" placeholder="film critic, cinephile..." autocomplete="username">
+        <label class="auth-label">Username</label>
+        <input class="auth-input" id="create-name" type="text" placeholder="cinephile_42" autocomplete="username" oninput="checkUsernameAvailability(this.value)">
+        <div class="auth-field-hint" id="create-name-hint"></div>
       </div>
       <div class="auth-field">
         <label class="auth-label">Email</label>
@@ -1671,11 +1682,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   <div class="nav-logo" onclick="showPage('discover',document.querySelectorAll('.nav-tab')[0])">FILM <span>CLUB</span></div>
   <div class="nav-tabs">
     <div class="nav-tab active" onclick="showPage('discover',this)">Discover</div>
-    <div class="nav-tab" onclick="showPage('rankings',this)">Rankings</div>
-    <div class="nav-tab" onclick="showPage('foryou',this)">For You</div>
     <div class="nav-tab" onclick="showPage('filmography',this)">My Filmography</div>
     <div class="nav-tab" onclick="showPage('clubs',this)">Clubs</div>
     <div class="nav-tab" onclick="showPage('weekly',this)">Weekly Debate</div>
+    <div class="nav-tab" onclick="showPage('rankings',this)">Rankings</div>
+    <div class="nav-tab" onclick="showPage('foryou',this)">For You</div>
     <div class="nav-tab" onclick="showPage('history',this)">Film History</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
@@ -1700,7 +1711,28 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   </div>
   <div class="user-menu-item" onclick="goToFilmography()">📽 My Filmography</div>
   <div class="user-menu-item" onclick="switchAccount()">↻ Switch Account</div>
+  <div class="user-menu-item" onclick="openWipeModal()" style="color:var(--red);">⌫ Wipe my rankings</div>
   <div class="user-menu-item" onclick="doLogout()" style="color:var(--red);">⎋ Sign Out</div>
+</div>
+
+<!-- WIPE DATA MODAL -->
+<div class="modal-overlay" id="wipe-modal" onclick="if(event.target===this) closeWipeModal()">
+  <div class="modal" style="max-width:440px;">
+    <span class="modal-close" onclick="closeWipeModal()">×</span>
+    <div class="club-modal-title">Wipe my rankings</div>
+    <div class="club-modal-sub">
+      This clears every film you've marked as seen, every rating you've given, your watchlist, and your Oscar picks. <strong>It cannot be undone.</strong> Your account, clubs, and friendships are kept.
+    </div>
+    <div class="club-input-row">
+      <label class="auth-label" style="margin-bottom:4px;">Your password</label>
+      <input class="club-input" id="wipe-password" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="auth-error" id="wipe-error" style="margin-top:8px;"></div>
+    <div class="club-modal-actions" style="margin-top:14px;">
+      <button class="btn-secondary" onclick="closeWipeModal()">Cancel</button>
+      <button class="btn-danger" id="wipe-confirm" onclick="confirmWipe()">Wipe everything</button>
+    </div>
+  </div>
 </div>
 
 <!-- DISCOVER -->
@@ -1711,7 +1743,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
       <div class="hero-title">Know Your <em>Taste.</em><br>Built Around Film.</div>
       <div class="hero-desc">Rate films, build your ranked list, and follow directors down every rabbit hole. Community scores from millions of votes — no algorithm, no nonsense.</div>
       <div class="hero-cta">
-        <button class="hero-cta-btn hero-cta-primary" onclick="showPage('rankings',document.querySelectorAll('.nav-tab')[1])">Rankings →</button>
+        <button class="hero-cta-btn hero-cta-primary" onclick="showPage('rankings',document.querySelectorAll('.nav-tab')[4])">Rankings →</button>
         <button class="hero-cta-btn hero-cta-secondary" onclick="showPage('history',document.querySelectorAll('.nav-tab')[6])">Film History</button>
       </div>
     </div>
@@ -2154,13 +2186,14 @@ async function initSupabase(){
   }
 }
 
-// Pre-fill the sign-in email from the last successful login, if any.
-// Pure convenience: the user still must enter their password.
+// Pre-fill the sign-in identifier from the last successful login. We store
+// whatever the user typed (username OR email) so the next visit is friction-free.
 function prefillLastEmail(){
   try{
-    const last=localStorage.getItem('fc_last_email');
+    // Prefer the more recent username storage; fall back to legacy email key
+    const last=localStorage.getItem('fc_last_identifier')||localStorage.getItem('fc_last_email');
     if(!last) return;
-    const el=document.getElementById('login-email');
+    const el=document.getElementById('login-id');
     if(el&&!el.value) el.value=last;
     // Move focus to the password field so the user can type immediately
     const pw=document.getElementById('login-pass');
@@ -2313,6 +2346,54 @@ function showAuthScreen(){
 }
 
 // ----- SUPABASE-MODE AUTH -----
+
+// As the user types a username on the create form, debounce-check whether
+// it's available. This is purely a UX nicety — the real uniqueness check
+// happens server-side via the unique index. If the RPC isn't installed
+// yet, we just stay silent and let the form submit handle conflicts.
+let _usernameCheckTimer=null;
+let _usernameCheckSeq=0;
+function checkUsernameAvailability(value){
+  const hint=document.getElementById('create-name-hint');
+  if(!hint) return;
+  const v=value.trim();
+  clearTimeout(_usernameCheckTimer);
+  // Reset hint state
+  hint.className='auth-field-hint';
+  hint.textContent='';
+  if(!v) return;
+  if(v.length<2){hint.classList.add('neutral');hint.textContent='Keep typing\u2026';return;}
+  if(v.length>30){hint.classList.add('bad');hint.textContent='Too long \u2014 max 30 characters';return;}
+  if(!/^[a-zA-Z0-9._-]+$/.test(v)){
+    hint.classList.add('bad');
+    hint.textContent='Letters, numbers, dots, underscores, and dashes only';
+    return;
+  }
+  if(isOffline||!sb){return;}
+  hint.classList.add('neutral');hint.textContent='Checking\u2026';
+  const seq=++_usernameCheckSeq;
+  _usernameCheckTimer=setTimeout(async()=>{
+    try{
+      const {data,error}=await sb.rpc('username_is_available',{p_username:v});
+      // Race protection: if user typed more since we kicked off, ignore this result
+      if(seq!==_usernameCheckSeq) return;
+      if(error){
+        // RPC missing — fail silently; submit-time check will catch collisions
+        hint.className='auth-field-hint';hint.textContent='';
+        return;
+      }
+      if(data===true){
+        hint.className='auth-field-hint ok';hint.textContent='Available';
+      } else {
+        hint.className='auth-field-hint bad';hint.textContent='Taken \u2014 try another';
+      }
+    }catch(e){
+      if(seq!==_usernameCheckSeq) return;
+      hint.className='auth-field-hint';hint.textContent='';
+    }
+  },350);
+}
+
 async function doCreate(){
   const name=document.getElementById('create-name').value.trim();
   const email=document.getElementById('create-email').value.trim();
@@ -2322,7 +2403,8 @@ async function doCreate(){
   const info=document.getElementById('auth-info-create');
   err.textContent='';info.style.display='none';
 
-  if(!name||name.length<2||name.length>30){err.textContent='Display name must be 2–30 characters';return;}
+  if(!name||name.length<2||name.length>30){err.textContent='Username must be 2\u201330 characters';return;}
+  if(!/^[a-zA-Z0-9._-]+$/.test(name)){err.textContent='Username can only contain letters, numbers, dots, underscores, and dashes';return;}
   if(!email||!email.includes('@')){err.textContent='Enter a valid email';return;}
   if(pw.length<6){err.textContent='Password must be 6+ characters';return;}
   if(pw!==pw2){err.textContent='Passwords do not match';return;}
@@ -2335,6 +2417,7 @@ async function doCreate(){
     localStorage.setItem('fc_offline_accts',JSON.stringify(accts));
     currentUser={id:email,email,displayName:name};
     localStorage.setItem('fc_guest_session',email);
+    localStorage.setItem('fc_last_identifier',email);
     loadUserDataLocal();
     handleLoggedIn();
     return;
@@ -2343,6 +2426,20 @@ async function doCreate(){
   const submitBtn=document.getElementById('create-submit');
   submitBtn.disabled=true;submitBtn.textContent='Creating...';
   try{
+    // Check username availability before sign-up so we can fail cleanly
+    // before Supabase creates the auth.users row.
+    try{
+      const {data:available,error:rpcErr}=await sb.rpc('username_is_available',{p_username:name});
+      if(rpcErr && !isMissingFunctionError(rpcErr)) throw rpcErr;
+      if(available===false){
+        err.textContent='That username is already taken \u2014 try another';
+        return;
+      }
+    }catch(e){
+      // If the RPC isn't installed yet, fall back to trying the insert and
+      // letting the unique-index conflict surface as a clear error.
+      if(!isMissingFunctionError(e)) throw e;
+    }
     const {data,error}=await sb.auth.signUp({
       email,password:pw,
       options:{data:{display_name:name},emailRedirectTo:window.location.href.split('#')[0]}
@@ -2353,28 +2450,40 @@ async function doCreate(){
       info.innerHTML='<strong>Check your email.</strong> We sent a confirmation link to <strong>'+email+'</strong>. Click it to activate your account, then sign in.';
       info.style.display='';
     } else if(data.session){
+      localStorage.setItem('fc_last_identifier',name);
       handleLoggedIn(data.user);
     }
   }catch(e){
-    err.textContent=e.message||'Sign up failed';
+    // Surface the username-collision case from a direct insert if the RPC
+    // wasn't there to catch it earlier
+    if(e&&e.message&&/duplicate key|unique constraint|user_data_username_unique/i.test(e.message)){
+      err.textContent='That username is already taken \u2014 try another';
+    } else if(e&&e.message&&/user.*already.*registered|email.*exists|already.*signed up/i.test(e.message)){
+      err.textContent='That email is already registered. Try signing in instead.';
+    } else {
+      err.textContent=e.message||'Sign up failed';
+    }
   }finally{
     submitBtn.disabled=false;submitBtn.textContent='Create Account →';
   }
 }
 
 async function doLogin(){
-  const email=document.getElementById('login-email').value.trim();
+  const id=document.getElementById('login-id').value.trim();
   const pw=document.getElementById('login-pass').value;
   const err=document.getElementById('auth-error-login');
   err.textContent='';
-  if(!email||!pw){err.textContent='Enter email and password';return;}
+  if(!id||!pw){err.textContent='Enter your username or email and password';return;}
 
   if(isOffline){
+    // Offline mode: only email-keyed accounts are supported (legacy local storage).
+    // We can still try the input as-is in case it's an email.
     const accts=JSON.parse(localStorage.getItem('fc_offline_accts')||'{}');
-    if(!accts[email]){err.textContent='No local account with that email';return;}
-    if(accts[email].pw!==hashLocal(pw)){err.textContent='Wrong password';return;}
-    currentUser={id:email,email,displayName:accts[email].name};
-    localStorage.setItem('fc_guest_session',email);
+    if(!accts[id]){err.textContent='No local account with that email';return;}
+    if(accts[id].pw!==hashLocal(pw)){err.textContent='Wrong password';return;}
+    currentUser={id,email:id,displayName:accts[id].name};
+    localStorage.setItem('fc_guest_session',id);
+    localStorage.setItem('fc_last_identifier',id);
     loadUserDataLocal();
     handleLoggedIn();
     return;
@@ -2383,11 +2492,44 @@ async function doLogin(){
   const submitBtn=document.getElementById('login-submit');
   submitBtn.disabled=true;submitBtn.textContent='Signing in...';
   try{
+    // Detect: if the input contains @, treat it as an email. Otherwise, treat
+    // it as a username and look up the email via our SECURITY DEFINER RPC.
+    let email=id;
+    const looksLikeEmail=id.includes('@');
+    if(!looksLikeEmail){
+      const {data,error}=await sb.rpc('find_email_by_username',{p_username:id});
+      if(error){
+        // If the RPC isn't installed yet, fall back to treating input as email
+        if(isMissingFunctionError(error)){
+          err.textContent='Username sign-in requires the latest schema. Re-run clubs-schema.sql in Supabase.';
+          return;
+        }
+        throw error;
+      }
+      if(!data){
+        // Username doesn't exist — return a generic message so we don't leak
+        // which names are taken
+        err.textContent='Incorrect username or password';
+        return;
+      }
+      email=data;
+    }
     const {data,error}=await sb.auth.signInWithPassword({email,password:pw});
-    if(error) throw error;
+    if(error){
+      // Map Supabase's "Invalid login credentials" to the same generic
+      // wording whether the user typed an email or a username
+      if(/invalid login/i.test(error.message)){
+        err.textContent=looksLikeEmail?'Incorrect email or password':'Incorrect username or password';
+      } else {
+        err.textContent=error.message||'Sign in failed';
+      }
+      return;
+    }
+    // Remember what they typed so the next visit pre-fills nicely
+    localStorage.setItem('fc_last_identifier',id);
     handleLoggedIn(data.user);
   }catch(e){
-    err.textContent=e.message||'Sign in failed';
+    err.textContent=(e&&e.message)||'Sign in failed';
   }finally{
     submitBtn.disabled=false;submitBtn.textContent='Sign In →';
   }
@@ -2445,6 +2587,113 @@ async function doResetPassword(){
   }
 }
 
+// ============================================================
+// WIPE MY RANKINGS — destructive, password-gated.
+//
+// Clears seen, ratings, watchlist, and oscars for the current user.
+// We verify the password by re-running signInWithPassword with the user's
+// own email — Supabase doesn't expose a "validate password" endpoint, so
+// this is the standard pattern. The session continues with a fresh token
+// after a successful re-auth. Account, clubs, and friendships are kept.
+// ============================================================
+
+function openWipeModal(){
+  document.getElementById('user-menu').classList.remove('open');
+  if(isOffline||!sb||!currentUser){
+    // In offline mode we can still wipe, but there's no password to verify.
+    // We still show the same modal — the offline confirmWipe path just
+    // checks the local hashLocal value.
+  }
+  const modal=document.getElementById('wipe-modal');
+  document.getElementById('wipe-password').value='';
+  document.getElementById('wipe-error').textContent='';
+  const btn=document.getElementById('wipe-confirm');
+  btn.disabled=false;btn.textContent='Wipe everything';
+  modal.classList.add('open');
+  setTimeout(()=>document.getElementById('wipe-password')?.focus(),50);
+}
+function closeWipeModal(){
+  document.getElementById('wipe-modal').classList.remove('open');
+}
+
+async function confirmWipe(){
+  const pw=document.getElementById('wipe-password').value;
+  const err=document.getElementById('wipe-error');
+  const btn=document.getElementById('wipe-confirm');
+  err.textContent='';
+  if(!pw){err.textContent='Enter your password to confirm';return;}
+  btn.disabled=true;btn.textContent='Wiping\u2026';
+
+  try{
+    if(isOffline){
+      // Offline mode: verify against locally-stored hash
+      const accts=JSON.parse(localStorage.getItem('fc_offline_accts')||'{}');
+      const acct=accts[currentUser.email];
+      if(!acct||acct.pw!==hashLocal(pw)){
+        err.textContent='Wrong password';
+        btn.disabled=false;btn.textContent='Wipe everything';
+        return;
+      }
+    } else {
+      // Verify password by signing in again. This succeeds quietly and
+      // refreshes the session token; on failure it throws.
+      const {error:authError}=await sb.auth.signInWithPassword({
+        email:currentUser.email,
+        password:pw,
+      });
+      if(authError){
+        err.textContent='Wrong password';
+        btn.disabled=false;btn.textContent='Wipe everything';
+        return;
+      }
+    }
+
+    // Verified. Wipe local state first so the UI updates immediately.
+    seenList=[];
+    myRatings={};
+    watchlist=[];
+    myOscars={};
+
+    if(!isOffline && sb){
+      // Atomic server wipe via RPC. Falls back to a direct upsert if the
+      // RPC isn't installed yet.
+      try{
+        const {error:rpcError}=await sb.rpc('wipe_personal_data');
+        if(rpcError) throw rpcError;
+      }catch(e){
+        if(isMissingFunctionError(e)){
+          // Fall back to a direct update
+          const {error:upError}=await sb.from('user_data').update({
+            seen:[], ratings:{}, watchlist:[], oscars:{},
+            updated_at:new Date().toISOString(),
+          }).eq('user_id',currentUser.id);
+          if(upError) throw upError;
+        } else {
+          throw e;
+        }
+      }
+    }
+    // Always clear the local cache too so a reload mirrors the wipe
+    try{
+      localStorage.setItem(userKey('seen'),'[]');
+      localStorage.setItem(userKey('ratings'),'{}');
+      localStorage.setItem(userKey('wl'),'[]');
+      localStorage.setItem(userKey('oscars'),'{}');
+    }catch(e){}
+
+    closeWipeModal();
+    toast('Your rankings have been wiped');
+    // If the user is currently on the Filmography page, re-render it so
+    // the cleared state shows up immediately.
+    try{
+      if(typeof renderFilmography==='function') await renderFilmography();
+    }catch(e){/* page just won't re-render — toast still confirms it worked */}
+  }catch(e){
+    err.textContent=(e&&e.message)||'Could not wipe data';
+    btn.disabled=false;btn.textContent='Wipe everything';
+  }
+}
+
 async function doLogout(){
   document.getElementById('user-menu').classList.remove('open');
   if(!isOffline&&sb){
@@ -2455,7 +2704,7 @@ async function doLogout(){
   currentUser=null;
   watchlist=[];seenList=[];myRatings={};myOscars={};
   // Clear form fields
-  ['login-email','login-pass','create-name','create-email','create-pass','create-pass2','forgot-email','reset-pass','reset-pass2']
+  ['login-id','login-pass','create-name','create-email','create-pass','create-pass2','forgot-email','reset-pass','reset-pass2']
     .forEach(id=>{const el=document.getElementById(id);if(el) el.value='';});
   switchAuthTab('login');
   showAuthScreen();
@@ -2475,10 +2724,12 @@ async function handleLoggedIn(supabaseUser,opts={}){
   }
   if(!currentUser) return;
 
-  // Remember the email for the next page-load's pre-fill convenience
-  // (used when the session expires and the user has to sign in again).
+  // Remember the user for the next page-load's pre-fill convenience.
+  // Legacy key (fc_last_email) is kept for back-compat with older versions;
+  // new key (fc_last_identifier) wins on next prefill.
   try{
     if(currentUser.email) localStorage.setItem('fc_last_email',currentUser.email);
+    if(currentUser.displayName) localStorage.setItem('fc_last_identifier',currentUser.displayName);
   }catch(e){}
 
   // Update UI chrome
@@ -2492,14 +2743,26 @@ async function handleLoggedIn(supabaseUser,opts={}){
   document.getElementById('auth-screen').classList.add('hidden');
 
   if(skipLoader){
-    // Session restore — go straight into the app, no film reel
+    // Session restore — go straight into the app, no film reel.
+    // Preserve whatever page was active before (refresh shouldn't jump
+    // you away from where you were).
     document.getElementById('app-wrap').style.display='';
     if(!window._loadedOnce){
       loadDiscover();
       window._loadedOnce=true;
     }
   } else {
-    // Fresh login/signup — show the film reel
+    // Fresh login/signup — show the film reel AND force the landing page
+    // to Discover regardless of which page was last active. This is the
+    // explicit-sign-in entry point, so we always start the user on the
+    // app's front door.
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-discover').classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    const firstTab=document.querySelectorAll('.nav-tab')[0];
+    if(firstTab) firstTab.classList.add('active');
+    _currentPageId='discover';
+    loadDiscover();
     showLoader();
   }
 
@@ -2554,7 +2817,7 @@ async function handleInviteLink(clubId){
     if(eClub) throw eClub;
     if(!club){toast('Invite link is invalid');return;}
     // Switch to the Clubs tab so the user sees the result of their click
-    showPage('clubs',document.querySelectorAll('.nav-tab')[4]);
+    showPage('clubs',document.querySelectorAll('.nav-tab')[2]);
     if(existing){
       // Already a member — just open it
       openClub(club.id,club.name);
@@ -2656,7 +2919,7 @@ function toggleUserMenu(e){
 document.addEventListener('click',()=>document.getElementById('user-menu').classList.remove('open'));
 function goToFilmography(){
   document.getElementById('user-menu').classList.remove('open');
-  showPage('filmography',document.querySelectorAll('.nav-tab')[3]);
+  showPage('filmography',document.querySelectorAll('.nav-tab')[1]);
 }
 
 // Enter key submits the currently visible auth form
@@ -6646,7 +6909,7 @@ async function openUserProfile(userId){
 
     body.innerHTML=`
       <div class="profile-head">
-        <div class="profile-back" onclick="showPage('clubs',document.querySelectorAll('.nav-tab')[4])">\u2190 Back to Clubs</div>
+        <div class="profile-back" onclick="showPage('clubs',document.querySelectorAll('.nav-tab')[2])">\u2190 Back to Clubs</div>
         <div class="profile-hero">
           <div class="profile-avatar">${initialsFor(p.display_name||'?')}</div>
           <div class="profile-hero-info">
