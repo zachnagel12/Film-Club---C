@@ -348,6 +348,39 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 /* #6 decade sweet spot */
 .stat-decade-grid{display:flex;flex-direction:column;gap:6px;}
 .stat-decade-row{display:grid;grid-template-columns:60px 1fr auto;gap:10px;align-items:center;}
+
+/* Tappable rows on the stats dashboard — subtle hover affordance.
+   Applied broadly to genre rows, decade rows, language rows, top100 rows,
+   and histogram cols when they have content behind them. */
+.stat-genre-row.tappable,.stat-decade-row.tappable,.stat-lang-row.tappable,
+.stat-top100-row.tappable,.stat-hist-col.tappable{cursor:pointer;transition:background 0.1s;}
+.stat-genre-row.tappable:hover,.stat-lang-row.tappable:hover,.stat-top100-row.tappable:hover{background:var(--bg2);}
+.stat-decade-row.tappable:hover{filter:brightness(1.04);}
+.stat-hist-col.tappable:hover .stat-hist-bar{background:linear-gradient(180deg,var(--accent2),var(--accent));}
+
+/* Stat detail modal — list of films behind an aggregate stat */
+.stat-detail-head{padding:18px 22px 14px;border-bottom:1px solid var(--border);}
+.stat-detail-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;font-weight:600;}
+.stat-detail-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.stat-detail-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text2);font-weight:300;}
+.stat-detail-body{padding:18px 22px;max-height:520px;overflow-y:auto;}
+.stat-detail-section-head{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);font-weight:600;margin:6px 0 10px;}
+.stat-detail-section-head:not(:first-child){margin-top:18px;}
+.stat-detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;}
+.stat-detail-card{position:relative;cursor:pointer;transition:transform 0.12s;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
+.stat-detail-card:hover{transform:translateY(-2px);border-color:var(--accent);}
+.stat-detail-card img,.stat-detail-ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:var(--bg2);}
+.stat-detail-rating{position:absolute;top:6px;right:6px;background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:13px;padding:3px 7px;border:1px solid var(--gold);}
+.stat-detail-card-info{padding:7px 9px 9px;}
+.stat-detail-card-title{font-family:'Russo One',sans-serif;font-size:12px;color:var(--text);line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.stat-detail-card-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.06em;color:var(--text3);margin-top:3px;font-weight:600;}
+.stat-detail-empty{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text3);font-style:italic;padding:24px 0;text-align:center;}
+@media (max-width:740px){
+  .stat-detail-head{padding:14px 16px 12px;}
+  .stat-detail-body{padding:14px 16px;max-height:60vh;}
+  .stat-detail-title{font-size:18px;}
+  .stat-detail-grid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;}
+}
 .stat-decade-name{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);}
 .stat-decade-bar{height:14px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
 .stat-decade-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));}
@@ -1820,6 +1853,19 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
       <input class="club-input" id="user-search-input" type="text" placeholder="Type a name…" autocomplete="off" oninput="userSearchDebounced(this.value)">
     </div>
     <div id="user-search-results"></div>
+  </div>
+</div>
+
+<!-- STAT DETAIL MODAL — shows the films behind an aggregate stat -->
+<div class="modal-overlay" id="stat-detail-modal" onclick="if(event.target===this) closeStatDetail()">
+  <div class="modal" style="max-width:680px;">
+    <span class="modal-close" onclick="closeStatDetail()">×</span>
+    <div class="stat-detail-head">
+      <div class="stat-detail-eyebrow" id="stat-detail-eyebrow"></div>
+      <div class="stat-detail-title" id="stat-detail-title"></div>
+      <div class="stat-detail-sub" id="stat-detail-sub"></div>
+    </div>
+    <div class="stat-detail-body" id="stat-detail-body"></div>
   </div>
 </div>
 
@@ -3908,12 +3954,12 @@ function renderStatsDashboard(s){
     ${s.genreGenerosity.length?`
     <div class="stat-section">
       <div class="stat-section-title">Where You Differ by Genre</div>
-      <div class="stat-section-sub">Your average rating vs. the community\u2019s, by primary genre. Need 2+ rated films per genre.</div>
+      <div class="stat-section-sub">Your average rating vs. the community\u2019s, by primary genre. Tap a row to see the films behind the number.</div>
       <div class="stat-genre-grid">
         ${s.genreGenerosity.map(g=>{
           const cls=g.delta>=0.3?'pos':(g.delta<=-0.3?'neg':'neutral');
           const sign=g.delta>=0?'+':'';
-          return `<div class="stat-genre-row ${cls}">
+          return `<div class="stat-genre-row tappable ${cls}" onclick="openStatDetail('genre','${escapeJs(g.name)}')">
             <div class="stat-genre-name">${escapeHtml(g.name)}</div>
             <div class="stat-genre-nums">
               <span class="stat-genre-mine">${fmt1(g.myAvg)}</span>
@@ -3938,12 +3984,12 @@ function renderStatsDashboard(s){
     ${s.decadeQuality.length?`
     <div class="stat-section">
       <div class="stat-section-title">Decade Sweet Spot</div>
-      <div class="stat-section-sub">Your average rating by decade. Sweet spot: ${sweetSpotTxt}.</div>
+      <div class="stat-section-sub">Your average rating by decade. Sweet spot: ${sweetSpotTxt}. Tap a decade to see the films.</div>
       <div class="stat-decade-grid">
         ${s.decadeQuality.map(d=>{
           // Bar scaled across the 5.0-10.0 range so differences are visible
           const pct=Math.max(0,Math.min(100,((d.avg-5)/5)*100));
-          return `<div class="stat-decade-row">
+          return `<div class="stat-decade-row tappable" onclick="openStatDetail('decade','${d.decade}')">
             <div class="stat-decade-name">${d.decade}s</div>
             <div class="stat-decade-bar"><div class="stat-decade-fill" style="width:${pct.toFixed(0)}%;"></div></div>
             <div class="stat-decade-val">${fmt1(d.avg)} <span class="stat-decade-count">(${d.count})</span></div>
@@ -3959,7 +4005,8 @@ function renderStatsDashboard(s){
       <div class="stat-histogram">
         ${s.buckets.map((c,i)=>{
           const pct=(c/s.maxBucket)*100;
-          return `<div class="stat-hist-col">
+          const tappable=c>0;
+          return `<div class="stat-hist-col ${tappable?'tappable':''}" ${tappable?`onclick="openStatDetail('bucket','${i}')"`:''}>
             <div class="stat-hist-bar-wrap"><div class="stat-hist-bar" style="height:${pct.toFixed(0)}%;"></div></div>
             <div class="stat-hist-count">${c||''}</div>
             <div class="stat-hist-label">${i}\u2013${i+1}</div>
@@ -3997,7 +4044,7 @@ function renderStatsDashboard(s){
       <div class="stat-section-title">Where Your Films Come From</div>
       <div class="stat-section-sub">${s.foreignPct}% of your films are non-English. The rest are listed below if applicable.</div>
       ${s.topForeign.length?`<div class="stat-lang-grid">
-        ${s.topForeign.map(l=>`<div class="stat-lang-row">
+        ${s.topForeign.map(l=>`<div class="stat-lang-row tappable" onclick="openStatDetail('language','${escapeJs(l.code)}')">
           <div class="stat-lang-name">${escapeHtml(l.name)}</div>
           <div class="stat-lang-count">${l.count}</div>
         </div>`).join('')}
@@ -4071,11 +4118,134 @@ function renderDisagreementRow(d,direction){
 }
 
 // ============================================================
+// STAT DETAIL OVERLAY — every aggregate stat row is tappable;
+// tapping opens this modal showing the actual films behind the
+// number. Each film in the list opens the film modal on tap.
+// We stash the latest stats bundle so the overlay can pull data
+// without re-querying.
+// ============================================================
+let _lastStatsBundle=null;
+
+function openStatDetail(kind,arg){
+  if(!_lastStatsBundle){return;}
+  const s=_lastStatsBundle;
+  const modal=document.getElementById('stat-detail-modal');
+  const eyebrow=document.getElementById('stat-detail-eyebrow');
+  const title=document.getElementById('stat-detail-title');
+  const sub=document.getElementById('stat-detail-sub');
+  const body=document.getElementById('stat-detail-body');
+  let films=[],headline='',subtext='',crumb='';
+
+  if(kind==='decade'){
+    const decade=parseInt(arg);
+    films=s._films.filter(f=>{
+      const y=parseInt((f.release_date||'').slice(0,4));
+      return y>=decade && y<decade+10 && s._ratings[f.id]>0;
+    }).sort((a,b)=>(s._ratings[b.id]||0)-(s._ratings[a.id]||0));
+    crumb='Decade Sweet Spot';
+    headline=`Your ${decade}s films`;
+    const avg=films.length?films.reduce((a,b)=>a+(s._ratings[b.id]||0),0)/films.length:0;
+    subtext=`${films.length} rated film${films.length===1?'':'s'} \u00b7 avg ${fmt1(avg)}/10`;
+  } else if(kind==='genre'){
+    const name=arg;
+    films=s._films.filter(f=>{
+      const g=(f.genres||[])[0]?.name;
+      return g===name && s._ratings[f.id]>0;
+    }).sort((a,b)=>(s._ratings[b.id]||0)-(s._ratings[a.id]||0));
+    crumb='Genre Generosity';
+    headline=`Your ${name} films`;
+    const avg=films.length?films.reduce((a,b)=>a+(s._ratings[b.id]||0),0)/films.length:0;
+    const cAvg=films.length?films.reduce((a,b)=>a+(b.vote_average||0),0)/films.length:0;
+    subtext=`${films.length} film${films.length===1?'':'s'} \u00b7 your avg ${fmt1(avg)} vs community ${fmt1(cAvg)}`;
+  } else if(kind==='language'){
+    const code=arg;
+    films=s._films.filter(f=>(f.original_language||'')===code)
+      .sort((a,b)=>(s._ratings[b.id]||0)-(s._ratings[a.id]||0));
+    crumb='Where Your Films Come From';
+    headline=`Your ${languageLabel(code)} films`;
+    subtext=`${films.length} film${films.length===1?'':'s'} originally in ${languageLabel(code)}`;
+  } else if(kind==='bucket'){
+    const lo=parseFloat(arg);
+    films=s._films.filter(f=>{
+      const r=s._ratings[f.id];
+      return r!=null && r>=lo && r<lo+1;
+    }).sort((a,b)=>(s._ratings[b.id]||0)-(s._ratings[a.id]||0));
+    crumb='Rating Distribution';
+    headline=`Films you rated ${lo}\u2013${lo+1}`;
+    subtext=`${films.length} film${films.length===1?'':'s'} in this bucket`;
+  } else if(kind==='top100'){
+    // arg here is the genre ID. Show the user's watched films in this genre's
+    // top 100 + a section for the top unwatched ones (as discovery suggestions).
+    const genreId=parseInt(arg);
+    const genreNames={18:'Drama',35:'Comedy',28:'Action',53:'Thriller',80:'Crime',
+      878:'Sci-Fi',16:'Animation',27:'Horror',10749:'Romance'};
+    const gName=genreNames[genreId]||'Genre';
+    crumb='Film Club Top 100';
+    headline=`${gName} canon`;
+    // We need to load the cinephile pool to know which are watched/unwatched
+    title.textContent=headline;
+    eyebrow.textContent=crumb;
+    sub.textContent='Loading…';
+    body.innerHTML='<div class="loading-box">Loading the top 100…</div>';
+    modal.classList.add('open');
+    loadCinephileTopRated(String(genreId)).then(pool=>{
+      const top100=pool.slice(0,100);
+      const seenSet=new Set(seenList);
+      const watched=top100.filter(f=>seenSet.has(f.id));
+      const unwatched=top100.filter(f=>!seenSet.has(f.id));
+      sub.textContent=`${watched.length}/${top100.length} watched \u00b7 ${unwatched.length} still to discover`;
+      const watchedHTML=watched.length?`
+        <div class="stat-detail-section-head">Watched (${watched.length})</div>
+        <div class="stat-detail-grid">
+          ${watched.map(f=>renderStatDetailCard(f,s._ratings[f.id])).join('')}
+        </div>`:'<div class="stat-detail-empty">You haven\u2019t watched any of these yet.</div>';
+      const unwatchedHTML=unwatched.length?`
+        <div class="stat-detail-section-head">Top suggestions to watch (${Math.min(unwatched.length,12)})</div>
+        <div class="stat-detail-grid">
+          ${unwatched.slice(0,12).map(f=>renderStatDetailCard(f,null)).join('')}
+        </div>`:'';
+      body.innerHTML=watchedHTML+unwatchedHTML;
+    }).catch(()=>{body.innerHTML='<div class="stat-detail-empty">Could not load the top 100.</div>';});
+    return;
+  }
+
+  eyebrow.textContent=crumb;
+  title.textContent=headline;
+  sub.textContent=subtext;
+  body.innerHTML=films.length?`
+    <div class="stat-detail-grid">
+      ${films.map(f=>renderStatDetailCard(f,s._ratings[f.id])).join('')}
+    </div>`:`<div class="stat-detail-empty">No films match this slice.</div>`;
+  modal.classList.add('open');
+}
+
+function closeStatDetail(){
+  document.getElementById('stat-detail-modal').classList.remove('open');
+}
+
+function renderStatDetailCard(f,myRating){
+  const poster=f.poster_path
+    ?`<img src="${IMG}w185${f.poster_path}" alt="">`
+    :'<div class="stat-detail-ph"></div>';
+  const yr=(f.release_date||'').slice(0,4);
+  const ratingBadge=myRating!=null?`<div class="stat-detail-rating">${fmt1(myRating)}</div>`:'';
+  return `<div class="stat-detail-card" onclick="closeStatDetail();openFilm(${f.id},'movie')">
+    ${poster}
+    ${ratingBadge}
+    <div class="stat-detail-card-info">
+      <div class="stat-detail-card-title">${escapeHtml(f.title||'')}</div>
+      <div class="stat-detail-card-meta">${yr}</div>
+    </div>
+  </div>`;
+}
+
+// ============================================================
 // LAZY HYDRATERS — run after the dashboard renders. These need
 // async data (credits per film, Oscar JSON, Top 100 cinephile pools)
 // and would block initial render if computed inline.
 // ============================================================
 async function hydrateLazyStats(s){
+  _lastStatsBundle=s;  // Stash for the stat-detail overlay
   // Run all three in parallel; each updates its own dom container.
   await Promise.all([
     hydrateAuteurAffinity(s),
@@ -4261,7 +4431,7 @@ async function hydrateTop100Coverage(s){
   body.innerHTML=`<div class="stat-top100-list">
     ${results.map(r=>{
       const pct=r.total?Math.round(r.watched/r.total*100):0;
-      return `<div class="stat-top100-row">
+      return `<div class="stat-top100-row tappable" onclick="openStatDetail('top100','${r.id}')">
         <div class="stat-top100-name">${r.name}</div>
         <div class="stat-top100-bar"><div class="stat-top100-fill" style="width:${pct}%;"></div></div>
         <div class="stat-top100-val">${r.watched}/${r.total} \u00b7 ${pct}%</div>
@@ -5796,6 +5966,192 @@ async function matchTitleWithFallbacks(title,yearHint){
   return null;
 }
 
+// ============================================================
+// TWO-PASS IMPORT MATCHING
+//
+// Pass 1: for each title, collect the top 3 candidates with scores.
+// Build an aggregate "import profile" from the high-confidence matches
+// (decade distribution, primary-genre distribution, popularity tier).
+//
+// Pass 2: re-score each title's candidates using profile bonuses, so
+// ambiguous titles get pulled toward films matching the user's overall
+// taste signal. Example: a user uploading 70s crime classics with a
+// bare "Serpico" gets Lumet's 1973 film instead of a 2018 short film.
+//
+// Profile bonuses only kick in when:
+//   - We have >=10 high-confidence first-place candidates to derive
+//     the profile from.
+//   - The dominant decade represents >=25% of confident matches
+//     (otherwise the profile is too mixed to be useful).
+// Below those thresholds we trust pure per-title matching.
+// ============================================================
+
+// Like searchAndPickBest but returns the top N candidates with their scores
+// instead of committing to one. Returns array of {film, score, sim, year}.
+async function gatherCandidates(query, yearHint, wantedNormalized, limit=3){
+  try{
+    const params={query};
+    if(yearHint) params.year=yearHint;
+    const data=await api('/search/movie',params);
+    const results=data?.results||[];
+    if(!results.length) return [];
+    const scored=results.map(r=>{
+      let s=0;
+      const candYear=r.release_date?parseInt(r.release_date.slice(0,4)):null;
+      if(yearHint && candYear){
+        const diff=Math.abs(candYear-yearHint);
+        if(diff===0) s+=3.0;
+        else if(diff===1) s+=2.0;
+        else if(diff<=3) s+=0.5;
+        else s-=0.5;
+      }
+      const sim=titleSim(r.title||r.original_title||'',wantedNormalized);
+      s+=sim*4.0;
+      s+=Math.log10((r.vote_count||0)+1)*0.1;
+      return {film:r, score:s, sim, year:candYear};
+    });
+    scored.sort((a,b)=>b.score-a.score);
+    return scored.slice(0,limit);
+  }catch(e){return [];}
+}
+
+// Multi-pass candidate gathering — same variant strategy as before, but
+// instead of returning one film, it gathers candidates from all variants
+// that yielded results, dedupes by film id keeping the best score per film.
+async function gatherCandidatesWithFallbacks(title, yearHint){
+  if(!title||!title.trim()) return [];
+  const wanted=normalizeTitle(title);
+
+  // Pass 1: literal title. Most items match here.
+  let candidates=await gatherCandidates(title,yearHint,wanted);
+
+  // If literal returned a strong match (similarity >= 0.85), we're done —
+  // no need to spend extra API calls on variants.
+  if(candidates.length && candidates[0].sim>=0.85){
+    return candidates;
+  }
+
+  // Build fallback variants only if needed
+  const variants=[];
+  const t1=title.replace(/\s*[\(\[]\s*\d{4}\s*[\)\]]\s*$/,'').replace(/\s+\d{4}\s*$/,'').trim();
+  if(t1 && t1!==title) variants.push(t1);
+  const t2=title.replace(/\s*[\(\[][^)\]]*[\)\]]\s*$/,'').trim();
+  if(t2 && t2!==title && !variants.includes(t2)) variants.push(t2);
+  const t3=title.split(/\s+[:\u2014\u2013\-]\s+/)[0].trim();
+  if(t3 && t3!==title && t3.length>=3 && !variants.includes(t3)) variants.push(t3);
+  const articleMatch=title.match(/^(.+),\s+(the|a|an)\s*$/i);
+  if(articleMatch){
+    const t4=articleMatch[2]+' '+articleMatch[1];
+    if(!variants.includes(t4)) variants.push(t4);
+  }
+  const t5=stripDiacritics(title).replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"');
+  if(t5!==title && !variants.includes(t5)) variants.push(t5);
+
+  // Try each variant, accumulating into our candidate set
+  for(const variant of variants){
+    if(candidates.length && candidates[0].sim>=0.85) break;
+    const more=await gatherCandidates(variant,yearHint,wanted);
+    // Merge by film id, keeping the higher score per film
+    const byId=new Map(candidates.map(c=>[c.film.id,c]));
+    for(const c of more){
+      const existing=byId.get(c.film.id);
+      if(!existing || c.score>existing.score) byId.set(c.film.id,c);
+    }
+    candidates=Array.from(byId.values()).sort((a,b)=>b.score-a.score).slice(0,3);
+  }
+
+  // Last-ditch: try original WITHOUT year filter if year hint was given
+  if(yearHint && (!candidates.length || candidates[0].sim<0.78)){
+    const more=await gatherCandidates(title,null,wanted);
+    const byId=new Map(candidates.map(c=>[c.film.id,c]));
+    for(const c of more){
+      const existing=byId.get(c.film.id);
+      if(!existing || c.score>existing.score) byId.set(c.film.id,c);
+    }
+    candidates=Array.from(byId.values()).sort((a,b)=>b.score-a.score).slice(0,3);
+  }
+
+  return candidates;
+}
+
+// Build an aggregate profile from a set of "confident" first-place candidates.
+// Returns the dominant decades, genres, and popularity tier — or null if the
+// data is too sparse or mixed to be useful.
+function buildImportProfile(confidentFilms){
+  if(confidentFilms.length<10) return null;
+  const decadeCount={};
+  const genreCount={};
+  const voteCounts=[];
+  for(const f of confidentFilms){
+    const y=f.release_date?parseInt(f.release_date.slice(0,4)):null;
+    if(y){const d=Math.floor(y/10)*10;decadeCount[d]=(decadeCount[d]||0)+1;}
+    const ids=f.genre_ids||[];
+    if(ids.length) genreCount[ids[0]]=(genreCount[ids[0]]||0)+1;  // primary only
+    if(f.vote_count>0) voteCounts.push(f.vote_count);
+  }
+  const decadeEntries=Object.entries(decadeCount).sort((a,b)=>b[1]-a[1]);
+  const genreEntries=Object.entries(genreCount).sort((a,b)=>b[1]-a[1]);
+  if(!decadeEntries.length) return null;
+  // Profile only useful if there's some concentration — top decade
+  // should represent at least 25% of confident matches
+  const topDecadeShare=decadeEntries[0][1]/confidentFilms.length;
+  if(topDecadeShare<0.25) return null;
+  // Median vote count as a proxy for "the popularity tier this user
+  // tends to engage with"
+  voteCounts.sort((a,b)=>a-b);
+  const medianVotes=voteCounts.length?voteCounts[Math.floor(voteCounts.length/2)]:0;
+  return {
+    topDecades: decadeEntries.slice(0,3).map(([d])=>parseInt(d)),
+    topGenres: genreEntries.slice(0,3).map(([g])=>parseInt(g)),
+    medianVotes,
+  };
+}
+
+// Re-score a single title's candidates against the import profile,
+// then pick the best. Returns the winning film.
+function pickWithProfile(candidates, profile){
+  if(!candidates.length) return null;
+  if(!profile){
+    // No profile — fall back to per-title acceptance rules
+    const best=candidates[0];
+    if(best.sim>=0.78) return best.film;
+    if(best.year && best.sim>=0.55) return best.film;
+    return null;
+  }
+  // Re-score each candidate with profile bonuses
+  const rescored=candidates.map(c=>{
+    let bonus=0;
+    const f=c.film;
+    const y=c.year;
+    // Decade match
+    if(y){
+      const dec=Math.floor(y/10)*10;
+      if(profile.topDecades.includes(dec)) bonus+=1.5;
+    }
+    // Primary-genre match
+    const ids=f.genre_ids||[];
+    if(ids.length && profile.topGenres.includes(ids[0])) bonus+=1.0;
+    // Popularity tier — both candidate and profile median should be in
+    // same order of magnitude. Compute log10 difference, score within 1
+    // gets the bonus. This protects foreign/obscure films from being
+    // unfairly penalized for legitimately having fewer votes.
+    if(profile.medianVotes>0 && f.vote_count>0){
+      const logDiff=Math.abs(Math.log10(f.vote_count)-Math.log10(profile.medianVotes));
+      if(logDiff<=1) bonus+=0.5;
+    }
+    return {...c, score:c.score+bonus};
+  });
+  rescored.sort((a,b)=>b.score-a.score);
+  const best=rescored[0];
+  // Acceptance: similarity threshold OR year + similarity OR strong profile fit
+  if(best.sim>=0.78) return best.film;
+  if(best.year && best.sim>=0.55) return best.film;
+  // Profile-boosted match: lower bar if the profile bonus is doing meaningful work
+  if(best.score>=4.5 && best.sim>=0.45) return best.film;
+  return null;
+}
+
+
 async function runImport(items){
   if(_importRunning) return;
   if(!items||!items.length){setImportError('No film titles detected.');return;}
@@ -5839,16 +6195,56 @@ async function runImport(items){
     <div class="import-results" id="ix-results"></div>
   `;
   const resEl=document.getElementById('ix-results');
-  const matches=[];
   let done=0;
 
+  // ---- PASS 1: gather candidates for every title ----
+  // We don't commit to any match yet — just collect the top 3 candidates
+  // per title along with their scores. Films with high-confidence first
+  // choices contribute to the aggregate profile we'll build next.
+  const candidateSets=[];  // [{item, candidates[]}]
   for(const item of items){
-    let film=null;
+    let candidates=[];
     try{
-      film=await matchTitleWithFallbacks(item.title,item.year);
-    } catch(e){/* keep going on a single failure */}
-    matches.push({...item,film});
+      candidates=await gatherCandidatesWithFallbacks(item.title,item.year);
+    }catch(e){/* keep going on a single failure */}
+    candidateSets.push({item,candidates});
     done++;
+    document.getElementById('ix-progress').style.width=`${(done/items.length*50).toFixed(0)}%`;
+    document.getElementById('ix-status').textContent=`Reading TMDB \u2014 ${done} of ${items.length}\u2026`;
+    await sleep(180);
+  }
+
+  // ---- BUILD AGGREGATE PROFILE ----
+  // "Confident" first-place picks are ones we're already sure about:
+  //   - similarity >=0.85 (very close title match), OR
+  //   - similarity >=0.65 AND year matches within 1 year of hint
+  // These are the films we use to derive the user's taste signal.
+  const confident=[];
+  for(const {item,candidates} of candidateSets){
+    if(!candidates.length) continue;
+    const c=candidates[0];
+    if(c.sim>=0.85){confident.push(c.film);continue;}
+    if(item.year && c.year && Math.abs(c.year-item.year)<=1 && c.sim>=0.65){
+      confident.push(c.film);
+    }
+  }
+  const profile=buildImportProfile(confident);
+  if(profile){
+    document.getElementById('ix-status').textContent=
+      `Profile detected: ${profile.topDecades.join('s, ')}s, applying to ambiguous matches\u2026`;
+  }
+
+  // ---- PASS 2: pick final match per title using the profile ----
+  // For confident titles, the profile bonus can't change the winner (their
+  // top candidate already wins by similarity). For ambiguous titles, the
+  // profile bonus may pull a lower-ranked-by-similarity but better-fitting
+  // candidate to the top.
+  const matches=[];
+  let resolved=0;
+  for(const {item,candidates} of candidateSets){
+    const film=pickWithProfile(candidates,profile);
+    matches.push({...item,film});
+    resolved++;
     const row=document.createElement('div');
     const ok=!!film;
     row.className='import-result-row '+(ok?'ok':'fail');
@@ -5862,10 +6258,8 @@ async function runImport(items){
     `;
     resEl.appendChild(row);
     resEl.scrollTop=resEl.scrollHeight;
-    document.getElementById('ix-progress').style.width=`${(done/items.length)*100}%`;
-    document.getElementById('ix-status').textContent=`Matched ${done} of ${items.length}…`;
-    // Throttle: ~5 req/sec
-    await sleep(200);
+    document.getElementById('ix-progress').style.width=`${(50+resolved/items.length*50).toFixed(0)}%`;
+    document.getElementById('ix-status').textContent=`Resolved ${resolved} of ${items.length}\u2026`;
   }
 
   const matched=matches.filter(m=>m.film);
@@ -6094,9 +6488,13 @@ async function renderClubsHome(){
       sb.from('club_members')
         .select('club_id, joined_at, clubs(id,name,created_at)')
         .eq('user_id',currentUser.id),
-      sb.rpc('list_friends',{p_user:null}).catch(()=>({data:null})),
-      sb.from('friendships').select('requester,recipient,status,created_at')
-        .eq('recipient',currentUser.id).eq('status','pending').catch(()=>({data:null})),
+      // Wrap RPC + table queries in async IIFEs so we can catch their errors
+      // independently. PostgrestBuilder doesn't have .catch directly — only
+      // .then — so chaining .catch on the builder throws "catch is not a function".
+      // Awaiting inside the IIFE makes it a real Promise we can recover from.
+      (async()=>{try{return await sb.rpc('list_friends',{p_user:null});}catch(e){return {data:null};}})(),
+      (async()=>{try{return await sb.from('friendships').select('requester,recipient,status,created_at')
+        .eq('recipient',currentUser.id).eq('status','pending');}catch(e){return {data:null};}})(),
     ]);
     if(e1) throw e1;
     const friends=(friendsResult&&friendsResult.data)||[];
@@ -6278,11 +6676,49 @@ async function doUserSearch(query){
   if(!results) return;
   results.innerHTML='<div class="user-search-hint">Searching\u2026</div>';
   try{
-    const {data,error}=await sb.rpc('search_users',{p_query:query});
-    if(error) throw error;
+    // Primary path: the search_users RPC. Returns up to 20 with relevance ordering.
+    let users=null;
+    let rpcError=null;
+    try{
+      const {data,error}=await sb.rpc('search_users',{p_query:query});
+      if(error) throw error;
+      users=data||[];
+    }catch(e){
+      rpcError=e;
+    }
+
+    // Fallback path: if the RPC isn't available (schema not yet updated, or
+    // PostgREST cache stale), do a direct ilike query on user_data. This needs
+    // the public-select RLS policy on user_data which the latest schema adds.
+    if(users===null && rpcError && isMissingFunctionError(rpcError)){
+      try{
+        const {data,error}=await sb.from('user_data')
+          .select('user_id,display_name')
+          .ilike('display_name','%'+query+'%')
+          .neq('user_id',currentUser.id)
+          .order('display_name')
+          .limit(20);
+        if(error) throw error;
+        // Sort prefix matches above substring matches client-side
+        const q=query.toLowerCase();
+        users=(data||[]).sort((a,b)=>{
+          const ap=(a.display_name||'').toLowerCase().startsWith(q)?0:1;
+          const bp=(b.display_name||'').toLowerCase().startsWith(q)?0:1;
+          if(ap!==bp) return ap-bp;
+          return (a.display_name||'').localeCompare(b.display_name||'');
+        });
+      }catch(e){
+        // Re-throw the original RPC error if the fallback also fails — it'll
+        // hit the catch-all below with the more helpful "run schema" message
+        throw rpcError;
+      }
+    } else if(rpcError){
+      throw rpcError;
+    }
+
     // search_users already orders by relevance (prefix match > substring match,
     // then alphabetical). Top 3 is plenty for an autocomplete affordance.
-    const top=(data||[]).slice(0,3);
+    const top=(users||[]).slice(0,3);
     if(!top.length){
       results.innerHTML='<div class="user-search-hint">No matches</div>';
       return;
@@ -6290,23 +6726,45 @@ async function doUserSearch(query){
     // Fetch existing friendship status for the displayed results so the action
     // buttons can show the right label (Add Friend / Pending / Friends)
     const ids=top.map(r=>r.user_id);
-    const {data:fr}=await sb.from('friendships')
-      .select('requester,recipient,status')
-      .or(`and(requester.eq.${currentUser.id},recipient.in.(${ids.join(',')})),and(recipient.eq.${currentUser.id},requester.in.(${ids.join(',')}))`);
-    const statusByUser={};
-    (fr||[]).forEach(f=>{
-      const other=f.requester===currentUser.id?f.recipient:f.requester;
-      const direction=f.requester===currentUser.id?'outgoing':'incoming';
-      statusByUser[other]={status:f.status,direction};
-    });
+    let statusByUser={};
+    try{
+      const {data:fr}=await sb.from('friendships')
+        .select('requester,recipient,status')
+        .or(`and(requester.eq.${currentUser.id},recipient.in.(${ids.join(',')})),and(recipient.eq.${currentUser.id},requester.in.(${ids.join(',')}))`);
+      (fr||[]).forEach(f=>{
+        const other=f.requester===currentUser.id?f.recipient:f.requester;
+        const direction=f.requester===currentUser.id?'outgoing':'incoming';
+        statusByUser[other]={status:f.status,direction};
+      });
+    }catch(e){
+      // Friendships table missing or RLS misconfigured — just render without status
+      // buttons rather than failing the whole search
+    }
     results.innerHTML=top.map(u=>renderUserSearchResult(u,statusByUser[u.user_id])).join('');
   }catch(e){
-    if(e&&e.message&&/relation .* does not exist|function .* does not exist/i.test(e.message)){
-      results.innerHTML='<div class="user-search-hint">User search isn\u2019t set up yet. Run the latest <code>clubs-schema.sql</code> in Supabase to enable it.</div>';
+    if(isMissingFunctionError(e)||isMissingRelationError(e)){
+      results.innerHTML='<div class="user-search-hint">User search isn\u2019t set up yet. Re-run the latest <code>clubs-schema.sql</code> in your Supabase SQL editor and wait a minute for the schema cache to refresh.</div>';
     } else {
-      results.innerHTML='<div class="user-search-hint">Search failed: '+escapeHtml((e&&e.message)||'')+'</div>';
+      results.innerHTML='<div class="user-search-hint">Search failed: '+escapeHtml((e&&e.message)||String(e))+'</div>';
     }
   }
+}
+
+// Detect "schema not updated" errors broadly. PostgREST surfaces missing
+// functions with several different wordings depending on version and whether
+// the function literally doesn't exist vs. just isn't in the schema cache yet.
+function isMissingFunctionError(e){
+  if(!e) return false;
+  const msg=(e.message||e.hint||String(e)||'').toLowerCase();
+  return /function .* does not exist/.test(msg)
+    || /could not find the function/.test(msg)
+    || /schema cache/.test(msg)
+    || (e.code==='PGRST202');  // PostgREST: "Searched for the function ... but no function ... matches"
+}
+function isMissingRelationError(e){
+  if(!e) return false;
+  const msg=(e.message||e.hint||String(e)||'').toLowerCase();
+  return /relation .* does not exist/.test(msg);
 }
 
 function renderUserSearchResult(u,fStatus){
