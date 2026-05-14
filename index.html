@@ -5882,273 +5882,49 @@ function titleSim(a,b){
   return 1 - dist/Math.max(m,n);
 }
 
-// Try a single query against TMDB and return the best candidate based on
-// year alignment and title similarity. Returns null if no usable match.
-async function searchAndPickBest(query,yearHint,wantedNormalized){
+// ============================================================
+// IMPORT TITLE MATCHING — strict exact-name policy
+//
+// User-mandated rule: find the TMDB film whose title (case-insensitive,
+// whitespace-trimmed) exactly matches the imported title. If multiple
+// exact matches exist, pick the one with the most TMDB votes.
+//
+// No fuzzy matching, no similarity thresholds, no year filtering, no
+// title-variant fallbacks. Either the title matches exactly or we return
+// null (the film won't be imported). This is intentional: a confident
+// no-match is better than a confident wrong match.
+//
+// We do check BOTH `title` (localized/English) and `original_title`
+// (the film's native title) on the TMDB result, so "Tokyo Story" matches
+// even though TMDB's original_title for it is "東京物語".
+// ============================================================
+
+// Normalize for exact comparison: trim, lowercase, collapse internal
+// whitespace. NOTHING else — punctuation, diacritics, articles, all kept
+// as the user typed them. The user has emphasized exact matching.
+function exactKey(s){
+  return String(s||'').trim().toLowerCase().replace(/\s+/g,' ');
+}
+
+async function matchTitleExact(title){
+  if(!title||!title.trim()) return null;
+  const wanted=exactKey(title);
   try{
-    const params={query};
-    if(yearHint) params.year=yearHint;
-    const data=await api('/search/movie',params);
+    const data=await api('/search/movie',{query:title});
     const results=data?.results||[];
     if(!results.length) return null;
-    // Score each candidate
-    const scored=results.map(r=>{
-      let s=0;
-      const candYear=r.release_date?parseInt(r.release_date.slice(0,4)):null;
-      // Year alignment: strong signal when provided
-      if(yearHint && candYear){
-        const diff=Math.abs(candYear-yearHint);
-        if(diff===0) s+=3.0;
-        else if(diff===1) s+=2.0;
-        else if(diff<=3) s+=0.5;
-        else s-=0.5;
-      }
-      // Title similarity against the wanted normalized title
-      const sim=titleSim(r.title||r.original_title||'',wantedNormalized);
-      s+=sim*4.0;
-      // Slight popularity bonus (TMDB returns mostly by popularity already)
-      s+=Math.log10((r.vote_count||0)+1)*0.1;
-      return {film:r,score:s,sim};
+    // Keep only candidates whose title OR original_title is an exact match
+    // (after the normalization above)
+    const exact=results.filter(r=>{
+      const t1=exactKey(r.title||'');
+      const t2=exactKey(r.original_title||'');
+      return t1===wanted || t2===wanted;
     });
-    scored.sort((a,b)=>b.score-a.score);
-    const best=scored[0];
-    // Require minimum similarity OR exact-year + good similarity to accept
-    if(best.sim>=0.78) return best.film;
-    if(yearHint && best.sim>=0.55){
-      const cy=best.film.release_date?parseInt(best.film.release_date.slice(0,4)):null;
-      if(cy && Math.abs(cy-yearHint)<=1) return best.film;
-    }
-    return null;
+    if(!exact.length) return null;
+    // Tiebreak: most TMDB votes wins
+    exact.sort((a,b)=>(b.vote_count||0)-(a.vote_count||0));
+    return exact[0];
   }catch(e){return null;}
-}
-
-// Multi-pass matcher. Tries the literal title first, then progressively
-// looser variants only if the previous variant failed. Most items match on
-// the first try, so the average cost stays at 1 API call per item.
-async function matchTitleWithFallbacks(title,yearHint){
-  if(!title||!title.trim()) return null;
-  const wanted=normalizeTitle(title);
-
-  // Pass 1: literal title. Most items match here.
-  let match=await searchAndPickBest(title,yearHint,wanted);
-  if(match) return match;
-
-  // Only build and try fallback variants if literal didn't match
-  const variants=[];
-  // Drop trailing year ("Heat 1995", "Heat (1995)")
-  const t1=title.replace(/\s*[\(\[]\s*\d{4}\s*[\)\]]\s*$/,'').replace(/\s+\d{4}\s*$/,'').trim();
-  if(t1 && t1!==title) variants.push(t1);
-  // Drop trailing parenthetical ("Heat (Director's Cut)")
-  const t2=title.replace(/\s*[\(\[][^)\]]*[\)\]]\s*$/,'').trim();
-  if(t2 && t2!==title && !variants.includes(t2)) variants.push(t2);
-  // Drop after colon/em-dash ("Mission: Impossible — Fallout" → "Mission")
-  const t3=title.split(/\s+[:\u2014\u2013\-]\s+/)[0].trim();
-  if(t3 && t3!==title && t3.length>=3 && !variants.includes(t3)) variants.push(t3);
-  // Article reordering ("Godfather, The" → "The Godfather")
-  const articleMatch=title.match(/^(.+),\s+(the|a|an)\s*$/i);
-  if(articleMatch){
-    const t4=articleMatch[2]+' '+articleMatch[1];
-    if(!variants.includes(t4)) variants.push(t4);
-  }
-  // Stripped diacritics + normalized apostrophes
-  const t5=stripDiacritics(title).replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"');
-  if(t5!==title && !variants.includes(t5)) variants.push(t5);
-
-  for(const variant of variants){
-    match=await searchAndPickBest(variant,yearHint,wanted);
-    if(match) return match;
-  }
-  // Last-ditch: try original title WITHOUT year filter (some TMDB dates are off)
-  if(yearHint){
-    match=await searchAndPickBest(title,null,wanted);
-    if(match) return match;
-  }
-  return null;
-}
-
-// ============================================================
-// TWO-PASS IMPORT MATCHING
-//
-// Pass 1: for each title, collect the top 3 candidates with scores.
-// Build an aggregate "import profile" from the high-confidence matches
-// (decade distribution, primary-genre distribution, popularity tier).
-//
-// Pass 2: re-score each title's candidates using profile bonuses, so
-// ambiguous titles get pulled toward films matching the user's overall
-// taste signal. Example: a user uploading 70s crime classics with a
-// bare "Serpico" gets Lumet's 1973 film instead of a 2018 short film.
-//
-// Profile bonuses only kick in when:
-//   - We have >=10 high-confidence first-place candidates to derive
-//     the profile from.
-//   - The dominant decade represents >=25% of confident matches
-//     (otherwise the profile is too mixed to be useful).
-// Below those thresholds we trust pure per-title matching.
-// ============================================================
-
-// Like searchAndPickBest but returns the top N candidates with their scores
-// instead of committing to one. Returns array of {film, score, sim, year}.
-async function gatherCandidates(query, yearHint, wantedNormalized, limit=3){
-  try{
-    const params={query};
-    if(yearHint) params.year=yearHint;
-    const data=await api('/search/movie',params);
-    const results=data?.results||[];
-    if(!results.length) return [];
-    const scored=results.map(r=>{
-      let s=0;
-      const candYear=r.release_date?parseInt(r.release_date.slice(0,4)):null;
-      if(yearHint && candYear){
-        const diff=Math.abs(candYear-yearHint);
-        if(diff===0) s+=3.0;
-        else if(diff===1) s+=2.0;
-        else if(diff<=3) s+=0.5;
-        else s-=0.5;
-      }
-      const sim=titleSim(r.title||r.original_title||'',wantedNormalized);
-      s+=sim*4.0;
-      s+=Math.log10((r.vote_count||0)+1)*0.1;
-      return {film:r, score:s, sim, year:candYear};
-    });
-    scored.sort((a,b)=>b.score-a.score);
-    return scored.slice(0,limit);
-  }catch(e){return [];}
-}
-
-// Multi-pass candidate gathering — same variant strategy as before, but
-// instead of returning one film, it gathers candidates from all variants
-// that yielded results, dedupes by film id keeping the best score per film.
-async function gatherCandidatesWithFallbacks(title, yearHint){
-  if(!title||!title.trim()) return [];
-  const wanted=normalizeTitle(title);
-
-  // Pass 1: literal title. Most items match here.
-  let candidates=await gatherCandidates(title,yearHint,wanted);
-
-  // If literal returned a strong match (similarity >= 0.85), we're done —
-  // no need to spend extra API calls on variants.
-  if(candidates.length && candidates[0].sim>=0.85){
-    return candidates;
-  }
-
-  // Build fallback variants only if needed
-  const variants=[];
-  const t1=title.replace(/\s*[\(\[]\s*\d{4}\s*[\)\]]\s*$/,'').replace(/\s+\d{4}\s*$/,'').trim();
-  if(t1 && t1!==title) variants.push(t1);
-  const t2=title.replace(/\s*[\(\[][^)\]]*[\)\]]\s*$/,'').trim();
-  if(t2 && t2!==title && !variants.includes(t2)) variants.push(t2);
-  const t3=title.split(/\s+[:\u2014\u2013\-]\s+/)[0].trim();
-  if(t3 && t3!==title && t3.length>=3 && !variants.includes(t3)) variants.push(t3);
-  const articleMatch=title.match(/^(.+),\s+(the|a|an)\s*$/i);
-  if(articleMatch){
-    const t4=articleMatch[2]+' '+articleMatch[1];
-    if(!variants.includes(t4)) variants.push(t4);
-  }
-  const t5=stripDiacritics(title).replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"');
-  if(t5!==title && !variants.includes(t5)) variants.push(t5);
-
-  // Try each variant, accumulating into our candidate set
-  for(const variant of variants){
-    if(candidates.length && candidates[0].sim>=0.85) break;
-    const more=await gatherCandidates(variant,yearHint,wanted);
-    // Merge by film id, keeping the higher score per film
-    const byId=new Map(candidates.map(c=>[c.film.id,c]));
-    for(const c of more){
-      const existing=byId.get(c.film.id);
-      if(!existing || c.score>existing.score) byId.set(c.film.id,c);
-    }
-    candidates=Array.from(byId.values()).sort((a,b)=>b.score-a.score).slice(0,3);
-  }
-
-  // Last-ditch: try original WITHOUT year filter if year hint was given
-  if(yearHint && (!candidates.length || candidates[0].sim<0.78)){
-    const more=await gatherCandidates(title,null,wanted);
-    const byId=new Map(candidates.map(c=>[c.film.id,c]));
-    for(const c of more){
-      const existing=byId.get(c.film.id);
-      if(!existing || c.score>existing.score) byId.set(c.film.id,c);
-    }
-    candidates=Array.from(byId.values()).sort((a,b)=>b.score-a.score).slice(0,3);
-  }
-
-  return candidates;
-}
-
-// Build an aggregate profile from a set of "confident" first-place candidates.
-// Returns the dominant decades, genres, and popularity tier — or null if the
-// data is too sparse or mixed to be useful.
-function buildImportProfile(confidentFilms){
-  if(confidentFilms.length<10) return null;
-  const decadeCount={};
-  const genreCount={};
-  const voteCounts=[];
-  for(const f of confidentFilms){
-    const y=f.release_date?parseInt(f.release_date.slice(0,4)):null;
-    if(y){const d=Math.floor(y/10)*10;decadeCount[d]=(decadeCount[d]||0)+1;}
-    const ids=f.genre_ids||[];
-    if(ids.length) genreCount[ids[0]]=(genreCount[ids[0]]||0)+1;  // primary only
-    if(f.vote_count>0) voteCounts.push(f.vote_count);
-  }
-  const decadeEntries=Object.entries(decadeCount).sort((a,b)=>b[1]-a[1]);
-  const genreEntries=Object.entries(genreCount).sort((a,b)=>b[1]-a[1]);
-  if(!decadeEntries.length) return null;
-  // Profile only useful if there's some concentration — top decade
-  // should represent at least 25% of confident matches
-  const topDecadeShare=decadeEntries[0][1]/confidentFilms.length;
-  if(topDecadeShare<0.25) return null;
-  // Median vote count as a proxy for "the popularity tier this user
-  // tends to engage with"
-  voteCounts.sort((a,b)=>a-b);
-  const medianVotes=voteCounts.length?voteCounts[Math.floor(voteCounts.length/2)]:0;
-  return {
-    topDecades: decadeEntries.slice(0,3).map(([d])=>parseInt(d)),
-    topGenres: genreEntries.slice(0,3).map(([g])=>parseInt(g)),
-    medianVotes,
-  };
-}
-
-// Re-score a single title's candidates against the import profile,
-// then pick the best. Returns the winning film.
-function pickWithProfile(candidates, profile){
-  if(!candidates.length) return null;
-  if(!profile){
-    // No profile — fall back to per-title acceptance rules
-    const best=candidates[0];
-    if(best.sim>=0.78) return best.film;
-    if(best.year && best.sim>=0.55) return best.film;
-    return null;
-  }
-  // Re-score each candidate with profile bonuses
-  const rescored=candidates.map(c=>{
-    let bonus=0;
-    const f=c.film;
-    const y=c.year;
-    // Decade match
-    if(y){
-      const dec=Math.floor(y/10)*10;
-      if(profile.topDecades.includes(dec)) bonus+=1.5;
-    }
-    // Primary-genre match
-    const ids=f.genre_ids||[];
-    if(ids.length && profile.topGenres.includes(ids[0])) bonus+=1.0;
-    // Popularity tier — both candidate and profile median should be in
-    // same order of magnitude. Compute log10 difference, score within 1
-    // gets the bonus. This protects foreign/obscure films from being
-    // unfairly penalized for legitimately having fewer votes.
-    if(profile.medianVotes>0 && f.vote_count>0){
-      const logDiff=Math.abs(Math.log10(f.vote_count)-Math.log10(profile.medianVotes));
-      if(logDiff<=1) bonus+=0.5;
-    }
-    return {...c, score:c.score+bonus};
-  });
-  rescored.sort((a,b)=>b.score-a.score);
-  const best=rescored[0];
-  // Acceptance: similarity threshold OR year + similarity OR strong profile fit
-  if(best.sim>=0.78) return best.film;
-  if(best.year && best.sim>=0.55) return best.film;
-  // Profile-boosted match: lower bar if the profile bonus is doing meaningful work
-  if(best.score>=4.5 && best.sim>=0.45) return best.film;
-  return null;
 }
 
 
@@ -6195,60 +5971,25 @@ async function runImport(items){
     <div class="import-results" id="ix-results"></div>
   `;
   const resEl=document.getElementById('ix-results');
+  const matches=[];
   let done=0;
 
-  // ---- PASS 1: gather candidates for every title ----
-  // We don't commit to any match yet — just collect the top 3 candidates
-  // per title along with their scores. Films with high-confidence first
-  // choices contribute to the aggregate profile we'll build next.
-  const candidateSets=[];  // [{item, candidates[]}]
+  // ---- Single-pass exact-match loop ----
+  // For every title: search TMDB, keep results whose title exactly matches
+  // (case-insensitive, whitespace-collapsed), pick the highest-voted.
+  // No fuzzy fallback — if no exact title match exists, the item is left
+  // unmatched. This was the user's explicit instruction; honor it strictly.
   for(const item of items){
-    let candidates=[];
+    let film=null;
     try{
-      candidates=await gatherCandidatesWithFallbacks(item.title,item.year);
+      film=await matchTitleExact(item.title);
     }catch(e){/* keep going on a single failure */}
-    candidateSets.push({item,candidates});
-    done++;
-    document.getElementById('ix-progress').style.width=`${(done/items.length*50).toFixed(0)}%`;
-    document.getElementById('ix-status').textContent=`Reading TMDB \u2014 ${done} of ${items.length}\u2026`;
-    await sleep(180);
-  }
-
-  // ---- BUILD AGGREGATE PROFILE ----
-  // "Confident" first-place picks are ones we're already sure about:
-  //   - similarity >=0.85 (very close title match), OR
-  //   - similarity >=0.65 AND year matches within 1 year of hint
-  // These are the films we use to derive the user's taste signal.
-  const confident=[];
-  for(const {item,candidates} of candidateSets){
-    if(!candidates.length) continue;
-    const c=candidates[0];
-    if(c.sim>=0.85){confident.push(c.film);continue;}
-    if(item.year && c.year && Math.abs(c.year-item.year)<=1 && c.sim>=0.65){
-      confident.push(c.film);
-    }
-  }
-  const profile=buildImportProfile(confident);
-  if(profile){
-    document.getElementById('ix-status').textContent=
-      `Profile detected: ${profile.topDecades.join('s, ')}s, applying to ambiguous matches\u2026`;
-  }
-
-  // ---- PASS 2: pick final match per title using the profile ----
-  // For confident titles, the profile bonus can't change the winner (their
-  // top candidate already wins by similarity). For ambiguous titles, the
-  // profile bonus may pull a lower-ranked-by-similarity but better-fitting
-  // candidate to the top.
-  const matches=[];
-  let resolved=0;
-  for(const {item,candidates} of candidateSets){
-    const film=pickWithProfile(candidates,profile);
     matches.push({...item,film});
-    resolved++;
+    done++;
     const row=document.createElement('div');
     const ok=!!film;
     row.className='import-result-row '+(ok?'ok':'fail');
-    const matchTxt=ok?`${film.title}${film.release_date?' · '+film.release_date.slice(0,4):''}`:'No match found';
+    const matchTxt=ok?`${film.title}${film.release_date?' · '+film.release_date.slice(0,4):''}`:'No exact match';
     const ratingTxt=item.rating!=null?fmt1(item.rating):'';
     row.innerHTML=`
       <span class="ir-mark">${ok?'✓':'—'}</span>
@@ -6258,8 +5999,10 @@ async function runImport(items){
     `;
     resEl.appendChild(row);
     resEl.scrollTop=resEl.scrollHeight;
-    document.getElementById('ix-progress').style.width=`${(50+resolved/items.length*50).toFixed(0)}%`;
-    document.getElementById('ix-status').textContent=`Resolved ${resolved} of ${items.length}\u2026`;
+    document.getElementById('ix-progress').style.width=`${(done/items.length*100).toFixed(0)}%`;
+    document.getElementById('ix-status').textContent=`Matched ${done} of ${items.length}\u2026`;
+    // Throttle: ~5 req/sec to be polite to TMDB
+    await sleep(200);
   }
 
   const matched=matches.filter(m=>m.film);
