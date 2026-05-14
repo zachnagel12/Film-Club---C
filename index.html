@@ -86,6 +86,14 @@
 </script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
+/* Lock the page itself from scrolling horizontally on every viewport. Internal
+   scroll affordances (nav-tabs strip, chat feed, modals, rank-controls row)
+   still work because they declare their own overflow. This ONLY kills the
+   page-level horizontal pan that has no purpose.
+   `max-width:100%` on html+body is a belt-and-suspenders guard against any
+   child element that tries to use 100vw, large fixed widths, or negative
+   margins to push past the viewport edge. */
+html,body{max-width:100%;overflow-x:hidden;}
 :root{
   --bg:#f0ece4;--bg2:#faf9f7;--bg3:#f4f2ee;--panel:#faf9f7;
   --border:#ddd6cc;--border2:#c8beb4;
@@ -1026,7 +1034,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .chat-time{font-family:'Oswald',sans-serif;font-size:9px;color:var(--text3);letter-spacing:0.04em;}
 .chat-delete{margin-left:auto;background:transparent;border:none;color:var(--text3);font-size:14px;cursor:pointer;padding:0 4px;line-height:1;font-family:sans-serif;opacity:0.6;}
 .chat-delete:hover{color:var(--red);opacity:1;}
-.chat-body{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text);line-height:1.4;word-wrap:break-word;}
+.chat-body{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text);line-height:1.4;word-wrap:break-word;overflow-wrap:anywhere;}
 
 /* POLL BLOCK inside a chat message */
 .chat-poll{margin-top:8px;display:flex;flex-direction:column;gap:5px;}
@@ -1059,7 +1067,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   .chat-body{font-size:13px;}
 }
 
-.club-rank-row{display:grid;grid-template-columns:36px 60px 1fr auto auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;}
+.club-rank-row{display:grid;grid-template-columns:36px 60px 1fr auto auto auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.08s;}
 .club-rank-row:hover{background:var(--panel);}
 .club-rank-num{font-family:'Russo One',sans-serif;font-size:18px;color:var(--accent);text-align:right;}
 .club-rank-poster{width:60px;height:90px;object-fit:cover;background:var(--bg3);border:1px solid var(--border);}
@@ -1071,6 +1079,12 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .club-rank-score-lbl{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);}
 .club-rank-count{font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);text-align:right;}
 .club-rank-count-lbl{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);}
+/* Subtle x-icon button to remove a film from a club. Only shown to
+   the film's poster or the club's creator. Faint by default so it
+   doesn't visually compete; hover state turns red for clear intent. */
+.club-rank-remove{background:transparent;border:1px solid var(--border);color:var(--text3);font-family:'Russo One',sans-serif;font-size:13px;width:28px;height:28px;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.12s;opacity:0.55;}
+.club-rank-row:hover .club-rank-remove{opacity:1;}
+.club-rank-remove:hover{border-color:var(--red);color:var(--red);}
 
 /* Members strip */
 .club-members{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg2);}
@@ -1293,6 +1307,16 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 }
 
 @media (max-width:740px){
+  /* Mobile-specific safety: every page-level container is constrained to
+     viewport width. Combined with the html/body overflow-x:hidden lock at
+     the top of this stylesheet, this stops any wide element from creating
+     a horizontal scrollbar on the page. Inner scrollable strips like the
+     nav-tabs row still scroll horizontally on their own. */
+  .app-wrap,.page,.hero,.fg-body,.club-rankings,.club-chat-feed,
+  .clubs-grid,.film-grid,.recap-wrap,.foryou-results,
+  #foryou-results,.import-modal{max-width:100%;}
+  img,video{max-width:100%;height:auto;}
+
   /* Nav restructured: logo+search top row, tabs scroll horizontally below */
   nav{flex-wrap:wrap;height:auto;padding:0;align-items:stretch;}
   .nav-logo{padding:10px 14px 8px;font-size:17px;flex:0 0 auto;display:flex;align-items:center;}
@@ -7348,7 +7372,7 @@ function renderClubDetail(){
     </div>
     <div id="club-section-rankings" class="club-section" style="display:${_currentClubSection==='rankings'?'':'none'};">
       <div class="club-rankings">
-        ${ranked.length?ranked.map(clubRankRow).join(''):'<div class="clubs-empty">No films posted yet. Tap "+ Post a film" to start the ranking.</div>'}
+        ${ranked.length?ranked.map((f,i)=>clubRankRow(f,i,club)).join(''):'<div class="clubs-empty">No films posted yet. Tap "+ Post a film" to start the ranking.</div>'}
       </div>
     </div>
     <div id="club-section-chat" class="club-section" style="display:${_currentClubSection==='chat'?'':'none'};">
@@ -7421,11 +7445,20 @@ async function shareClubLink(clubId,clubName,isPublic){
   }
 }
 
-function clubRankRow(f,i){
+function clubRankRow(f,i,club){
   const posted=f.posted_by_name?'Posted by '+escapeHtml(f.posted_by_name):'';
   const poster=f.film_poster?`<img class="club-rank-poster" src="${IMG}w185${f.film_poster}" alt="">`
     :`<div class="club-rank-poster-ph">\u2014</div>`;
   const score=f.avg!=null?fmt1(f.avg):'\u2014';
+  // Permission gate for the remove button:
+  //   - The club creator can remove ANY film
+  //   - A regular member can remove ONLY the films they themselves posted
+  // Both layers are enforced server-side by RLS; this just controls UI affordance.
+  const canRemove=club && currentUser && (
+    club.created_by===currentUser.id
+    || f.posted_by_id===currentUser.id
+  );
+  const removeBtn=canRemove?`<button class="club-rank-remove" title="Remove from this club" onclick="event.stopPropagation();removeClubFilm('${club.id}',${f.film_id},'${escapeJs(f.film_title||'this film')}')">\u2715</button>`:'';
   return `<div class="club-rank-row" onclick="openFilm(${f.film_id},'movie')">
     <div class="club-rank-num">${i+1}</div>
     ${poster}
@@ -7442,6 +7475,7 @@ function clubRankRow(f,i){
       <div class="club-rank-count">${f.count}</div>
       <div class="club-rank-count-lbl" style="text-align:right;">Rating${f.count===1?'':'s'}</div>
     </div>
+    ${removeBtn}
   </div>`;
 }
 
@@ -8116,6 +8150,41 @@ async function deleteClub(clubId,name,memberCount,filmCount){
     renderClubsHome();
   } catch(e){
     toast('Could not delete: '+((e&&e.message)||''));
+  }
+}
+
+// Remove a single film from a club. The RPC enforces the permission rule
+// (only the film's poster or the club's creator can remove it). The RPC
+// also cleans up any club_ratings rows for that film so removing-and-re-
+// adding doesn't resurrect old ratings — a member could otherwise be
+// surprised to see their old score reappear.
+async function removeClubFilm(clubId, filmId, filmTitle){
+  if(!confirm(`Remove "${filmTitle}" from this club? Its ratings will be cleared too.`)) return;
+  try{
+    const {data,error}=await sb.rpc('remove_club_film',{p_club_id:clubId,p_film_id:filmId});
+    if(error){
+      // Helpful messages when the RPC isn't yet installed (older schema)
+      if(isMissingFunctionError(error)){
+        // Fallback: try a direct delete. This works for the poster (RLS
+        // allows them) but may fail for the creator until the schema is
+        // updated to the latest version.
+        const {error:delErr}=await sb.from('club_films').delete()
+          .eq('club_id',clubId).eq('film_id',filmId);
+        if(delErr) throw delErr;
+        toast('Removed (re-run clubs-schema.sql for full cleanup)');
+      } else {
+        throw error;
+      }
+    } else {
+      const cleaned=data||0;
+      toast(`Removed "${filmTitle}"${cleaned>0?` (${cleaned} rating${cleaned===1?'':'s'} cleared)`:''}`);
+    }
+    // Refresh the club detail view so the row disappears immediately
+    if(_currentClubId===clubId && typeof openClub==='function'){
+      openClub(clubId, _currentClubData?.club?.name||'');
+    }
+  } catch(e){
+    toast('Could not remove: '+((e&&e.message)||''));
   }
 }
 
