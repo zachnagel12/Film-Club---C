@@ -1346,9 +1346,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 
   /* Section wrap padding tighter */
   .section-wrap{padding:14px 14px 0;}
-  .film-grid{grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
-  .film-title{font-size:11px;}
-  .film-meta{font-size:9px;}
+  /* Note: .film-grid columns + .film-title/.film-meta sizing are set by
+     the unified mobile sizing block further down. We only adjust margin
+     here to fit the tighter section padding. */
+  .film-grid{gap:10px;margin-bottom:18px;}
   .film-score-badge{font-size:10px;padding:1px 4px;}
 
   /* Genre bar */
@@ -1421,6 +1422,124 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   .loader-title{font-size:18px;}
   .loader-counter{font-size:42px;bottom:18px;right:18px;}
   .loader-bar{width:150px;}
+}
+
+@media (max-width:740px){
+  /* ============================================================
+     UNIFORM CARD SIZING FOR MOBILE
+     ============================================================
+     Every place that shows a film card or grid uses the SAME column
+     count and the SAME title/meta sizing. The desktop styles use
+     auto-fill with varied min-widths (some 90px, some 130px, some
+     150px), which on a 380px viewport produced a chaotic mix of
+     1- and 2-column grids with different card sizes per section.
+     This block locks everything to a clean 2-column rhythm with
+     uniform typography so a film card on the Stats page looks the
+     same as one on the Discover page. */
+
+  /* All browsable film/poster grids → 2 columns, uniform gap */
+  .film-grid,
+  .stat-detail-grid,
+  .stat-hidden-grid,
+  .modal-similar,
+  .recap-notable-grid,
+  .profile-clubs-grid{
+    grid-template-columns:repeat(2,1fr) !important;
+    gap:10px;
+  }
+
+  /* All film-card title text — same font, same size, same line clamp */
+  .film-title,
+  .stat-detail-card-title,
+  .stat-hidden-title,
+  .stat-best-year-title,
+  .sim-title,
+  .search-dropdown-title,
+  .profile-club-name{
+    font-family:'Russo One',sans-serif;
+    font-size:12px;
+    font-weight:normal;
+    line-height:1.2;
+    color:var(--text);
+    /* Two-line clamp — wraps long titles instead of clipping or
+       letting them push the card taller than its neighbors. */
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:normal;
+  }
+
+  /* All film-card meta text (year, vote count, runtime label) — same too */
+  .film-meta,
+  .stat-detail-card-meta,
+  .stat-hidden-meta,
+  .stat-best-year-rating,
+  .search-dropdown-meta,
+  .profile-club-meta{
+    font-family:'Oswald',sans-serif;
+    font-size:10px;
+    letter-spacing:0.04em;
+    color:var(--text3);
+    font-weight:600;
+    margin-top:3px;
+  }
+
+  /* All card poster images — same aspect ratio + treatment */
+  .film-card img,
+  .stat-detail-card img,.stat-detail-ph,
+  .stat-hidden-card img,.stat-hidden-ph,
+  .modal-similar img,
+  .recap-notable-grid .film-card img{
+    aspect-ratio:2/3;
+    width:100%;
+    height:auto;
+    object-fit:cover;
+    background:var(--bg3);
+    display:block;
+  }
+
+  /* Card body padding (text under the poster) — uniform */
+  .stat-detail-card-info,
+  .stat-hidden-info{
+    padding:6px 8px 8px;
+  }
+
+  /* Best-year poster strip: was 64px on mobile, conspicuously tiny next
+     to other film cards. Bump to match the standard 2-column grid. */
+  .stat-best-year-films{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    justify-content:initial;
+  }
+  .stat-best-year-film{width:auto;}
+  .stat-best-year-film img,.stat-best-year-ph{width:100%;height:auto;aspect-ratio:2/3;}
+
+  /* Section padding: consistent horizontal inset across pages */
+  .stat-section,.profile-section,.recap-wrap{padding-left:14px;padding-right:14px;}
+
+  /* De-clutter: dim or hide redundant labels in compact stat rows */
+  .stat-headline-meta{display:none;} /* The small "vs TMDB community on the same films" footnotes — visible space hog */
+  .stat-section-sub{font-size:12px;line-height:1.4;} /* Smaller helper text */
+  /* Stack the three headline cards but keep them visually tight rather
+     than three tall hero panels eating most of the viewport. */
+  .stat-headline-row{gap:8px;margin-bottom:14px;}
+  .stat-headline-card{padding:10px 12px;border-left-width:3px;}
+  .stat-headline-big{font-size:28px;}
+  .stat-headline-big-text{font-size:18px;}
+  .stat-headline-label{font-size:8px;letter-spacing:0.14em;margin-bottom:3px;}
+  .stat-headline-sub{font-size:10px;margin-top:2px;}
+  .stat-headline-sub-multi{font-size:12px;margin-top:2px;}
+  /* Section title tightening so each section header doesn't dominate */
+  .stat-section{padding-top:14px;padding-bottom:14px;margin-bottom:14px;}
+  .stat-section-title{font-size:10px;letter-spacing:0.14em;margin-bottom:4px;}
+
+  /* Now Showing strip cards — keep them in a horizontal scroll strip
+     but uniform with the title styling above */
+  .ns-row{padding:8px 12px;}
+  .ns-title{font-size:13px;}
 }
 
 @media (max-width:380px){
