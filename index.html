@@ -143,6 +143,9 @@ body{background:var(--bg3);color:var(--text);font-family:'Barlow Condensed',sans
 nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:46px;position:sticky;top:0;z-index:100;}
 .nav-logo{font-family:'Russo One',sans-serif;font-size:19px;letter-spacing:0.02em;color:var(--text);cursor:pointer;}
 .nav-logo span{color:var(--accent);}
+.nav-back{flex-shrink:0;background:transparent;border:1px solid var(--border2);color:var(--text);font-family:'Russo One',sans-serif;font-size:14px;width:34px;height:32px;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;margin-right:10px;transition:all 0.12s;line-height:1;}
+.nav-back:hover{border-color:var(--accent);color:var(--accent);background:var(--bg2);}
+.nav-back:active{transform:translateX(-1px);}
 .nav-tabs{display:flex;gap:0;}
 .nav-tab{padding:0 16px;height:46px;display:flex;align-items:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;}
 .nav-tab:hover{color:var(--text2);}
@@ -1441,6 +1444,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   /* Nav restructured: logo+search top row, tabs scroll horizontally below */
   nav{flex-wrap:wrap;height:auto;padding:0;align-items:stretch;}
   .nav-logo{padding:10px 14px 8px;font-size:17px;flex:0 0 auto;display:flex;align-items:center;}
+  .nav-back{width:30px;height:28px;font-size:13px;margin:9px 4px 0 10px;}
   nav > div:last-child{order:0;padding:8px 14px;flex:1 1 auto;justify-content:flex-end;gap:6px !important;align-items:center;display:flex;}
   .nav-search{width:100%;max-width:none;font-size:13px;padding:6px 10px;}
   .user-badge{flex-shrink:0;height:28px;}
@@ -1558,18 +1562,47 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
      uniform typography so a film card on the Stats page looks the
      same as one on the Discover page. */
 
-  /* All browsable film/poster grids → 2 columns, uniform gap */
+  /* All browsable film/poster grids → 2 columns, uniform gap.
+     Use a chained selector ".page X" so specificity is higher than
+     any later !important rule that might re-define .film-grid alone.
+     Width clamp ensures the grid never exceeds its parent's box. */
+  .page .film-grid,
+  .page .stat-detail-grid,
+  .page .stat-hidden-grid,
+  .page .modal-similar,
+  .page .recap-notable-grid,
+  .page .profile-clubs-grid,
   .film-grid,
   .stat-detail-grid,
   .stat-hidden-grid,
   .modal-similar,
   .recap-notable-grid,
   .profile-clubs-grid{
-    grid-template-columns:repeat(2,1fr) !important;
-    gap:10px;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:10px !important;
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box;
+  }
+  /* Defensive: each card cell cannot expand wider than its 1fr slot.
+     Without min-width:0, grid children with content wider than the
+     column (long titles, posters with explicit dimensions) can force
+     the column to grow past 1fr, producing the overflow we saw. */
+  .page .film-grid > *,
+  .film-grid > *,
+  .stat-detail-grid > *,
+  .stat-hidden-grid > *,
+  .modal-similar > *,
+  .recap-notable-grid > *{
+    min-width:0;
+    max-width:100%;
   }
 
-  /* All film-card title text — same font, same size, same line clamp */
+  /* All film-card title text — same font, same size, same line clamp.
+     Use !important to win against the desktop default which sets
+     white-space:nowrap, otherwise long titles in a constrained
+     column display one line that bleeds off the right of the card. */
+  .page .film-title,
   .film-title,
   .stat-detail-card-title,
   .stat-hidden-title,
@@ -1577,30 +1610,30 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
   .sim-title,
   .search-dropdown-title,
   .profile-club-name{
-    font-family:'Russo One',sans-serif;
-    font-size:12px;
-    font-weight:normal;
-    line-height:1.2;
+    font-family:'Russo One',sans-serif !important;
+    font-size:12px !important;
+    font-weight:normal !important;
+    line-height:1.2 !important;
     color:var(--text);
-    /* Two-line clamp — wraps long titles instead of clipping or
-       letting them push the card taller than its neighbors. */
-    display:-webkit-box;
+    display:-webkit-box !important;
     -webkit-line-clamp:2;
     -webkit-box-orient:vertical;
-    overflow:hidden;
+    overflow:hidden !important;
     text-overflow:ellipsis;
-    white-space:normal;
+    white-space:normal !important;
+    word-break:break-word;
   }
 
   /* All film-card meta text (year, vote count, runtime label) — same too */
+  .page .film-meta,
   .film-meta,
   .stat-detail-card-meta,
   .stat-hidden-meta,
   .stat-best-year-rating,
   .search-dropdown-meta,
   .profile-club-meta{
-    font-family:'Oswald',sans-serif;
-    font-size:10px;
+    font-family:'Oswald',sans-serif !important;
+    font-size:10px !important;
     letter-spacing:0.04em;
     color:var(--text3);
     font-weight:600;
@@ -1958,7 +1991,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 <div id="app-wrap" style="display:none;">
 
 <nav>
-  <div class="nav-logo" onclick="showPage('discover',document.querySelectorAll('.nav-tab')[0])">FILM <span>CLUB</span></div>
+  <button class="nav-back" id="nav-back" onclick="navBack()" title="Back" aria-label="Back" style="display:none;">\u2190</button>
+  <div class="nav-logo" onclick="navJumpTo({type:'page',id:'discover'})">FILM <span>CLUB</span></div>
   <div class="nav-tabs">
     <div class="nav-tab active" onclick="showPage('discover',this)">Discover</div>
     <div class="nav-tab" onclick="showPage('filmography',this)">My Filmography</div>
@@ -2993,6 +3027,10 @@ async function doLogout(){
   // signed-out user (would just 401 on every tick)
   if(window._friendsPollTimer){clearInterval(window._friendsPollTimer);window._friendsPollTimer=null;}
   setClubsNavBadge(0);
+  // Clear nav stack so the back button doesn't surface stale destinations
+  // for whoever signs in next.
+  if(typeof _navStack!=='undefined'){_navStack=[];}
+  if(typeof _updateBackButton==='function') _updateBackButton();
   // Clear form fields
   ['login-id','login-pass','create-name','create-email','create-pass','create-pass2','forgot-email','reset-pass','reset-pass2']
     .forEach(id=>{const el=document.getElementById(id);if(el) el.value='';});
@@ -3041,6 +3079,12 @@ async function handleLoggedIn(supabaseUser,opts={}){
       loadDiscover();
       window._loadedOnce=true;
     }
+    // Seed the nav stack with the current page so the back button has
+    // a reference point if the user navigates somewhere new.
+    if(typeof _navStack!=='undefined' && _navStack.length===0){
+      _navStack.push({type:'page',payload:{id:_currentPageId||'discover'}});
+    }
+    if(typeof _updateBackButton==='function') _updateBackButton();
   } else {
     // Fresh login/signup — show the film reel AND force the landing page
     // to Discover regardless of which page was last active. This is the
@@ -3054,6 +3098,11 @@ async function handleLoggedIn(supabaseUser,opts={}){
     _currentPageId='discover';
     loadDiscover();
     showLoader();
+    // Reset the nav stack to just the landing page on fresh sign-in
+    if(typeof _navStack!=='undefined'){
+      _navStack=[{type:'page',payload:{id:'discover'}}];
+    }
+    if(typeof _updateBackButton==='function') _updateBackButton();
   }
 
   // Load data (cloud or local)
@@ -7333,6 +7382,8 @@ async function openUserProfile(userId, opts){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-profile').classList.add('active');
   window.scrollTo(0,0);
+  // Track this navigation so the back button can return here
+  if(typeof navTrack==='function') navTrack({type:'profile',payload:{userId,subtab:_profileSubtab}});
   const body=document.getElementById('profile-body');
   body.innerHTML='<div class="loading-box">Loading profile\u2026</div>';
   try{
@@ -8086,6 +8137,8 @@ async function openClub(clubId,clubName){
   if(tabs && tabs[2]) tabs[2].classList.add('active');
   if(typeof _currentPageId!=='undefined') _currentPageId='clubs';
   window.scrollTo(0,0);
+  // Track this navigation so the back button can return here
+  if(typeof navTrack==='function') navTrack({type:'club',payload:{clubId,name:clubName}});
   // Default to the Clubs sub-tab (not Friends) so the back-arrow lands
   // the user on their clubs grid — the expected back-target when viewing
   // a single club's detail.
@@ -8330,6 +8383,8 @@ async function openClubSettings(clubId){
     return;
   }
   _currentClubId = clubId;
+  // Track this navigation so the back button can return here
+  if(typeof navTrack==='function') navTrack({type:'clubSettings',payload:{clubId}});
   const body = document.getElementById('clubs-body');
   body.innerHTML = `
     <div class="club-detail-head">
@@ -9436,6 +9491,115 @@ let _currentPageId='discover';
 let _curtainBusy=false;
 let _pendingNav=null; // {id, el} — most recent tap during a curtain
 
+// =========================================================================
+// IN-APP NAVIGATION STACK
+// =========================================================================
+// Single-page apps don't get free back-button behavior — we have to track
+// where the user has been ourselves. Every navigation that changes which
+// screen is showing pushes a "location" onto a stack. The back button in
+// the nav bar pops the top entry and routes to whatever was below.
+//
+// Location shape: {type, payload}
+//   type='page'         payload={id}                  // a top-level page like 'discover'
+//   type='profile'      payload={userId, subtab}
+//   type='club'         payload={clubId, name}        // club detail (rankings/discussion)
+//   type='clubSettings' payload={clubId}              // settings page for a club
+//
+// When we trigger a navigation programmatically (e.g. from a button click)
+// we push. When we navigate AS a result of the user pressing Back, we DO
+// NOT push — _suppressNavTrack flips on for the duration of that flow so
+// downstream calls into navigation functions don't add a new stack entry.
+//
+// We don't try to merge consecutive duplicates — if the user re-taps the
+// same nav tab, we just don't push (saves stack noise).
+// =========================================================================
+
+let _navStack = [];
+let _suppressNavTrack = false;
+
+function navTrack(location){
+  if(_suppressNavTrack) return;
+  // Don't push if the new location is identical to the current top
+  const top = _navStack[_navStack.length-1];
+  if(top && _sameLocation(top, location)) return;
+  _navStack.push(location);
+  _updateBackButton();
+}
+
+function _sameLocation(a, b){
+  if(!a || !b || a.type !== b.type) return false;
+  if(a.type === 'page') return a.payload?.id === b.payload?.id;
+  if(a.type === 'profile') return a.payload?.userId === b.payload?.userId;
+  if(a.type === 'club') return a.payload?.clubId === b.payload?.clubId;
+  if(a.type === 'clubSettings') return a.payload?.clubId === b.payload?.clubId;
+  return false;
+}
+
+function _updateBackButton(){
+  const btn = document.getElementById('nav-back');
+  if(!btn) return;
+  btn.style.display = _navStack.length >= 2 ? '' : 'none';
+}
+
+// Pop the top entry; route to whatever's now on top. If the stack would
+// underflow to a single entry or less, do nothing (no destination).
+function navBack(){
+  if(_navStack.length < 2){
+    _updateBackButton();
+    return;
+  }
+  _navStack.pop();                      // discard current location
+  const prev = _navStack[_navStack.length-1];
+  // Re-route to `prev` without pushing (back-navigation must not add
+  // a new entry, otherwise pressing back would loop between two places).
+  _suppressNavTrack = true;
+  try{
+    _routeToLocation(prev);
+  }finally{
+    _suppressNavTrack = false;
+  }
+  _updateBackButton();
+}
+
+// Programmatic jump that resets the stack to a single location. Used for
+// the FILM CLUB logo, which should always be a "go home" reset rather
+// than adding yet another stack entry.
+function navJumpTo(location){
+  _navStack = [];
+  _suppressNavTrack = true;
+  try{
+    _routeToLocation(location);
+  }finally{
+    _suppressNavTrack = false;
+  }
+  _navStack.push(location);
+  _updateBackButton();
+}
+
+// Internal: route to a location by calling the appropriate navigation
+// function. NEVER calls navTrack — caller controls stack semantics.
+function _routeToLocation(loc){
+  if(!loc) return;
+  switch(loc.type){
+    case 'page': {
+      const tabs = document.querySelectorAll('.nav-tab');
+      // Map page id to its nav-tab index for the active-tab highlight
+      const idx = {discover:0, filmography:1, clubs:2, weekly:3, rankings:4, foryou:5, history:6}[loc.payload.id];
+      showPage(loc.payload.id, idx!=null ? tabs[idx] : null);
+      return;
+    }
+    case 'profile':
+      openUserProfile(loc.payload.userId, {subtab: loc.payload.subtab});
+      return;
+    case 'club':
+      openClub(loc.payload.clubId, loc.payload.name || '');
+      return;
+    case 'clubSettings':
+      openClubSettings(loc.payload.clubId);
+      return;
+  }
+}
+
 function showPage(id,el){
   // If a curtain is currently running, just remember where the user wants to go.
   // The midpoint callback will honor the latest pending request rather than
@@ -9453,11 +9617,13 @@ function showPage(id,el){
       _pendingNav=null;
       _doPageSwap(target.id,target.el);
       _currentPageId=target.id;
+      navTrack({type:'page',payload:{id:target.id}});
     });
     return;
   }
   _doPageSwap(id,el);
   _currentPageId=id;
+  navTrack({type:'page',payload:{id}});
 }
 
 // Build (once) and animate two stage curtains that sweep in from left and right,
