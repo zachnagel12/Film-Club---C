@@ -255,6 +255,190 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .taste-empty-desc{font-size:13px;color:var(--text2);font-weight:300;max-width:340px;margin:0 auto;line-height:1.5;}
 .taste-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px;}
 .taste-gap-notice{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text2);font-style:italic;background:var(--bg3);border-left:3px solid var(--border2);padding:8px 12px;margin-bottom:14px;line-height:1.5;font-weight:300;}
+
+/* ============================================================
+   STATS DASHBOARD — rich profile metrics layout
+   ============================================================ */
+.stat-taste-vector{margin-bottom:18px;padding:14px 18px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);color:var(--bg2);border:none;}
+.stat-taste-vector.loading{background:var(--bg3);color:var(--text3);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;}
+.stat-taste-vector-text{font-family:'Russo One',sans-serif;font-size:20px;line-height:1.2;letter-spacing:0.01em;}
+
+.stat-headline-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:22px;}
+.stat-headline-card{padding:14px 16px 16px;background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);}
+.stat-headline-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;font-weight:600;}
+.stat-headline-big{font-family:'Russo One',sans-serif;font-size:38px;line-height:1.0;color:var(--text);}
+.stat-headline-big.pos{color:#1a6a2a;}
+.stat-headline-big.neg{color:#8a2020;}
+.stat-headline-big-text{font-family:'Russo One',sans-serif;font-size:24px;line-height:1.0;color:var(--text);margin-bottom:4px;}
+.stat-headline-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-top:4px;font-weight:600;}
+.stat-headline-sub-multi{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text2);line-height:1.4;font-weight:300;margin-top:4px;}
+.stat-headline-meta{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--text3);font-style:italic;margin-top:6px;font-weight:300;}
+
+.stat-section{margin-bottom:24px;padding:18px;background:var(--bg2);border:1px solid var(--border);}
+.stat-section-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:6px;}
+.stat-section-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text2);font-weight:300;line-height:1.45;margin-bottom:12px;}
+.stat-empty-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text3);font-style:italic;padding:8px 0;}
+.stat-loading-sub{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+
+/* #2 disagreement scoreboard */
+.stat-disagree-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.stat-disagree-col{display:flex;flex-direction:column;gap:6px;}
+.stat-disagree-head{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;font-weight:600;}
+.stat-disagree-row{display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg3);border:1px solid var(--border);cursor:pointer;transition:border-color 0.12s;}
+.stat-disagree-row:hover{border-color:var(--accent);}
+.stat-disagree-row img,.stat-disagree-ph{width:36px;height:54px;object-fit:cover;background:var(--bg2);border:1px solid var(--border);flex-shrink:0;}
+.stat-disagree-info{flex:1;min-width:0;}
+.stat-disagree-title{font-family:'Russo One',sans-serif;font-size:12px;color:var(--text);line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.stat-disagree-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.06em;color:var(--text3);margin-top:2px;}
+.stat-disagree-nums{display:flex;align-items:center;gap:4px;font-family:'Russo One',sans-serif;flex-shrink:0;}
+.stat-disagree-mine{font-size:14px;color:var(--accent);}
+.stat-disagree-vs{font-family:'Oswald',sans-serif;font-size:8px;color:var(--text3);letter-spacing:0.08em;}
+.stat-disagree-comm{font-size:13px;color:var(--text2);}
+.stat-disagree-delta{font-size:13px;margin-left:4px;font-family:'Oswald',sans-serif;font-weight:700;}
+.stat-disagree-delta.pos{color:#1a6a2a;}
+.stat-disagree-delta.neg{color:#8a2020;}
+
+/* #4 genre generosity */
+.stat-genre-grid{display:flex;flex-direction:column;gap:6px;}
+.stat-genre-row{display:grid;grid-template-columns:130px 1fr auto;gap:10px;align-items:center;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--border2);}
+.stat-genre-row.pos{border-left-color:#1a6a2a;}
+.stat-genre-row.neg{border-left-color:#8a2020;}
+.stat-genre-name{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);}
+.stat-genre-nums{display:flex;align-items:center;gap:6px;font-family:'Russo One',sans-serif;font-size:13px;justify-self:end;}
+.stat-genre-mine{color:var(--accent);}
+.stat-genre-sep{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.08em;color:var(--text3);}
+.stat-genre-comm{color:var(--text2);}
+.stat-genre-delta{margin-left:6px;font-weight:700;}
+.stat-genre-delta.pos{color:#1a6a2a;}
+.stat-genre-delta.neg{color:#8a2020;}
+.stat-genre-delta.neutral{color:var(--text2);}
+.stat-genre-count{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.08em;color:var(--text3);}
+
+/* #5 auteur affinity */
+.stat-auteur-list{display:flex;flex-direction:column;gap:6px;}
+.stat-auteur-list.cool{opacity:0.7;}
+.stat-auteur-sub-title{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin:14px 0 6px;font-weight:600;}
+.stat-auteur-row{padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--border2);cursor:pointer;transition:border-color 0.12s;}
+.stat-auteur-row:hover{border-color:var(--accent);}
+.stat-auteur-row.pos{border-left-color:#1a6a2a;}
+.stat-auteur-row.neg{border-left-color:#8a2020;}
+.stat-auteur-name{font-family:'Russo One',sans-serif;font-size:15px;color:var(--text);margin-bottom:4px;}
+.stat-auteur-nums{display:flex;align-items:center;gap:6px;font-family:'Russo One',sans-serif;font-size:13px;margin-bottom:3px;}
+.stat-auteur-mine{color:var(--accent);}
+.stat-auteur-sep{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.08em;color:var(--text3);}
+.stat-auteur-comm{color:var(--text2);}
+.stat-auteur-delta{margin-left:6px;font-weight:700;}
+.stat-auteur-delta.pos{color:#1a6a2a;}
+.stat-auteur-delta.neg{color:#8a2020;}
+.stat-auteur-delta.neutral{color:var(--text2);}
+.stat-auteur-count{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.08em;color:var(--text3);font-weight:600;}
+.stat-auteur-expand{color:var(--accent);letter-spacing:0.06em;}
+.stat-auteur-coverage{max-height:0;overflow:hidden;transition:max-height 0.25s ease-out, margin 0.25s ease-out;margin-top:0;}
+.stat-auteur-coverage.open{max-height:400px;margin-top:10px;}
+.stat-coverage-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.stat-coverage-pct{font-family:'Russo One',sans-serif;font-size:26px;color:var(--accent);}
+.stat-coverage-frac{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;color:var(--text2);font-weight:600;}
+.stat-coverage-bar{height:6px;background:var(--bg2);border:1px solid var(--border);overflow:hidden;margin-bottom:8px;}
+.stat-coverage-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.stat-coverage-sub{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text2);font-style:italic;margin-bottom:6px;font-weight:300;}
+.stat-coverage-list{display:flex;flex-wrap:wrap;gap:5px;}
+.stat-coverage-pill{display:inline-block;padding:4px 9px;background:var(--bg2);border:1px solid var(--border);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text);cursor:pointer;transition:border-color 0.1s;}
+.stat-coverage-pill:hover{border-color:var(--accent);}
+
+/* #6 decade sweet spot */
+.stat-decade-grid{display:flex;flex-direction:column;gap:6px;}
+.stat-decade-row{display:grid;grid-template-columns:60px 1fr auto;gap:10px;align-items:center;}
+.stat-decade-name{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);}
+.stat-decade-bar{height:14px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
+.stat-decade-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));}
+.stat-decade-val{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);}
+.stat-decade-count{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.06em;color:var(--text3);font-weight:600;}
+
+/* #7 histogram */
+.stat-histogram{display:flex;gap:4px;align-items:flex-end;height:140px;padding:10px 0 0;border-bottom:1px solid var(--border);}
+.stat-hist-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;}
+.stat-hist-bar-wrap{flex:1;width:100%;display:flex;align-items:flex-end;}
+.stat-hist-bar{width:100%;background:linear-gradient(180deg,var(--accent),var(--accent2));min-height:1px;transition:height 0.4s;}
+.stat-hist-count{font-family:'Russo One',sans-serif;font-size:12px;color:var(--text);min-height:14px;}
+.stat-hist-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.04em;color:var(--text3);font-weight:600;}
+
+/* #8 language */
+.stat-lang-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;}
+.stat-lang-row{display:flex;justify-content:space-between;padding:6px 10px;background:var(--bg3);border:1px solid var(--border);}
+.stat-lang-name{font-family:'Russo One',sans-serif;font-size:12px;color:var(--text);}
+.stat-lang-count{font-family:'Russo One',sans-serif;font-size:13px;color:var(--accent);}
+
+/* #9 runtime */
+.stat-runtime-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+.stat-runtime-big{font-family:'Russo One',sans-serif;font-size:42px;color:var(--text);line-height:1.0;}
+.stat-runtime-unit{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.14em;color:var(--text3);text-transform:uppercase;font-weight:600;}
+.stat-runtime-buckets{display:grid;grid-template-columns:repeat(2,auto);gap:6px 14px;flex:1;min-width:240px;}
+.stat-runtime-bucket{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);font-weight:600;}
+.stat-runtime-bucket span{font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);margin-right:6px;text-transform:none;}
+
+/* #11 hidden gems */
+.stat-hidden-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.stat-hidden-card{display:flex;flex-direction:column;background:var(--bg3);border:1px solid var(--border);cursor:pointer;transition:border-color 0.12s;}
+.stat-hidden-card:hover{border-color:var(--gold);}
+.stat-hidden-card img,.stat-hidden-ph{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--bg2);}
+.stat-hidden-info{padding:6px 9px 9px;}
+.stat-hidden-title{font-family:'Russo One',sans-serif;font-size:12px;color:var(--text);line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.stat-hidden-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.06em;color:var(--text3);margin-top:3px;font-weight:600;}
+
+/* #12 Film Club Top 100 coverage */
+.stat-top100-list{display:flex;flex-direction:column;gap:6px;}
+.stat-top100-row{display:grid;grid-template-columns:100px 1fr 110px;gap:10px;align-items:center;}
+.stat-top100-name{font-family:'Russo One',sans-serif;font-size:13px;color:var(--text);}
+.stat-top100-bar{height:12px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
+.stat-top100-fill{height:100%;background:linear-gradient(90deg,var(--gold),#e6a23a);}
+.stat-top100-val{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text2);text-align:right;font-weight:600;}
+
+/* #13 awards */
+.stat-awards-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.stat-awards-pill{display:flex;align-items:baseline;gap:6px;padding:8px 12px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;border:1px solid var(--border);background:var(--bg3);}
+.stat-awards-pill span{font-family:'Russo One',sans-serif;font-size:18px;}
+.stat-awards-pill.won{border-color:var(--gold);color:var(--gold);}
+.stat-awards-pill.nom{border-color:var(--accent);color:var(--accent);}
+.stat-awards-pill.ignored{color:var(--text3);}
+.stat-awards-summary{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text2);font-style:italic;margin-bottom:10px;font-weight:300;}
+.stat-awards-breakdown{display:flex;flex-direction:column;gap:4px;}
+.stat-awards-item{display:flex;align-items:center;gap:8px;padding:5px 9px;background:var(--bg3);border:1px solid var(--border);cursor:pointer;transition:border-color 0.1s;}
+.stat-awards-item:hover{border-color:var(--accent);}
+.stat-awards-item.won{border-left:2px solid var(--gold);}
+.stat-awards-item.nom{border-left:2px solid var(--accent);}
+.stat-awards-mark{font-size:14px;width:18px;text-align:center;}
+.stat-awards-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text);}
+
+/* #14 best year */
+.stat-best-year-card{padding:16px;background:linear-gradient(135deg,var(--bg3) 0%,var(--bg2) 100%);border:1px solid var(--gold);text-align:center;}
+.stat-best-year-num{font-family:'Russo One',sans-serif;font-size:54px;color:var(--gold);line-height:1.0;}
+.stat-best-year-meta{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.1em;color:var(--text2);margin-top:4px;font-weight:600;}
+.stat-best-year-films{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px;}
+.stat-best-year-film{display:flex;flex-direction:column;align-items:center;gap:3px;width:80px;cursor:pointer;}
+.stat-best-year-film img,.stat-best-year-ph{width:80px;height:120px;object-fit:cover;background:var(--bg2);border:1px solid var(--border);}
+.stat-best-year-title{font-family:'Russo One',sans-serif;font-size:10px;color:var(--text);text-align:center;line-height:1.15;}
+.stat-best-year-rating{font-family:'Oswald',sans-serif;font-size:10px;color:var(--accent);letter-spacing:0.06em;font-weight:700;}
+.stat-best-year-runners{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;}
+.stat-best-year-runner{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.08em;color:var(--text3);padding:4px 8px;background:var(--bg3);border:1px solid var(--border);font-weight:600;}
+
+@media (max-width:740px){
+  .stat-headline-row{grid-template-columns:1fr;}
+  .stat-headline-big{font-size:30px;}
+  .stat-disagree-grid{grid-template-columns:1fr;}
+  .stat-section{padding:14px;}
+  .stat-section-title{font-size:10px;letter-spacing:0.14em;}
+  .stat-genre-row{grid-template-columns:1fr;gap:4px;padding:8px;}
+  .stat-genre-name{font-size:14px;}
+  .stat-genre-nums,.stat-genre-count{justify-self:start;}
+  .stat-decade-row{grid-template-columns:50px 1fr auto;}
+  .stat-histogram{height:110px;}
+  .stat-hist-label{font-size:8px;}
+  .stat-runtime-big{font-size:32px;}
+  .stat-best-year-num{font-size:42px;}
+  .stat-best-year-film{width:64px;}
+  .stat-best-year-film img,.stat-best-year-ph{width:64px;height:96px;}
+  .stat-top100-row{grid-template-columns:80px 1fr 90px;}
+}
 .taste-card{background:var(--panel);border:1px solid var(--border);padding:14px;}
 .taste-card-head{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
 .taste-big{font-family:'Russo One',sans-serif;font-size:26px;color:var(--accent);line-height:1;}
@@ -391,8 +575,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .auth-link-btn:hover{color:var(--accent2);text-decoration:underline;}
 .auth-info{background:rgba(26,106,42,0.08);border-left:3px solid var(--green);padding:9px 11px;margin-top:10px;font-size:12px;color:var(--text2);line-height:1.5;font-weight:300;}
 .auth-info strong{color:var(--green);font-weight:600;}
-.auth-offline-banner{background:rgba(176,96,48,0.1);border-left:3px solid var(--accent);padding:8px 10px;margin-bottom:18px;font-size:11px;color:var(--text2);line-height:1.4;font-weight:300;}
+.auth-offline-banner{background:rgba(176,96,48,0.1);border-left:3px solid var(--accent);padding:10px 12px;margin-bottom:18px;font-size:11px;color:var(--text2);line-height:1.4;font-weight:300;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
 .auth-offline-banner strong{color:var(--accent);font-weight:600;}
+.auth-offline-retry{background:var(--accent);color:var(--bg2);border:none;padding:6px 12px;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;cursor:pointer;flex-shrink:0;}
+.auth-offline-retry:hover{opacity:0.88;}
+.auth-offline-retry:disabled{opacity:0.5;cursor:default;}
 .sync-indicator{position:fixed;bottom:20px;right:20px;background:var(--text);color:var(--bg2);padding:7px 13px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;z-index:280;opacity:0;transition:opacity 0.3s,transform 0.3s;pointer-events:none;transform:translateY(10px);}
 .sync-indicator.show{opacity:0.9;transform:translateY(0);}
 .sync-indicator.error{background:var(--red);}
@@ -1289,7 +1476,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <div class="auth-tagline">Know What To Watch · Built Around Film</div>
 
     <div class="auth-offline-banner" id="auth-offline-banner" style="display:none;">
-      <strong>Offline mode</strong> — Supabase not configured. Data stays on this device.
+      <div id="auth-offline-msg">
+        <strong>Offline mode</strong> — your data stays on this device.
+      </div>
+      <button class="auth-offline-retry" id="auth-offline-retry" onclick="retryConnection()" style="display:none;">Retry connection</button>
     </div>
 
     <div class="auth-tabs">
@@ -1609,7 +1799,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <div class="clubs-actions">
       <button class="clubs-btn-primary" onclick="openClubModal('create')">+ Create a club</button>
       <button class="clubs-btn-secondary" onclick="openClubModal('join')">Join with password</button>
-      <button class="clubs-btn-secondary" onclick="openUserSearch()">\u{1F50D} Find people</button>
+      <button class="clubs-btn-secondary" onclick="openUserSearch()">Find people</button>
     </div>
   </div>
   <div id="clubs-body"><div class="loading-box">Loading your clubs…</div></div>
@@ -1623,11 +1813,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 <!-- USER SEARCH MODAL -->
 <div class="modal-overlay" id="user-search-modal" onclick="if(event.target===this) closeUserSearch()">
   <div class="modal" style="max-width:460px;">
-    <span class="modal-close" onclick="closeUserSearch()">\u00d7</span>
+    <span class="modal-close" onclick="closeUserSearch()">×</span>
     <div class="club-modal-title">Find people</div>
     <div class="club-modal-sub">Search by display name. Tap a result to see their profile and public clubs.</div>
     <div class="club-input-row">
-      <input class="club-input" id="user-search-input" type="text" placeholder="Type a name\u2026" autocomplete="off" oninput="userSearchDebounced(this.value)">
+      <input class="club-input" id="user-search-input" type="text" placeholder="Type a name…" autocomplete="off" oninput="userSearchDebounced(this.value)">
     </div>
     <div id="user-search-results"></div>
   </div>
@@ -1644,11 +1834,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 <!-- WEEKLY DEBATE -->
 <div class="page" id="page-weekly">
   <div class="weekly-head">
-    <div class="weekly-eyebrow">This Week\u2019s Debate</div>
-    <div class="weekly-title" id="weekly-title">Loading\u2026</div>
+    <div class="weekly-eyebrow">This Week's Debate</div>
+    <div class="weekly-title" id="weekly-title">Loading…</div>
     <div class="weekly-sub" id="weekly-sub"></div>
   </div>
-  <div id="weekly-body"><div class="loading-box">Loading the week\u2019s film\u2026</div></div>
+  <div id="weekly-body"><div class="loading-box">Loading the week's film…</div></div>
 </div>
 
 <!-- FILM HISTORY -->
@@ -1785,10 +1975,83 @@ let pickerCategory=null;
 
 function userKey(k){return `fc_${currentUser?.id||'guest'}_${k}`;}
 
-function setOfflineMode(){
+// Offline mode kicks in when we can't talk to Supabase. There are two
+// distinct reasons:
+//   - 'no-credentials': the FILMCLUB_CONFIG block still has placeholder
+//     values. The user (developer) needs to fill those in.
+//   - 'load-failed': credentials are present, but the CDN module import
+//     failed (network blip, blocked CDN, slow connection). The user
+//     should be invited to retry.
+//   - 'unknown': we couldn't determine which; show a generic message.
+// We show different copy + a retry button only when retrying might help.
+function setOfflineMode(reason){
   isOffline=true;
-  document.getElementById('auth-offline-banner').style.display='';
-  document.getElementById('auth-footer').textContent='Add your Supabase credentials at the top of the file to enable sync.';
+  const banner=document.getElementById('auth-offline-banner');
+  const msg=document.getElementById('auth-offline-msg');
+  const retry=document.getElementById('auth-offline-retry');
+  const footer=document.getElementById('auth-footer');
+  if(!banner||!msg) return;
+  banner.style.display='';
+  const cfg=window.FILMCLUB_CONFIG||{};
+  const placeholderUrl=!cfg.SUPABASE_URL||cfg.SUPABASE_URL==='YOUR_PROJECT_URL';
+  if(reason==='no-credentials'||placeholderUrl){
+    msg.innerHTML='<strong>Offline mode</strong> \u2014 Supabase isn\u2019t configured. Your data stays on this device.';
+    if(footer) footer.textContent='Add your Supabase credentials at the top of the file to enable cloud sync.';
+    if(retry) retry.style.display='none';
+  } else if(reason==='load-failed'){
+    const errBit=window.SUPABASE_ERROR?` (${window.SUPABASE_ERROR})`:'';
+    msg.innerHTML='<strong>Connection problem</strong> \u2014 couldn\u2019t reach the auth service'+errBit+'. You can use the app offline; your data stays on this device until you reconnect.';
+    if(footer) footer.textContent='If this keeps happening, check your network or refresh the page.';
+    if(retry){retry.style.display='';retry.disabled=false;retry.textContent='Retry connection';}
+  } else {
+    msg.innerHTML='<strong>Offline mode</strong> \u2014 your data stays on this device.';
+    if(footer) footer.textContent='Cloud sync unavailable right now.';
+    if(retry){retry.style.display='';retry.disabled=false;retry.textContent='Retry connection';}
+  }
+}
+
+// Retry the Supabase module load. The first-load <script type="module"> may
+// have failed transiently; this lets the user re-attempt without a full page
+// reload. We re-run the import directly here instead of relying on the
+// original module script, since modules execute only once.
+async function retryConnection(){
+  const retry=document.getElementById('auth-offline-retry');
+  const msg=document.getElementById('auth-offline-msg');
+  if(retry){retry.disabled=true;retry.textContent='Connecting\u2026';}
+  if(msg) msg.innerHTML='<strong>Reconnecting\u2026</strong>';
+  try{
+    const cfg=window.FILMCLUB_CONFIG||{};
+    if(!cfg.SUPABASE_URL||cfg.SUPABASE_URL==='YOUR_PROJECT_URL'){
+      throw new Error('Supabase credentials missing');
+    }
+    const mod=await import('https://esm.sh/@supabase/supabase-js@2');
+    window.supabaseClient=mod.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY,{
+      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}
+    });
+    window.SUPABASE_READY=true;
+    window.SUPABASE_ERROR=null;
+    isOffline=false;
+    sb=window.supabaseClient;
+    // Hide the offline banner and rerun the init flow
+    const banner=document.getElementById('auth-offline-banner');
+    if(banner) banner.style.display='none';
+    const footer=document.getElementById('auth-footer');
+    if(footer) footer.textContent='Your archive syncs to the cloud \u2014 log in from anywhere.';
+    // Try to resume any existing session
+    try{
+      const {data}=await sb.auth.getSession();
+      if(data&&data.session&&data.session.user){
+        await handleLoggedIn(data.session.user,{skipLoader:true});
+        return;
+      }
+    }catch(e){}
+    // Otherwise just stay on the auth screen but online
+    prefillLastEmail();
+  }catch(e){
+    console.error('Retry failed:',e);
+    window.SUPABASE_ERROR=e.message||String(e);
+    setOfflineMode('load-failed');
+  }
 }
 
 // Bootstrap once Supabase module finishes loading
@@ -1823,7 +2086,11 @@ async function initSupabase(){
       prefillLastEmail();
     },50);
   } else {
-    setOfflineMode();
+    // Determine why we couldn't go online. If the URL is the placeholder,
+    // it's a config issue (dev-time). Otherwise it's a runtime load failure.
+    const cfg=window.FILMCLUB_CONFIG||{};
+    const noCreds=!cfg.SUPABASE_URL||cfg.SUPABASE_URL==='YOUR_PROJECT_URL';
+    setOfflineMode(noCreds?'no-credentials':'load-failed');
     // Offline mode: try to restore the guest pointer if we set one previously;
     // otherwise show the auth screen.
     try{
@@ -1856,7 +2123,27 @@ function prefillLastEmail(){
 }
 
 if(window.SUPABASE_READY===undefined){
-  window.addEventListener('supabase-ready',initSupabase);
+  // Wait for the supabase-ready event from the module loader. The event-listener
+  // pattern handles the case where the module is still loading when this script
+  // runs. If for any reason the event never fires (CDN hang, module parse error
+  // that doesn't trigger the catch, etc.), this 8-second timeout falls back to
+  // offline mode so the page never sits in a perpetual "loading" state.
+  let supabaseInitFired=false;
+  const onReady=()=>{
+    if(supabaseInitFired) return;
+    supabaseInitFired=true;
+    initSupabase();
+  };
+  window.addEventListener('supabase-ready',onReady);
+  setTimeout(()=>{
+    if(supabaseInitFired) return;
+    if(window.SUPABASE_READY===undefined){
+      console.warn('Supabase module load timed out after 8s; falling back to offline mode');
+      window.SUPABASE_READY=false;
+      window.SUPABASE_ERROR='Module load timed out';
+    }
+    onReady();
+  },8000);
 } else {
   initSupabase();
 }
@@ -3316,9 +3603,7 @@ async function renderFgTabContent(){
     body.innerHTML='<div class="loading-box">Crunching your taste...</div>';
     try{
       const allIds=[...new Set([...seenList,...Object.keys(myRatings).map(Number)])];
-      // No cap — load ALL seen+rated films so every one factors into stats.
-      // Cached films return instantly. For uncached, we batch the requests
-      // in groups of 25 so TMDB doesn't rate-limit us on first-time loads.
+      // Load all films in batches to avoid TMDB rate-limit on first load
       const films=[];
       const BATCH=25;
       for(let i=0;i<allIds.length;i+=BATCH){
@@ -3329,97 +3614,788 @@ async function renderFgTabContent(){
             :api(`/movie/${id}`).then(f=>{filmCache[id]=f;return f;}).catch(()=>null)
         ));
         for(const f of got) if(f) films.push(f);
-        // Tiny pacing so a 200-film load doesn't bang TMDB all at once
         if(i+BATCH<allIds.length) await new Promise(r=>setTimeout(r,40));
       }
-      const valid=films;
-      const missingCount=allIds.length-valid.length;
-
-      // Primary genre count — STRICT count of films, not rating-weighted.
-      // Every seen film contributes exactly 1 to its first-listed genre.
-      // Unrated-but-seen films count just as much as rated ones.
-      const genreCount={};
-      const noGenreFilms=[];
-      valid.forEach(f=>{
-        const primary=(f.genres||[])[0]?.name;
-        if(primary) genreCount[primary]=(genreCount[primary]||0)+1;
-        else noGenreFilms.push(f.id);
-      });
-      const topGenres=Object.entries(genreCount).sort((a,b)=>b[1]-a[1]).slice(0,8);
-      const maxG=topGenres[0]?topGenres[0][1]:1;
-
-      // Decade allocation — strict bucketing by release year.
-      const decadeCount={};
-      const noYearFilms=[];
-      valid.forEach(f=>{
-        const yr=parseInt((f.release_date||'').slice(0,4));
-        if(yr){const d=Math.floor(yr/10)*10;decadeCount[d+'s']=(decadeCount[d+'s']||0)+1;}
-        else noYearFilms.push(f.id);
-      });
-      const topDecades=Object.entries(decadeCount).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
-      const maxD=Math.max(...Object.values(decadeCount),1);
-
-      const avgScore=valid.length?fmt1(valid.reduce((s,f)=>s+(f.vote_average||0),0)/valid.length):'—';
-      const ratedFilms=Object.values(myRatings);
-      const myAvg=ratedFilms.length?fmt1(ratedFilms.reduce((a,b)=>a+b,0)/ratedFilms.length):'—';
-      const myFavs=Object.entries(myRatings).sort((a,b)=>b[1]-a[1]).slice(0,1);
-      const favFilm=myFavs.length?valid.find(f=>f.id===parseInt(myFavs[0][0])):null;
-
-      // Build a small "X films couldn't be categorized" notice if relevant —
-      // surfacing data gaps is honest. Usually 0 when all films have details.
-      const dataGapNotice=(missingCount>0 || noGenreFilms.length || noYearFilms.length)?`
-        <div class="taste-gap-notice">
-          ${missingCount>0?`${missingCount} film${missingCount===1?'':'s'} couldn't be loaded from TMDB.`:''}
-          ${noGenreFilms.length?`${noGenreFilms.length} film${noGenreFilms.length===1?'':'s'} have no genre data.`:''}
-          ${noYearFilms.length?`${noYearFilms.length} film${noYearFilms.length===1?'':'s'} have no release date.`:''}
-        </div>`:'';
-
-      body.innerHTML=`
-        ${dataGapNotice}
-        <div class="taste-grid">
-          <div class="taste-card">
-            <div class="taste-card-head">Films Logged</div>
-            <div class="taste-big">${valid.length}</div>
-            <div class="taste-big-sub">${ratedFilms.length} rated</div>
-          </div>
-          <div class="taste-card">
-            <div class="taste-card-head">Your Avg Rating</div>
-            <div class="taste-big">${myAvg}<span style="font-size:14px;color:var(--gold);">★</span></div>
-            <div class="taste-big-sub">Community avg: ${avgScore}/10</div>
-          </div>
-          <div class="taste-card">
-            <div class="taste-card-head">Top Primary Genre</div>
-            <div class="taste-big" style="font-size:20px;">${topGenres[0]?.[0]||'—'}</div>
-            <div class="taste-big-sub">${topGenres[1]?.[0]?'Also: '+topGenres[1][0]:''}</div>
-          </div>
-          ${favFilm?`<div class="taste-card" style="cursor:pointer;" onclick="openFilm(${favFilm.id},'movie')">
-            <div class="taste-card-head">Your Top Rated</div>
-            <div class="taste-big" style="font-size:18px;">${favFilm.title}</div>
-            <div class="taste-big-sub">${fmt1(myFavs[0][1])} / 10 · ${(favFilm.release_date||'').slice(0,4)}</div>
-          </div>`:''}
-        </div>
-        <div class="taste-grid">
-          <div class="taste-card">
-            <div class="taste-card-head">Primary Genres You Watch</div>
-            ${topGenres.map(([n,v])=>`
-              <div class="taste-bar-row">
-                <div class="taste-bar-name">${n}</div>
-                <div class="taste-bar-bar"><div class="taste-bar-fill" style="width:${(v/maxG*100).toFixed(0)}%;"></div></div>
-                <div class="taste-bar-val">${v}</div>
-              </div>`).join('')}
-          </div>
-          <div class="taste-card">
-            <div class="taste-card-head">Decades You Watch</div>
-            ${topDecades.map(([n,v])=>`
-              <div class="taste-bar-row">
-                <div class="taste-bar-name">${n}</div>
-                <div class="taste-bar-bar"><div class="taste-bar-fill" style="width:${(v/maxD*100).toFixed(0)}%;"></div></div>
-                <div class="taste-bar-val">${v}</div>
-              </div>`).join('')}
-          </div>
-        </div>`;
-    }catch(e){body.innerHTML='<div class="no-results">Couldn\'t build stats.</div>';}
+      // Compute every stat once and render
+      const stats=crunchStatsBundle(films,myRatings,myOscars);
+      body.innerHTML=renderStatsDashboard(stats);
+      // After insertion, render the secondary lazy/async content (awards, top 100)
+      hydrateLazyStats(stats);
+    }catch(e){console.error('stats',e);body.innerHTML='<div class="no-results">Couldn\'t build stats.</div>';}
   }
+}
+
+// ============================================================
+// STATS BUNDLE — compute every dashboard metric once.
+// `films` is the list of TMDB film objects (full details, with genres array).
+// Returns an object with named fields per stat.
+// ============================================================
+function crunchStatsBundle(films,ratings,oscars){
+  const rated=films.filter(f=>ratings[f.id]>0);
+  const myCount=films.length;
+  const ratedCount=rated.length;
+
+  // Helper: community avg for one film (from filmCache details), in our 0-10 scale
+  const commAvg=f=>f.vote_average||0;
+
+  // ----- #1 Generosity Index — average delta from community across rated films
+  let totalDelta=0;
+  let deltaCount=0;
+  const deltas=[];   // {film, myRating, comm, delta}
+  for(const f of rated){
+    const my=ratings[f.id];
+    const c=commAvg(f);
+    if(!c) continue;
+    const d=my-c;
+    totalDelta+=d;
+    deltaCount++;
+    deltas.push({film:f,my,comm:c,delta:d});
+  }
+  const generosity=deltaCount?totalDelta/deltaCount:null;
+
+  // ----- #2 Where you disagree most — top 5 each direction
+  const sortedDeltas=deltas.slice().sort((a,b)=>b.delta-a.delta);
+  const lovedYouTheyDidnt=sortedDeltas.slice(0,5);
+  const lovedThemYouDidnt=sortedDeltas.slice(-5).reverse();
+
+  // ----- #3 Critical disagreement score — stdev of deltas
+  let disagreementStdev=null;
+  if(deltas.length>=2 && generosity!=null){
+    const variance=deltas.reduce((s,d)=>s+Math.pow(d.delta-generosity,2),0)/deltas.length;
+    disagreementStdev=Math.sqrt(variance);
+  }
+
+  // ----- #4 Genre generosity — per-genre delta
+  const genreBuckets={};  // name → {myTotal, commTotal, count}
+  for(const d of deltas){
+    const g=(d.film.genres||[])[0]?.name;
+    if(!g) continue;
+    if(!genreBuckets[g]) genreBuckets[g]={myTotal:0,commTotal:0,count:0};
+    genreBuckets[g].myTotal+=d.my;
+    genreBuckets[g].commTotal+=d.comm;
+    genreBuckets[g].count++;
+  }
+  const genreGenerosity=Object.entries(genreBuckets)
+    .filter(([,b])=>b.count>=2)
+    .map(([name,b])=>({
+      name,count:b.count,
+      myAvg:b.myTotal/b.count,
+      commAvg:b.commTotal/b.count,
+      delta:(b.myTotal-b.commTotal)/b.count,
+    }))
+    .sort((a,b)=>b.count-a.count)
+    .slice(0,6);
+
+  // ----- #5 Auteur Affinity — needs credits per film; defer to lazy hydrate
+  // (return seeds so the lazy step knows which films to fetch credits for)
+  const ratedFilmsForAuteur=rated;
+
+  // ----- #6 Decade Sweet Spot — avg rating by decade (rated films only)
+  const decadeBuckets={};  // decade → {total, count}
+  for(const f of rated){
+    const yr=parseInt((f.release_date||'').slice(0,4));
+    if(!yr) continue;
+    const dec=Math.floor(yr/10)*10;
+    if(!decadeBuckets[dec]) decadeBuckets[dec]={total:0,count:0};
+    decadeBuckets[dec].total+=ratings[f.id];
+    decadeBuckets[dec].count++;
+  }
+  const decadeQuality=Object.entries(decadeBuckets)
+    .filter(([,b])=>b.count>=1)
+    .map(([dec,b])=>({decade:parseInt(dec),avg:b.total/b.count,count:b.count}))
+    .sort((a,b)=>a.decade-b.decade);
+  let sweetSpotDecade=null;
+  for(const d of decadeQuality){
+    if(d.count>=2 && (!sweetSpotDecade || d.avg>sweetSpotDecade.avg)) sweetSpotDecade=d;
+  }
+
+  // ----- #7 Rating spread / personality
+  const buckets=[0,0,0,0,0,0,0,0,0,0]; // 0=0-1, 9=9-10
+  for(const r of Object.values(ratings)){
+    if(r<=0) continue;
+    const idx=Math.min(9,Math.floor(r));
+    buckets[idx]++;
+  }
+  const maxBucket=Math.max(...buckets,1);
+  // Personality: spread / cluster / generous / harsh
+  const ratingsArr=Object.values(ratings).filter(r=>r>0);
+  let personality='—';
+  let personalityDesc='';
+  if(ratingsArr.length>=10){
+    const sorted=ratingsArr.slice().sort((a,b)=>a-b);
+    const q1=sorted[Math.floor(sorted.length*0.25)];
+    const q3=sorted[Math.floor(sorted.length*0.75)];
+    const iqr=q3-q1;
+    const meanR=ratingsArr.reduce((s,x)=>s+x,0)/ratingsArr.length;
+    if(iqr<=1.5){
+      personality='Cluster grader';
+      personalityDesc=`${Math.round(ratingsArr.filter(r=>r>=q1&&r<=q3).length/ratingsArr.length*100)}% of your scores fall within ${fmt1(q1)}\u2013${fmt1(q3)}.`;
+    } else if(iqr>=3){
+      personality='Wide-swing';
+      personalityDesc='You use the full scale — your scores span a wide range.';
+    } else if(meanR>=8){
+      personality='Generous';
+      personalityDesc=`Your average is ${fmt1(meanR)} \u2014 you lean toward higher scores.`;
+    } else if(meanR<=6){
+      personality='Hard grader';
+      personalityDesc=`Your average is ${fmt1(meanR)} \u2014 you grade tough.`;
+    } else {
+      personality='Balanced';
+      personalityDesc='Your distribution looks like a typical rating curve.';
+    }
+  }
+
+  // ----- #8 Foreign-language breakdown
+  const langCount={};   // language code → count
+  for(const f of films){
+    const lang=f.original_language||'??';
+    langCount[lang]=(langCount[lang]||0)+1;
+  }
+  const langTotal=films.length;
+  const enCount=langCount['en']||0;
+  const foreignPct=langTotal?Math.round((langTotal-enCount)/langTotal*100):0;
+  const topForeign=Object.entries(langCount)
+    .filter(([k])=>k!=='en'&&k!=='??')
+    .sort((a,b)=>b[1]-a[1]).slice(0,6)
+    .map(([code,n])=>({code,name:languageLabel(code),count:n}));
+
+  // ----- #9 Runtime preference
+  const runtimes=films.map(f=>f.runtime).filter(r=>r&&r>0);
+  const avgRuntime=runtimes.length?runtimes.reduce((a,b)=>a+b,0)/runtimes.length:null;
+  const rtBuckets={short:0,standard:0,long:0,epic:0};
+  for(const r of runtimes){
+    if(r<100) rtBuckets.short++;
+    else if(r<150) rtBuckets.standard++;
+    else if(r<180) rtBuckets.long++;
+    else rtBuckets.epic++;
+  }
+
+  // ----- #11 Hidden gems — rated >= 8, <1000 votes
+  const hiddenGems=rated
+    .filter(f=>(ratings[f.id]>=8) && (f.vote_count||0)<1000 && (f.vote_count||0)>0)
+    .map(f=>({film:f,my:ratings[f.id]}))
+    .sort((a,b)=>b.my-a.my)
+    .slice(0,9);
+
+  // ----- #12 Film Club Top 100 — lazy-hydrated per genre (uses cached cinephile pool)
+  // Skipped here; rendered as a placeholder, populated later in hydrateLazyStats.
+
+  // ----- #13 Awards alignment — lazy-hydrated against oscar JSON
+  // We pass the top-20 rated films down to the hydrater.
+  const top20=Object.entries(ratings)
+    .filter(([,r])=>r>0).sort((a,b)=>b[1]-a[1]).slice(0,20)
+    .map(([id])=>films.find(f=>f.id===parseInt(id))).filter(Boolean);
+
+  // ----- #14 Best year of cinema
+  const yearBuckets={};
+  for(const f of rated){
+    const yr=parseInt((f.release_date||'').slice(0,4));
+    if(!yr) continue;
+    if(!yearBuckets[yr]) yearBuckets[yr]={total:0,count:0,films:[]};
+    yearBuckets[yr].total+=ratings[f.id];
+    yearBuckets[yr].count++;
+    yearBuckets[yr].films.push(f);
+  }
+  const qualifyingYears=Object.entries(yearBuckets)
+    .filter(([,b])=>b.count>=3)
+    .map(([yr,b])=>({year:parseInt(yr),avg:b.total/b.count,count:b.count,films:b.films}))
+    .sort((a,b)=>b.avg-a.avg);
+  const peakYear=qualifyingYears[0]||null;
+
+  // Quick small additions for header summary
+  const myAvgAll=ratingsArr.length?ratingsArr.reduce((a,b)=>a+b,0)/ratingsArr.length:null;
+
+  return {
+    myCount,ratedCount,myAvgAll,
+    generosity,deltas,
+    lovedYouTheyDidnt,lovedThemYouDidnt,
+    disagreementStdev,
+    genreGenerosity,
+    ratedFilmsForAuteur,
+    decadeQuality,sweetSpotDecade,
+    buckets,maxBucket,personality,personalityDesc,
+    langCount,foreignPct,topForeign,
+    avgRuntime,rtBuckets,
+    hiddenGems,
+    top20,
+    qualifyingYears,peakYear,
+    // Also pass the raw films + ratings down — lazy hydrators need them
+    _films:films,_ratings:ratings,_oscars:oscars,
+  };
+}
+
+// ISO language code → readable name. Small lookup; falls back to the code itself.
+function languageLabel(code){
+  const map={en:'English',fr:'French',es:'Spanish',it:'Italian',de:'German',ja:'Japanese',ko:'Korean',zh:'Chinese',cn:'Chinese',
+    ru:'Russian',pt:'Portuguese',sv:'Swedish',da:'Danish',no:'Norwegian',fi:'Finnish',pl:'Polish',
+    nl:'Dutch',hi:'Hindi',ar:'Arabic',he:'Hebrew',tr:'Turkish',th:'Thai',vi:'Vietnamese',
+    fa:'Persian',cs:'Czech',el:'Greek',hu:'Hungarian',is:'Icelandic',ro:'Romanian','??':'Unknown'};
+  return map[code]||code.toUpperCase();
+}
+
+// ============================================================
+// STATS DASHBOARD render — assembles everything into a layout.
+// ============================================================
+function renderStatsDashboard(s){
+  // Generosity + disagreement headline pair
+  const generosityTxt=s.generosity!=null
+    ? (s.generosity>=0?`+${fmt1(s.generosity)}`:`${fmt1(s.generosity)}`)
+    : '—';
+  const generosityInterpret=s.generosity==null?''
+    : s.generosity>=0.6?'You\u2019re a soft grader'
+    : s.generosity>=0.2?'Slightly generous'
+    : s.generosity>=-0.2?'In line with consensus'
+    : s.generosity>=-0.6?'Slightly tough'
+    : 'Hard grader';
+  const disagreementTxt=s.disagreementStdev!=null?fmt1(s.disagreementStdev):'—';
+  const disagreementInterpret=s.disagreementStdev==null?''
+    : s.disagreementStdev<=0.8?'In tune with the mainstream'
+    : s.disagreementStdev<=1.4?'Moderate contrarian'
+    : s.disagreementStdev<=2.0?'Strong individualist taste'
+    : 'Wildly contrarian';
+
+  // Sweet spot decade language
+  const sweetSpotTxt=s.sweetSpotDecade
+    ? `${s.sweetSpotDecade.decade}s avg <b>${fmt1(s.sweetSpotDecade.avg)}</b> across ${s.sweetSpotDecade.count} film${s.sweetSpotDecade.count===1?'':'s'}`
+    : 'Rate a few more films to find it';
+
+  const peakYearTxt=s.peakYear
+    ? `<b>${s.peakYear.year}</b> \u2014 avg ${fmt1(s.peakYear.avg)} across ${s.peakYear.count} films`
+    : 'Need 3+ rated films from the same year';
+
+  return `
+    <!-- #15 Taste Vector Summary lives at the very top, hydrated lazily -->
+    <div id="stat-taste-vector" class="stat-taste-vector loading">Building your taste signature…</div>
+
+    <!-- Headline row: generosity + disagreement -->
+    <div class="stat-headline-row">
+      <div class="stat-headline-card">
+        <div class="stat-headline-label">Generosity Index</div>
+        <div class="stat-headline-big ${s.generosity!=null&&s.generosity>=0?'pos':'neg'}">${generosityTxt}</div>
+        <div class="stat-headline-sub">${generosityInterpret}</div>
+        <div class="stat-headline-meta">vs TMDB community on the same films</div>
+      </div>
+      <div class="stat-headline-card">
+        <div class="stat-headline-label">Disagreement Score</div>
+        <div class="stat-headline-big">${disagreementTxt}</div>
+        <div class="stat-headline-sub">${disagreementInterpret}</div>
+        <div class="stat-headline-meta">standard deviation of your deltas</div>
+      </div>
+      <div class="stat-headline-card">
+        <div class="stat-headline-label">Rating Personality</div>
+        <div class="stat-headline-big-text">${s.personality}</div>
+        <div class="stat-headline-sub-multi">${s.personalityDesc}</div>
+      </div>
+    </div>
+
+    <!-- #2 Where you disagree most -->
+    ${(s.lovedYouTheyDidnt.length||s.lovedThemYouDidnt.length)?`
+    <div class="stat-section">
+      <div class="stat-section-title">Where You Disagree Most</div>
+      <div class="stat-disagree-grid">
+        <div class="stat-disagree-col">
+          <div class="stat-disagree-head">You loved, they didn\u2019t</div>
+          ${s.lovedYouTheyDidnt.length?s.lovedYouTheyDidnt.map(d=>renderDisagreementRow(d,'pos')).join(''):'<div class="stat-empty-sub">No strong positive disagreements yet.</div>'}
+        </div>
+        <div class="stat-disagree-col">
+          <div class="stat-disagree-head">They loved, you didn\u2019t</div>
+          ${s.lovedThemYouDidnt.length?s.lovedThemYouDidnt.map(d=>renderDisagreementRow(d,'neg')).join(''):'<div class="stat-empty-sub">No strong negative disagreements yet.</div>'}
+        </div>
+      </div>
+    </div>`:''}
+
+    <!-- #4 Genre Generosity Map -->
+    ${s.genreGenerosity.length?`
+    <div class="stat-section">
+      <div class="stat-section-title">Where You Differ by Genre</div>
+      <div class="stat-section-sub">Your average rating vs. the community\u2019s, by primary genre. Need 2+ rated films per genre.</div>
+      <div class="stat-genre-grid">
+        ${s.genreGenerosity.map(g=>{
+          const cls=g.delta>=0.3?'pos':(g.delta<=-0.3?'neg':'neutral');
+          const sign=g.delta>=0?'+':'';
+          return `<div class="stat-genre-row ${cls}">
+            <div class="stat-genre-name">${escapeHtml(g.name)}</div>
+            <div class="stat-genre-nums">
+              <span class="stat-genre-mine">${fmt1(g.myAvg)}</span>
+              <span class="stat-genre-sep">vs</span>
+              <span class="stat-genre-comm">${fmt1(g.commAvg)}</span>
+              <span class="stat-genre-delta ${cls}">${sign}${fmt1(g.delta)}</span>
+            </div>
+            <div class="stat-genre-count">${g.count} film${g.count===1?'':'s'}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`:''}
+
+    <!-- #5 Auteur Affinity (lazy hydrate) -->
+    <div class="stat-section" id="stat-auteur-section">
+      <div class="stat-section-title">Auteur Affinity</div>
+      <div class="stat-section-sub">Directors with 3+ films in your list, sorted by how much you rate them above (or below) their TMDB average.</div>
+      <div id="stat-auteur-body"><div class="stat-loading-sub">Reading directors\u2026</div></div>
+    </div>
+
+    <!-- #6 Decade Sweet Spot -->
+    ${s.decadeQuality.length?`
+    <div class="stat-section">
+      <div class="stat-section-title">Decade Sweet Spot</div>
+      <div class="stat-section-sub">Your average rating by decade. Sweet spot: ${sweetSpotTxt}.</div>
+      <div class="stat-decade-grid">
+        ${s.decadeQuality.map(d=>{
+          // Bar scaled across the 5.0-10.0 range so differences are visible
+          const pct=Math.max(0,Math.min(100,((d.avg-5)/5)*100));
+          return `<div class="stat-decade-row">
+            <div class="stat-decade-name">${d.decade}s</div>
+            <div class="stat-decade-bar"><div class="stat-decade-fill" style="width:${pct.toFixed(0)}%;"></div></div>
+            <div class="stat-decade-val">${fmt1(d.avg)} <span class="stat-decade-count">(${d.count})</span></div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`:''}
+
+    <!-- #7 Rating Distribution histogram -->
+    <div class="stat-section">
+      <div class="stat-section-title">How You Use the Scale</div>
+      <div class="stat-section-sub">Distribution of your rated films across 1-point buckets.</div>
+      <div class="stat-histogram">
+        ${s.buckets.map((c,i)=>{
+          const pct=(c/s.maxBucket)*100;
+          return `<div class="stat-hist-col">
+            <div class="stat-hist-bar-wrap"><div class="stat-hist-bar" style="height:${pct.toFixed(0)}%;"></div></div>
+            <div class="stat-hist-count">${c||''}</div>
+            <div class="stat-hist-label">${i}\u2013${i+1}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- #14 Best Year -->
+    ${s.peakYear?`
+    <div class="stat-section">
+      <div class="stat-section-title">Your Best Year of Cinema</div>
+      <div class="stat-section-sub">Calendar years where you\u2019ve rated 3+ films, ranked by your average.</div>
+      <div class="stat-best-year-card">
+        <div class="stat-best-year-num">${s.peakYear.year}</div>
+        <div class="stat-best-year-meta">avg <b>${fmt1(s.peakYear.avg)}</b> across ${s.peakYear.count} films</div>
+        <div class="stat-best-year-films">
+          ${s.peakYear.films.slice(0,6).map(f=>`<div class="stat-best-year-film" onclick="openFilm(${f.id},'movie')">
+            ${f.poster_path?`<img src="${IMG}w154${f.poster_path}" alt="">`:'<div class="stat-best-year-ph"></div>'}
+            <div class="stat-best-year-title">${escapeHtml(f.title||'')}</div>
+            <div class="stat-best-year-rating">${fmt1(s._ratings[f.id]||0)}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+      ${s.qualifyingYears.length>1?`
+        <div class="stat-best-year-runners">
+          ${s.qualifyingYears.slice(1,5).map(y=>`
+            <span class="stat-best-year-runner">${y.year} \u00b7 ${fmt1(y.avg)}</span>
+          `).join('')}
+        </div>`:''}
+    </div>`:''}
+
+    <!-- #8 Foreign-language affinity -->
+    <div class="stat-section">
+      <div class="stat-section-title">Where Your Films Come From</div>
+      <div class="stat-section-sub">${s.foreignPct}% of your films are non-English. The rest are listed below if applicable.</div>
+      ${s.topForeign.length?`<div class="stat-lang-grid">
+        ${s.topForeign.map(l=>`<div class="stat-lang-row">
+          <div class="stat-lang-name">${escapeHtml(l.name)}</div>
+          <div class="stat-lang-count">${l.count}</div>
+        </div>`).join('')}
+      </div>`:`<div class="stat-empty-sub">All your logged films are in English. Try expanding into other national cinemas.</div>`}
+    </div>
+
+    <!-- #9 Runtime preference -->
+    ${s.avgRuntime?`
+    <div class="stat-section">
+      <div class="stat-section-title">Runtime Preference</div>
+      <div class="stat-runtime-row">
+        <div class="stat-runtime-big">${Math.round(s.avgRuntime)} <span class="stat-runtime-unit">min</span></div>
+        <div class="stat-runtime-buckets">
+          <div class="stat-runtime-bucket"><span>${s.rtBuckets.short}</span> Under 100m</div>
+          <div class="stat-runtime-bucket"><span>${s.rtBuckets.standard}</span> 100\u2013150m</div>
+          <div class="stat-runtime-bucket"><span>${s.rtBuckets.long}</span> 150\u2013180m</div>
+          <div class="stat-runtime-bucket"><span>${s.rtBuckets.epic}</span> 180m+</div>
+        </div>
+      </div>
+    </div>`:''}
+
+    <!-- #11 Hidden Gems -->
+    ${s.hiddenGems.length?`
+    <div class="stat-section">
+      <div class="stat-section-title">Hidden Gems You Champion</div>
+      <div class="stat-section-sub">Films you rated 8.0+ that have fewer than 1,000 votes on TMDB.</div>
+      <div class="stat-hidden-grid">
+        ${s.hiddenGems.map(g=>`<div class="stat-hidden-card" onclick="openFilm(${g.film.id},'movie')">
+          ${g.film.poster_path?`<img src="${IMG}w185${g.film.poster_path}" alt="">`:'<div class="stat-hidden-ph"></div>'}
+          <div class="stat-hidden-info">
+            <div class="stat-hidden-title">${escapeHtml(g.film.title||'')}</div>
+            <div class="stat-hidden-meta">${fmt1(g.my)} \u00b7 ${(g.film.vote_count||0).toLocaleString()} votes</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`:''}
+
+    <!-- #12 Film Club Top 100 by genre (lazy hydrate) -->
+    <div class="stat-section" id="stat-top100-section">
+      <div class="stat-section-title">Film Club Top 100 Coverage</div>
+      <div class="stat-section-sub">What share of each genre\u2019s top-100 (by Film Club\u2019s cinephile score) you\u2019ve seen.</div>
+      <div id="stat-top100-body"><div class="stat-loading-sub">Computing top 100 per genre\u2026</div></div>
+    </div>
+
+    <!-- #13 Awards Alignment (lazy hydrate) -->
+    <div class="stat-section" id="stat-awards-section">
+      <div class="stat-section-title">Awards Alignment</div>
+      <div class="stat-section-sub">How often the Academy agreed with your top 20 rated films.</div>
+      <div id="stat-awards-body"><div class="stat-loading-sub">Cross-referencing Oscar history\u2026</div></div>
+    </div>
+  `;
+}
+
+function renderDisagreementRow(d,direction){
+  const f=d.film;
+  const poster=f.poster_path?`<img src="${IMG}w92${f.poster_path}" alt="">`:'<div class="stat-disagree-ph"></div>';
+  const sign=d.delta>=0?'+':'';
+  return `<div class="stat-disagree-row" onclick="openFilm(${f.id},'movie')">
+    ${poster}
+    <div class="stat-disagree-info">
+      <div class="stat-disagree-title">${escapeHtml(f.title||'')}</div>
+      <div class="stat-disagree-meta">${(f.release_date||'').slice(0,4)}</div>
+    </div>
+    <div class="stat-disagree-nums">
+      <div class="stat-disagree-mine">${fmt1(d.my)}</div>
+      <div class="stat-disagree-vs">vs</div>
+      <div class="stat-disagree-comm">${fmt1(d.comm)}</div>
+      <div class="stat-disagree-delta ${direction}">${sign}${fmt1(d.delta)}</div>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// LAZY HYDRATERS — run after the dashboard renders. These need
+// async data (credits per film, Oscar JSON, Top 100 cinephile pools)
+// and would block initial render if computed inline.
+// ============================================================
+async function hydrateLazyStats(s){
+  // Run all three in parallel; each updates its own dom container.
+  await Promise.all([
+    hydrateAuteurAffinity(s),
+    hydrateTop100Coverage(s),
+    hydrateAwardsAlignment(s),
+  ]);
+  // #15 Taste Vector composes from multiple stats — render after the lazy ones
+  hydrateTasteVector(s);
+}
+
+// #5 Auteur Affinity — needs /credits for each rated film.
+async function hydrateAuteurAffinity(s){
+  const body=document.getElementById('stat-auteur-body');
+  if(!body) return;
+  const ratings=s._ratings;
+  const films=s.ratedFilmsForAuteur;
+  // Fetch credits in parallel, batched.
+  const directorByFilm={};   // filmId → {director_id, director_name, film_avg}
+  const BATCH=20;
+  for(let i=0;i<films.length;i+=BATCH){
+    const chunk=films.slice(i,i+BATCH);
+    const got=await Promise.all(chunk.map(f=>{
+      if(filmCache[f.id]&&filmCache[f.id]._credits) return Promise.resolve(filmCache[f.id]._credits);
+      return api(`/movie/${f.id}/credits`).then(c=>{
+        if(!filmCache[f.id]) filmCache[f.id]={};
+        filmCache[f.id]._credits=c;
+        return c;
+      }).catch(()=>null);
+    }));
+    chunk.forEach((f,k)=>{
+      const c=got[k];
+      if(!c||!c.crew) return;
+      const dir=c.crew.find(p=>p.job==='Director');
+      if(!dir) return;
+      directorByFilm[f.id]={director_id:dir.id,director_name:dir.name};
+    });
+    if(i+BATCH<films.length) await new Promise(r=>setTimeout(r,30));
+  }
+  // Aggregate: director → {films:[{film, myRating, commAvg}], ...}
+  const byDir={};
+  for(const f of films){
+    const d=directorByFilm[f.id];
+    if(!d) continue;
+    if(!byDir[d.director_id]){
+      byDir[d.director_id]={id:d.director_id,name:d.director_name,films:[]};
+    }
+    byDir[d.director_id].films.push({film:f,my:ratings[f.id],comm:f.vote_average||0});
+  }
+  // Filter to directors with 3+ rated films
+  const qualified=Object.values(byDir).filter(d=>d.films.length>=3).map(d=>{
+    const myAvg=d.films.reduce((s,x)=>s+x.my,0)/d.films.length;
+    const commAvg=d.films.reduce((s,x)=>s+x.comm,0)/d.films.length;
+    return {...d,myAvg,commAvg,delta:myAvg-commAvg};
+  }).sort((a,b)=>b.delta-a.delta);
+  if(!qualified.length){
+    body.innerHTML='<div class="stat-empty-sub">Need 3+ rated films from the same director. Keep rating!</div>';
+    return;
+  }
+  // Top 8 by positive delta + up to 3 cool-on at the bottom
+  const top=qualified.slice(0,8);
+  const cool=qualified.slice(-3).filter(d=>d.delta<-0.2).reverse();
+  body.innerHTML=`
+    <div class="stat-auteur-list">
+      ${top.map(d=>renderAuteurRow(d,s._films)).join('')}
+    </div>
+    ${cool.length?`
+      <div class="stat-auteur-sub-title">You\u2019re cool on these:</div>
+      <div class="stat-auteur-list cool">
+        ${cool.map(d=>renderAuteurRow(d,s._films)).join('')}
+      </div>`:''}
+  `;
+}
+
+function renderAuteurRow(d,allFilms){
+  const sign=d.delta>=0?'+':'';
+  const cls=d.delta>=0.3?'pos':(d.delta<=-0.3?'neg':'neutral');
+  const filmCount=d.films.length;
+  return `<div class="stat-auteur-row ${cls}" onclick="toggleDirectorCoverage('${d.id}','${escapeJs(d.name)}',this)">
+    <div class="stat-auteur-name">${escapeHtml(d.name)}</div>
+    <div class="stat-auteur-nums">
+      <span class="stat-auteur-mine">${fmt1(d.myAvg)}</span>
+      <span class="stat-auteur-sep">vs</span>
+      <span class="stat-auteur-comm">${fmt1(d.commAvg)}</span>
+      <span class="stat-auteur-delta ${cls}">${sign}${fmt1(d.delta)}</span>
+    </div>
+    <div class="stat-auteur-count">${filmCount} watched \u00b7 <span class="stat-auteur-expand">tap for filmography \u203A</span></div>
+    <div class="stat-auteur-coverage" data-loaded="0"></div>
+  </div>`;
+}
+
+// ============================================================
+// DIRECTOR COVERAGE — lazy, tap-to-reveal.
+// Fetches /person/{id}/movie_credits, shows N watched / M total
+// and the percentage. Caches per session.
+// ============================================================
+const _directorCoverageCache={};
+
+async function toggleDirectorCoverage(dirId,dirName,rowEl){
+  // Stop the click from bubbling
+  if(window.event){window.event.stopPropagation();}
+  const cov=rowEl.querySelector('.stat-auteur-coverage');
+  if(!cov) return;
+  // If already loaded, just toggle visibility
+  if(cov.dataset.loaded==='1'){
+    cov.classList.toggle('open');
+    return;
+  }
+  cov.classList.add('open');
+  cov.innerHTML='<span class="stat-loading-sub">Reading filmography\u2026</span>';
+  cov.dataset.loaded='1';
+  let coverage;
+  if(_directorCoverageCache[dirId]){
+    coverage=_directorCoverageCache[dirId];
+  } else {
+    try{
+      const data=await api(`/person/${dirId}/movie_credits`);
+      const directed=(data?.crew||[])
+        .filter(c=>c.job==='Director' && c.release_date)
+        // Filter out unreleased / future films
+        .filter(c=>new Date(c.release_date)<=new Date())
+        // Dedupe by id (occasionally a person appears multiple times)
+        .reduce((acc,c)=>{if(!acc[c.id])acc[c.id]=c;return acc;},{});
+      const all=Object.values(directed);
+      const seenSet=new Set(seenList);
+      const watched=all.filter(f=>seenSet.has(f.id));
+      coverage={
+        total:all.length,
+        watched:watched.length,
+        watchedFilms:watched,
+        unwatched:all.filter(f=>!seenSet.has(f.id))
+          .sort((a,b)=>(b.vote_count||0)-(a.vote_count||0)),
+      };
+      _directorCoverageCache[dirId]=coverage;
+    } catch(e){
+      cov.innerHTML='<span class="stat-empty-sub">Could not load filmography.</span>';
+      return;
+    }
+  }
+  const pct=coverage.total?Math.round(coverage.watched/coverage.total*100):0;
+  cov.innerHTML=`
+    <div class="stat-coverage-head">
+      <span class="stat-coverage-pct">${pct}%</span>
+      <span class="stat-coverage-frac">${coverage.watched} / ${coverage.total} films</span>
+    </div>
+    <div class="stat-coverage-bar"><div class="stat-coverage-fill" style="width:${pct}%;"></div></div>
+    ${coverage.unwatched.length?`
+      <div class="stat-coverage-sub">Suggested next watches (most-voted unseen):</div>
+      <div class="stat-coverage-list">
+        ${coverage.unwatched.slice(0,4).map(f=>`<span class="stat-coverage-pill" onclick="event.stopPropagation();openFilm(${f.id},'movie')">${escapeHtml(f.title||'')}${f.release_date?' \u00b7 '+f.release_date.slice(0,4):''}</span>`).join('')}
+      </div>`:`<div class="stat-coverage-sub">You\u2019ve seen everything they\u2019ve directed. \u{1F3C6}</div>`}
+  `;
+}
+
+// #12 Film Club Top 100 — coverage per genre
+async function hydrateTop100Coverage(s){
+  const body=document.getElementById('stat-top100-body');
+  if(!body) return;
+  const seenSet=new Set(seenList);
+  // 7 main genres: Drama, Comedy, Action, Thriller, Crime, Sci-Fi, Animation
+  // (Plus Horror, Romance — let's do top 9). Genre IDs from TMDB.
+  const genres=[
+    {id:18,name:'Drama'},
+    {id:35,name:'Comedy'},
+    {id:28,name:'Action'},
+    {id:53,name:'Thriller'},
+    {id:80,name:'Crime'},
+    {id:878,name:'Sci-Fi'},
+    {id:16,name:'Animation'},
+    {id:27,name:'Horror'},
+    {id:10749,name:'Romance'},
+  ];
+  // Use the existing cinephile pool (already strongly filtered, age-weighted).
+  // Pull top 100 per genre (the function fetches up to 100 candidates already).
+  const results=await Promise.all(genres.map(async g=>{
+    try{
+      const pool=await loadCinephileTopRated(String(g.id));
+      const top100=pool.slice(0,100);
+      const watched=top100.filter(f=>seenSet.has(f.id)).length;
+      return {...g,total:top100.length,watched};
+    }catch(e){return {...g,total:0,watched:0};}
+  }));
+  results.sort((a,b)=>(b.watched/Math.max(b.total,1))-(a.watched/Math.max(a.total,1)));
+  body.innerHTML=`<div class="stat-top100-list">
+    ${results.map(r=>{
+      const pct=r.total?Math.round(r.watched/r.total*100):0;
+      return `<div class="stat-top100-row">
+        <div class="stat-top100-name">${r.name}</div>
+        <div class="stat-top100-bar"><div class="stat-top100-fill" style="width:${pct}%;"></div></div>
+        <div class="stat-top100-val">${r.watched}/${r.total} \u00b7 ${pct}%</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+// #13 Awards Alignment — match top-20 rated films against Best Picture winners/nominees
+async function hydrateAwardsAlignment(s){
+  const body=document.getElementById('stat-awards-body');
+  if(!body) return;
+  try{
+    const oscarRows=await ensureOscarData();
+    if(!oscarRows||!oscarRows.length){
+      body.innerHTML='<div class="stat-empty-sub">Oscar data unavailable.</div>';
+      return;
+    }
+    // Build a set of Best Picture film names (winners and nominees separately)
+    // Picture category in the data is typically 'Picture' (or 'Outstanding Picture' in old years).
+    const isPictureCat=cat=>/picture/i.test(cat);
+    const pictureWinners=new Set();
+    const pictureNominees=new Set();
+    for(const row of oscarRows){
+      // row: [year, category, name, film, won01]
+      const [year,cat,name,film,won]=row;
+      if(!isPictureCat(cat)) continue;
+      // For Picture, the 'film' field IS the film (sometimes name; data is uneven).
+      const titleCandidate=film||name||'';
+      if(!titleCandidate) continue;
+      const key=normalizeTitle(titleCandidate);
+      if(won) pictureWinners.add(key);
+      pictureNominees.add(key);
+    }
+    // For each of my top-20, check membership
+    let wins=0,noms=0,ignored=0;
+    const breakdown=[];   // {film, status}
+    for(const f of s.top20){
+      const key=normalizeTitle(f.title||'');
+      if(pictureWinners.has(key)){wins++;breakdown.push({film:f,status:'won'});}
+      else if(pictureNominees.has(key)){noms++;breakdown.push({film:f,status:'nom'});}
+      else {ignored++;breakdown.push({film:f,status:'none'});}
+    }
+    const total=s.top20.length;
+    const alignedPct=total?Math.round((wins+noms)/total*100):0;
+    body.innerHTML=`
+      <div class="stat-awards-row">
+        <div class="stat-awards-pill won"><span>${wins}</span> Won Best Picture</div>
+        <div class="stat-awards-pill nom"><span>${noms}</span> Nominated</div>
+        <div class="stat-awards-pill ignored"><span>${ignored}</span> Ignored by the Academy</div>
+      </div>
+      <div class="stat-awards-summary">${alignedPct}% of your top 20 were Picture nominees or winners.</div>
+      ${breakdown.length?`
+      <div class="stat-awards-breakdown">
+        ${breakdown.map(b=>`<div class="stat-awards-item ${b.status}" onclick="openFilm(${b.film.id},'movie')">
+          <span class="stat-awards-mark">${b.status==='won'?'\u{1F3C6}':b.status==='nom'?'\u272F':'\u2014'}</span>
+          <span class="stat-awards-title">${escapeHtml(b.film.title||'')}</span>
+        </div>`).join('')}
+      </div>`:''}
+    `;
+  } catch(e){
+    body.innerHTML='<div class="stat-empty-sub">Could not compute awards alignment.</div>';
+  }
+}
+
+// #15 Taste Vector Summary — composes a one-line identity at the top
+function hydrateTasteVector(s){
+  const el=document.getElementById('stat-taste-vector');
+  if(!el) return;
+  el.classList.remove('loading');
+  // Compose from: top genre, top decade by count (not sweet-spot), personality, top auteur if one stands out
+  const parts=[];
+  // Genre: most-frequent primary
+  const genreCount={};
+  for(const f of s._films){
+    const g=(f.genres||[])[0]?.name;
+    if(g) genreCount[g]=(genreCount[g]||0)+1;
+  }
+  const topGenre=Object.entries(genreCount).sort((a,b)=>b[1]-a[1])[0];
+  if(topGenre){
+    const adj={
+      Drama:'character-driven drama',
+      Comedy:'comedy',
+      Action:'action',
+      Thriller:'tense thriller',
+      Crime:'crime',
+      'Science Fiction':'sci-fi',
+      Animation:'animation',
+      Horror:'horror',
+      Romance:'romance',
+      Adventure:'adventure',
+      Documentary:'documentary',
+      Mystery:'mystery',
+      Fantasy:'fantasy',
+      War:'war film',
+      Western:'western',
+      History:'historical drama',
+      Music:'musical',
+    }[topGenre[0]]||topGenre[0].toLowerCase();
+    parts.push(adj);
+  }
+  // Decade: most-frequent decade
+  const decadeCountForVector={};
+  for(const f of s._films){
+    const y=parseInt((f.release_date||'').slice(0,4));
+    if(y){const d=Math.floor(y/10)*10;decadeCountForVector[d]=(decadeCountForVector[d]||0)+1;}
+  }
+  const topDec=Object.entries(decadeCountForVector).sort((a,b)=>b[1]-a[1])[0];
+  if(topDec) parts.unshift(`${topDec[0]}s`);
+  // Personality flavor
+  const persFlavor=s.personality==='Generous'?'generous-grade'
+    :s.personality==='Hard grader'?'hard-grade'
+    :s.personality==='Wide-swing'?'wide-swing':null;
+  // Auteur lean (if there's a strong director affinity)
+  let auteurLean='';
+  // The auteur module hydrates asynchronously; we just rely on a quick string if present in DOM
+  const auteurRow=document.querySelector('.stat-auteur-row.pos');
+  if(auteurRow){
+    const dirName=auteurRow.querySelector('.stat-auteur-name')?.textContent;
+    if(dirName) auteurLean=`soft spot for ${dirName}`;
+  }
+  let line='';
+  if(parts.length===2){
+    line=`${parts[0]} ${parts[1]} viewer`;
+  } else if(parts.length===1){
+    line=`${parts[0]} viewer`;
+  } else {
+    line='Your taste is still taking shape';
+  }
+  if(persFlavor==='generous-grade') line=`Soft-on-greatness ${line.toLowerCase()}`;
+  else if(persFlavor==='hard-grade') line=`Tough-grading ${line.toLowerCase()}`;
+  else if(persFlavor==='wide-swing') line=`Wide-swinging ${line.toLowerCase()}`;
+  if(auteurLean) line+=` with a ${auteurLean}`;
+  el.innerHTML=`<div class="stat-taste-vector-text">${escapeHtml(line)}</div>`;
 }
 
 function getMyAvgRating(){
@@ -5269,9 +6245,17 @@ function initialsFor(name){
 // ============================================================
 
 function openUserSearch(){
+  // Offline-mode users can't search the user database — surface that clearly
+  // instead of letting them type into a dead input.
+  if(isOffline||!sb||!currentUser){
+    toast('Find people is unavailable in offline mode');
+    return;
+  }
   document.getElementById('user-search-modal').classList.add('open');
   setTimeout(()=>document.getElementById('user-search-input')?.focus(),50);
-  document.getElementById('user-search-results').innerHTML='';
+  // Friendly starter state instead of a blank panel
+  document.getElementById('user-search-results').innerHTML=
+    '<div class="user-search-hint">Type a friend\u2019s display name to find them.</div>';
 }
 function closeUserSearch(){
   document.getElementById('user-search-modal').classList.remove('open');
