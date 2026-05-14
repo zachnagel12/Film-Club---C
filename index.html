@@ -873,8 +873,15 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .profile-section-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;font-weight:600;}
 .profile-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
 .profile-clubs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
-.profile-club-card{padding:11px 13px;background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:border-color 0.12s;}
+.profile-club-card{padding:11px 13px;background:var(--bg2);border:1px solid var(--border);transition:border-color 0.12s;display:flex;align-items:center;gap:10px;}
 .profile-club-card:hover{border-color:var(--accent);}
+.profile-club-info{flex:1;min-width:0;cursor:pointer;}
+.profile-club-action{flex-shrink:0;padding:7px 12px;background:transparent;border:1px solid var(--border2);color:var(--text2);font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all 0.12s;}
+.profile-club-action:hover{border-color:var(--accent);color:var(--accent);}
+.profile-club-action.primary{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
+.profile-club-action.primary:hover{background:var(--accent2);border-color:var(--accent2);color:var(--bg2);}
+.profile-club-action.pending{background:transparent;color:var(--text3);border-color:var(--border);font-style:italic;}
+.profile-club-action.pending:hover{border-color:var(--red);color:var(--red);font-style:normal;}
 .profile-club-name{font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);line-height:1.15;margin-bottom:3px;}
 .profile-club-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
 .profile-oscars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
@@ -1133,10 +1140,45 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 
 /* Members strip */
 .club-members{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg2);}
+
+/* Pending join-request strip shown to the club creator at the top of
+   their club's detail page. Prominent but contained — distinct color
+   border so it draws the eye without being shouty. */
+.club-join-requests{padding:14px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#fff4e9,var(--bg2));border-left:3px solid var(--accent);}
+.club-join-requests-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:600;}
+.club-join-requests-list{display:grid;gap:8px;}
+.club-join-request-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--border);}
+.club-join-request-info{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer;}
+.club-join-request-info:hover .club-join-request-name{color:var(--accent);}
+.club-join-request-avatar{width:34px;height:34px;background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.club-join-request-name{font-family:'Russo One',sans-serif;font-size:14px;color:var(--text);line-height:1.15;transition:color 0.12s;}
+.club-join-request-meta{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-top:2px;font-weight:600;}
+.club-join-request-actions{display:flex;gap:4px;flex-shrink:0;}
+@media (max-width:740px){
+  .club-join-requests{padding:10px 14px 12px;}
+  .club-join-request-row{padding:6px 8px;}
+  .club-join-request-avatar{width:28px;height:28px;font-size:11px;}
+  .club-join-request-name{font-size:12px;}
+}
 .club-members-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
 .club-members-list{display:flex;gap:6px;flex-wrap:wrap;}
-.club-member-chip{padding:4px 10px;background:var(--bg3);border:1px solid var(--border);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text2);}
+.club-member-chip{padding:4px 10px;background:var(--bg3);border:1px solid var(--border);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.06em;color:var(--text2);cursor:pointer;transition:border-color 0.12s,color 0.12s;}
+.club-member-chip:hover{border-color:var(--accent);color:var(--text);}
 .club-member-chip.you{background:var(--accent);color:var(--bg2);border-color:var(--accent);}
+.club-member-chip.you:hover{background:var(--accent2);border-color:var(--accent2);color:var(--bg2);}
+
+/* Pending join-requests strip (creator-only) — appears between members
+   chips and the Rankings/Discussion tabs when there are people waiting
+   to be approved. Visually distinct (left accent border) so the creator
+   notices it. */
+.join-requests-strip{padding:12px 20px;background:var(--bg2);border-bottom:1px solid var(--border);border-left:3px solid var(--accent);}
+.join-requests-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:600;}
+.join-requests-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;}
+.join-request-card{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);}
+@media (max-width:740px){
+  .join-requests-strip{padding:10px 14px;}
+  .join-requests-list{grid-template-columns:1fr;}
+}
 
 /* Modal form */
 .club-modal-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--text);line-height:1.1;margin-bottom:6px;}
@@ -1147,6 +1189,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .club-input:focus{border-color:var(--accent);}
 .club-modal-error{color:var(--red);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.06em;margin-bottom:10px;min-height:14px;}
 .club-modal-submit{width:100%;padding:11px;background:var(--accent);color:var(--bg2);border:none;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;cursor:pointer;}
+.club-modal-alt{margin-top:14px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text3);font-weight:300;}
+.club-modal-alt-btn{display:inline;background:none;border:none;padding:0 0 0 4px;color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:500;text-decoration:underline;cursor:pointer;}
+.club-modal-alt-btn:hover{color:var(--accent2);}
 .club-modal-submit:hover{opacity:0.88;}
 .club-modal-submit:disabled{background:var(--border2);cursor:not-allowed;}
 .club-modal-actions{display:flex;gap:8px;justify-content:flex-end;}
@@ -3012,22 +3057,34 @@ async function handleLoggedIn(supabaseUser,opts={}){
   }
 }
 
-// Lightweight check: count incoming pending friend requests and update
-// the nav-tab badge accordingly. Does NOT fetch friend names or anything
-// else — just the count. Cheap query.
-async function pollPendingFriendRequests(){
+// Combined notification poll: counts (a) incoming pending friend requests
+// and (b) pending club join requests for clubs you created. Both go into
+// the nav-tab dot. The Friends sub-tab badge counts only (a). The club
+// detail strip shows (b) per club.
+async function pollPendingNotifications(){
   if(!sb||isOffline||!currentUser) return;
   try{
-    const {count}=await sb.from('friendships').select('*',{count:'exact',head:true})
-      .eq('recipient',currentUser.id).eq('status','pending');
-    setClubsNavBadge(count||0);
+    const [friendsRes, joinReqsRes] = await Promise.all([
+      sb.from('friendships').select('*',{count:'exact',head:true})
+        .eq('recipient',currentUser.id).eq('status','pending'),
+      // For join requests, the RLS policy already restricts SELECT to clubs
+      // I created — so this naturally counts only requests for me to handle.
+      (async()=>{try{return await sb.from('club_join_requests').select('*',{count:'exact',head:true}).eq('status','pending');}catch(e){return {count:0};}})(),
+    ]);
+    const friendCount = friendsRes.count || 0;
+    const joinCount = (joinReqsRes && joinReqsRes.count) || 0;
+    setClubsNavBadge(friendCount + joinCount);
+    updateFriendsBadge(friendCount);
   }catch(e){
-    // Silent — the badge is an extra. If the query fails (RLS, network),
-    // the user can still see pending requests by opening the Clubs tab.
+    // Silent — the badge is an extra. If the query fails, the user can
+    // still see pending requests by opening the Clubs tab.
   }
 }
 
-// Update the small dot on the Clubs nav tab to indicate pending requests.
+// Backward-compat alias — keeps older call sites working without rewriting them
+async function pollPendingFriendRequests(){ return pollPendingNotifications(); }
+
+// Update the small dot on the Clubs nav tab to indicate pending items.
 function setClubsNavBadge(count){
   // Clubs is nav-tab index 2 in the current ordering
   // (Discover · My Filmography · Clubs · Weekly Debate · Rankings · For You · Film History)
@@ -3041,12 +3098,10 @@ function setClubsNavBadge(count){
       dot.className='nav-tab-dot';
       clubsTab.appendChild(dot);
     }
-    dot.title=`${count} pending request${count===1?'':'s'}`;
+    dot.title=`${count} pending ${count===1?'request':'requests'}`;
   } else if(dot){
     dot.remove();
   }
-  // Also update the in-page sub-tab badge if the Clubs page is open
-  updateFriendsBadge(count);
 }
 
 // Captured at page load. Stays null unless the user landed on ?join=<uuid>.
@@ -7350,12 +7405,13 @@ async function openUserProfile(userId, opts){
         <div class="oscars-grid" id="profile-oscars-grid"></div>
       </div>
 
-      <!-- TABS — match the 5 from My Filmography exactly: Overview / Seen / Rated / Watchlist / Stats -->
+      <!-- TABS — Overview / Seen / Rated / Watchlist / Clubs / Stats — mirrors My Filmography plus a Clubs tab specific to viewing someone else -->
       <div class="fg-tabs profile-fg-tabs">
         <button class="fg-tab ${_profileSubtab==='overview'?'active':''}" data-tab="overview" onclick="setProfileSubtab('overview',this)">Overview</button>
         <button class="fg-tab ${_profileSubtab==='seen'?'active':''}" data-tab="seen" onclick="setProfileSubtab('seen',this)">Seen <span class="fg-tab-count">${profileSeen.length}</span></button>
         <button class="fg-tab ${_profileSubtab==='rated'?'active':''}" data-tab="rated" onclick="setProfileSubtab('rated',this)">Rated <span class="fg-tab-count">${ratedCount}</span></button>
         <button class="fg-tab ${_profileSubtab==='watchlist'?'active':''}" data-tab="watchlist" onclick="setProfileSubtab('watchlist',this)">Watchlist <span class="fg-tab-count">${watchlistArr.length}</span></button>
+        <button class="fg-tab ${_profileSubtab==='clubs'?'active':''}" data-tab="clubs" onclick="setProfileSubtab('clubs',this)">Clubs <span class="fg-tab-count">${clubs.length}</span></button>
         <button class="fg-tab ${_profileSubtab==='stats'?'active':''}" data-tab="stats" onclick="setProfileSubtab('stats',this)">Stats</button>
       </div>
       <div class="fg-body" id="profile-content"></div>
@@ -7480,6 +7536,11 @@ async function renderProfileSubtab(){
     return;
   }
 
+  if(_profileSubtab==='clubs'){
+    renderProfileClubsTab(d);
+    return;
+  }
+
   if(_profileSubtab==='stats'){
     if(!d.profileSeen.length && !ratedEntries.length){
       content.innerHTML=`<div class="taste-empty">No activity to crunch yet.</div>`;
@@ -7489,6 +7550,154 @@ async function renderProfileSubtab(){
     content.innerHTML='<div id="profile-stats-body"><div class="loading-box">Crunching their taste\u2026</div></div>';
     crunchProfileStats(d.p.user_id, d.profileSeen, d.ratings, d.topRated, d.oscars);
     return;
+  }
+}
+
+// Render the Clubs tab on the profile. Lists every club the person is in
+// (RLS already filtered to: public clubs OR clubs you're also in OR, if
+// you two are friends, all their clubs including private ones). For any
+// club the viewer is NOT yet a member of, we show a "Request to join"
+// or "Pending" button so they can ask the creator for access without a
+// password.
+async function renderProfileClubsTab(d){
+  const content=document.getElementById('profile-content');
+  if(!content) return;
+  if(!d.clubs.length){
+    const msg=d.isSelf?'You haven\u2019t joined any clubs yet.'
+            :d.areFriends?`${d.firstName} hasn\u2019t joined any clubs yet.`
+            :'No public clubs to show.';
+    content.innerHTML=`<div class="watchlist-empty">${msg}</div>`;
+    return;
+  }
+  content.innerHTML='<div class="loading-box">Loading\u2026</div>';
+
+  // Determine which clubs the viewer is already a member of, and which
+  // they've already requested. Both are quick filtered queries.
+  let myMemberIds=new Set();
+  let myPendingRequestIds=new Set();
+  try{
+    const ids=d.clubs.map(c=>c.id);
+    const [{data:mems},{data:reqs}]=await Promise.all([
+      sb.from('club_members').select('club_id').eq('user_id',currentUser.id).in('club_id',ids),
+      sb.from('club_join_requests').select('club_id,status').eq('user_id',currentUser.id).in('club_id',ids),
+    ]);
+    (mems||[]).forEach(r=>myMemberIds.add(r.club_id));
+    (reqs||[]).forEach(r=>{if(r.status==='pending') myPendingRequestIds.add(r.club_id);});
+  }catch(e){/* fall back to showing every club as 'request to join' */}
+
+  const publicClubs=d.clubs.filter(c=>c.is_public);
+  const privateClubs=d.clubs.filter(c=>!c.is_public);
+
+  function clubRow(c){
+    const youAreIn=myMemberIds.has(c.id);
+    const isCreator=c.created_by===currentUser.id; // not loaded; safe-default false
+    let actionBtn='';
+    if(youAreIn){
+      actionBtn=`<button class="profile-club-action" onclick="openClub('${c.id}','${escapeJs(c.name)}')">Open</button>`;
+    } else if(myPendingRequestIds.has(c.id)){
+      actionBtn=`<button class="profile-club-action pending" onclick="cancelJoinRequest('${c.id}')" title="Tap to cancel your request">Pending</button>`;
+    } else {
+      actionBtn=`<button class="profile-club-action primary" onclick="requestJoinClub('${c.id}','${escapeJs(c.name)}')">Request to join</button>`;
+    }
+    const subLine=c.is_public?'Public':(d.areFriends?'Private \u2014 visible because you\u2019re friends':'Private');
+    return `<div class="profile-club-card">
+      <div class="profile-club-info" onclick="openClub('${c.id}','${escapeJs(c.name)}')">
+        <div class="profile-club-name">${escapeHtml(c.name)}</div>
+        <div class="profile-club-meta">${subLine}</div>
+      </div>
+      ${actionBtn}
+    </div>`;
+  }
+
+  const sections=[];
+  if(publicClubs.length){
+    sections.push(`<div class="profile-section">
+      <div class="profile-section-title">Public Clubs (${publicClubs.length})</div>
+      <div class="profile-clubs-grid">${publicClubs.map(clubRow).join('')}</div>
+    </div>`);
+  }
+  if(privateClubs.length){
+    sections.push(`<div class="profile-section">
+      <div class="profile-section-title">Private Clubs (${privateClubs.length})</div>
+      <div class="profile-clubs-grid">${privateClubs.map(clubRow).join('')}</div>
+    </div>`);
+  }
+  content.innerHTML=sections.join('');
+}
+
+// Send a join request. The RPC handles all the edge cases (already a member,
+// already pending, creator). We surface the result with a toast and update
+// the UI without a full re-fetch when possible.
+async function requestJoinClub(clubId, clubName){
+  try{
+    const {data,error}=await sb.rpc('request_to_join_club',{
+      p_club_id:clubId,
+      p_display_name:currentUser.displayName||currentUser.email||'Member',
+    });
+    if(error){
+      if(isMissingFunctionError(error)){
+        toast('Join requests need the latest schema. Re-run clubs-schema.sql in Supabase.');
+        return;
+      }
+      throw error;
+    }
+    const msgs={
+      'requested':`Request sent to the creator of "${clubName}"`,
+      'already_pending':'Your request is still pending',
+      'already_member':'You\u2019re already a member of this club',
+      'creator':'You\u2019re the creator of this club',
+    };
+    toast(msgs[data]||'Request sent');
+    // Refresh the profile clubs tab so the button updates
+    if(_currentProfileId && _profileSubtab==='clubs'){
+      renderProfileSubtab();
+    }
+  }catch(e){
+    toast('Could not send: '+((e&&e.message)||''));
+  }
+}
+
+// Cancel a pending join request the viewer previously sent. We delete the
+// row directly — RLS allows the requester to delete their own row.
+async function cancelJoinRequest(clubId){
+  if(!confirm('Cancel your request to join this club?')) return;
+  try{
+    const {error}=await sb.from('club_join_requests').delete()
+      .eq('club_id',clubId).eq('user_id',currentUser.id);
+    if(error) throw error;
+    toast('Request canceled');
+    if(_profileSubtab==='clubs') renderProfileSubtab();
+  }catch(e){
+    toast('Could not cancel: '+((e&&e.message)||''));
+  }
+}
+
+// Creator-only: respond to a pending join request. On accept the user is
+// added to club_members; on reject the row stays marked 'rejected' so the
+// requester can see the outcome and so they don't auto-spam re-requests.
+async function respondToJoinRequest(clubId, userId, decision){
+  try{
+    const {error}=await sb.rpc('respond_to_join_request',{
+      p_club_id:clubId,
+      p_user_id:userId,
+      p_decision:decision,
+    });
+    if(error){
+      if(isMissingFunctionError(error)){
+        toast('Re-run clubs-schema.sql in Supabase to enable join requests.');
+        return;
+      }
+      throw error;
+    }
+    toast(decision==='accept'?'Member added':'Request declined');
+    // Refresh the club detail page (also drops the row from the pending strip).
+    // We also refresh the nav badge in case this was the last pending action.
+    pollPendingFriendRequests();
+    if(_currentClubId===clubId){
+      openClub(clubId, _currentClubData?.club?.name||'');
+    }
+  }catch(e){
+    toast('Could not respond: '+((e&&e.message)||''));
   }
 }
 
@@ -7665,7 +7874,11 @@ function openClubModal(mode){
         <input class="club-input" id="club-join-pass" type="password" autocomplete="off">
       </div>
       <div class="club-modal-error" id="club-modal-error"></div>
-      <button class="club-modal-submit" onclick="submitJoinClub()">Join</button>`;
+      <button class="club-modal-submit" onclick="submitJoinClub()">Join</button>
+      <div class="club-modal-alt">
+        Don\u2019t have the password?
+        <button type="button" class="club-modal-alt-btn" onclick="submitJoinClubAsRequest()">Send a request to the creator instead</button>
+      </div>`;
     setTimeout(()=>document.getElementById('club-join-name')?.focus(),50);
   }
   document.getElementById('club-modal').classList.add('open');
@@ -7767,22 +7980,91 @@ async function submitJoinClub(){
   }
 }
 
+// "Request to join" pathway from the Join modal: when the user knows the
+// name but not the password (or is asking permission for any reason), we
+// look up the club's UUID from its name, then fire the request RPC. The
+// creator will see this in their club's detail page.
+async function submitJoinClubAsRequest(){
+  const name=document.getElementById('club-join-name').value.trim();
+  const err=document.getElementById('club-modal-error');
+  err.textContent='';
+  if(!name){err.textContent='Enter the club name first';return;}
+  try{
+    // Lookup by exact name (case-insensitive). The clubs table SELECT
+    // policy lets any authenticated user search by name.
+    const {data:matches,error:lookupErr}=await sb.from('clubs')
+      .select('id,name,created_by').ilike('name',name).limit(2);
+    if(lookupErr) throw lookupErr;
+    if(!matches || !matches.length){
+      err.textContent='No club found with that name';
+      return;
+    }
+    // If multiple clubs share the name, we can't disambiguate — the user
+    // would need to use a direct invite link instead.
+    if(matches.length>1){
+      err.textContent='Multiple clubs share that name. Use an invite link from a member.';
+      return;
+    }
+    const club=matches[0];
+    // Don't ping the creator to join their own club
+    if(club.created_by===currentUser.id){
+      err.textContent='That\u2019s your own club \u2014 you\u2019re already the creator';
+      return;
+    }
+    const {data,error}=await sb.rpc('request_to_join_club',{
+      p_club_id:club.id,
+      p_display_name:currentUser.displayName||currentUser.email||'Member',
+    });
+    if(error){
+      if(isMissingFunctionError(error)){
+        err.textContent='Join requests need the latest schema. Re-run clubs-schema.sql in Supabase.';
+        return;
+      }
+      throw error;
+    }
+    const msgs={
+      'requested':`Request sent to the creator of "${club.name}"`,
+      'already_pending':'You already have a pending request for this club',
+      'already_member':'You\u2019re already a member of this club',
+      'creator':'You\u2019re the creator of this club',
+    };
+    toast(msgs[data]||'Request sent');
+    closeClubModal();
+  }catch(e){
+    err.textContent=(e&&e.message)||'Could not send request';
+  }
+}
+
 // --- Club detail view ---
 async function openClub(clubId,clubName){
   _currentClubId=clubId;
   const body=document.getElementById('clubs-body');
   body.innerHTML='<div class="loading-box">Loading club…</div>';
   try{
-    // Pull club info, members, films, and all ratings in parallel
-    const [{data:club,error:eClub},{data:members,error:eMem},{data:films,error:eFilms},{data:ratings,error:eRate}]=await Promise.all([
+    // Pull club info, members, films, ratings, and pending join requests in parallel.
+    // The pending-requests query will return only what RLS allows — for the
+    // creator that's every pending request to their club; for everyone else
+    // it returns just their own row (if any). That's fine — we only render
+    // the strip if you ARE the creator.
+    const [{data:club,error:eClub},{data:members,error:eMem},{data:films,error:eFilms},{data:ratings,error:eRate},pendingResult]=await Promise.all([
       sb.from('clubs').select('id,name,is_public,members_can_post,members_can_rate,members_can_chat,created_at,created_by').eq('id',clubId).single(),
       sb.from('club_members').select('user_id,display_name,joined_at').eq('club_id',clubId),
       sb.from('club_films').select('film_id,posted_by_id,posted_by_name,film_title,film_year,film_poster,posted_at').eq('club_id',clubId),
       sb.from('club_ratings').select('film_id,user_id,user_name,rating').eq('club_id',clubId),
+      (async()=>{try{return await sb.from('club_join_requests')
+        .select('user_id,display_name,requested_at,status')
+        .eq('club_id',clubId).eq('status','pending');
+      }catch(e){return {data:null};}})(),
     ]);
     if(eClub) throw eClub;
 
-    _currentClubData={club,members:members||[],films:films||[],ratings:ratings||[]};
+    _currentClubData={
+      club,
+      members:members||[],
+      films:films||[],
+      ratings:ratings||[],
+      pendingJoinRequests:(pendingResult&&pendingResult.data)||[],
+    };
     renderClubDetail();
   } catch(e){
     body.innerHTML='<div class="clubs-empty">Could not load this club.<br><span style="text-transform:none;letter-spacing:0;font-family:Barlow Condensed,sans-serif;font-size:12px;color:var(--text2);">'+escapeHtml((e&&e.message)||'')+'</span></div>';
@@ -7801,7 +8083,7 @@ function permBadges(club){
 }
 
 function renderClubDetail(){
-  const {club,members,films,ratings}=_currentClubData;
+  const {club,members,films,ratings,pendingJoinRequests}=_currentClubData;
   // Aggregate ratings by film_id
   const byFilm={};
   for(const r of ratings){
@@ -7824,8 +8106,12 @@ function renderClubDetail(){
   });
 
   const isMe=u=>u===currentUser.id;
+  // Tappable member chips — tap a name to open that person's profile.
+  // We open everyone's profile via openUserProfile, including the current
+  // user (which lands on their own profile — same as the "My Filmography"
+  // link from the user menu, just routed through the profile view).
   const memberStrip=members.map(m=>
-    `<span class="club-member-chip ${isMe(m.user_id)?'you':''}">${escapeHtml(m.display_name||'Member')}</span>`
+    `<span class="club-member-chip ${isMe(m.user_id)?'you':''}" onclick="openUserProfile('${m.user_id}')">${escapeHtml(m.display_name||'Member')}</span>`
   ).join('');
 
   document.getElementById('clubs-body').innerHTML=`
@@ -7840,6 +8126,26 @@ function renderClubDetail(){
         ${club.created_by===currentUser.id?`<button class="club-action-btn danger" onclick="deleteClub('${club.id}','${escapeJs(club.name)}',${members.length},${films.length})">\u{1F5D1} Delete club</button>`:''}
       </div>
     </div>
+    ${(club.created_by===currentUser.id && pendingJoinRequests && pendingJoinRequests.length)?`
+      <div class="club-join-requests">
+        <div class="club-join-requests-label">Pending join requests \u00b7 ${pendingJoinRequests.length}</div>
+        <div class="club-join-requests-list">
+          ${pendingJoinRequests.map(r=>`
+            <div class="club-join-request-row">
+              <div class="club-join-request-info" onclick="openUserProfile('${r.user_id}')">
+                <div class="club-join-request-avatar">${initialsFor(r.display_name||'?')}</div>
+                <div>
+                  <div class="club-join-request-name">${escapeHtml(r.display_name||'Someone')}</div>
+                  <div class="club-join-request-meta">asked to join \u00b7 ${formatRelative(r.requested_at)}</div>
+                </div>
+              </div>
+              <div class="club-join-request-actions">
+                <button class="friend-btn-accept" onclick="respondToJoinRequest('${club.id}','${r.user_id}','accept')">Accept</button>
+                <button class="friend-btn-reject" onclick="respondToJoinRequest('${club.id}','${r.user_id}','reject')">Decline</button>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`:''}
     <div class="club-members">
       <div class="club-members-label">Members</div>
       <div class="club-members-list">${memberStrip}</div>
@@ -7869,6 +8175,69 @@ function renderClubDetail(){
   `;
   // If we're on the chat tab, load messages
   if(_currentClubSection==='chat') loadClubChat(club.id);
+  // If I'm the creator, load any pending join requests into the strip
+  if(club.created_by===currentUser.id) loadClubJoinRequests(club.id);
+}
+
+// Pull pending join requests for a club and render Accept/Decline rows.
+// Only the creator can call this (RLS blocks others). Re-runs whenever the
+// club detail re-renders, so the strip stays in sync.
+async function loadClubJoinRequests(clubId){
+  const strip=document.getElementById('club-join-requests-strip');
+  if(!strip) return;
+  try{
+    const {data,error}=await sb.from('club_join_requests')
+      .select('user_id,display_name,requested_at,status')
+      .eq('club_id',clubId).eq('status','pending')
+      .order('requested_at',{ascending:true});
+    if(error){
+      if(isMissingFunctionError(error)||isMissingRelationError(error)){
+        strip.innerHTML='';return;
+      }
+      throw error;
+    }
+    if(!data||!data.length){strip.innerHTML='';return;}
+    strip.innerHTML=`<div class="join-requests-strip">
+      <div class="join-requests-label">Pending join requests \u00b7 ${data.length}</div>
+      <div class="join-requests-list">
+        ${data.map(r=>`<div class="join-request-card">
+          <div class="friend-avatar">${initialsFor(r.display_name||'?')}</div>
+          <div class="friend-info">
+            <div class="friend-name" onclick="openUserProfile('${r.user_id}')">${escapeHtml(r.display_name||'Member')}</div>
+            <div class="friend-meta">wants to join</div>
+          </div>
+          <div class="friends-tab-actions">
+            <button class="friend-btn-accept" onclick="respondToJoinRequest('${clubId}','${r.user_id}','accept')">Accept</button>
+            <button class="friend-btn-reject" onclick="respondToJoinRequest('${clubId}','${r.user_id}','reject')">Decline</button>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }catch(e){
+    console.warn('join requests load failed',e);
+    strip.innerHTML='';
+  }
+}
+
+// Handle Accept/Decline click. RPC enforces creator-only permission.
+async function respondToJoinRequest(clubId, userId, decision){
+  try{
+    const {error}=await sb.rpc('respond_to_join_request',{
+      p_club_id:clubId, p_user_id:userId, p_decision:decision,
+    });
+    if(error) throw error;
+    toast(decision==='accept'?'Added to club':'Request declined');
+    // Re-fetch the club so the new member shows up in the strip + members chip row
+    if(decision==='accept'){
+      openClub(clubId, _currentClubData?.club?.name||'');
+    } else {
+      loadClubJoinRequests(clubId);
+    }
+    // Recount pending notifications
+    pollPendingNotifications();
+  }catch(e){
+    toast('Could not respond: '+((e&&e.message)||''));
+  }
 }
 
 // Which section of the club detail is visible
