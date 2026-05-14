@@ -1194,6 +1194,23 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .club-modal-alt-btn:hover{color:var(--accent2);}
 .club-modal-submit:hover{opacity:0.88;}
 .club-modal-submit:disabled{background:var(--border2);cursor:not-allowed;}
+
+/* CLUB SETTINGS PAGE — full-page form inside the Clubs page, replaces
+   the club detail when the creator taps Settings. Single-column layout
+   with section labels in the sports-newspaper Oswald style. */
+.club-settings-wrap{padding:18px 20px 30px;max-width:680px;}
+.club-settings-section{margin-bottom:22px;}
+.club-settings-section.danger{margin-top:30px;padding:16px;border:1px solid #f0d8d0;background:#fff7f4;}
+.club-settings-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:8px;}
+.club-settings-label.danger-label{color:var(--red);}
+.club-settings-hint{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text3);font-weight:300;letter-spacing:0;text-transform:none;margin-left:8px;font-style:italic;}
+.club-settings-error{color:var(--red);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.06em;min-height:14px;margin-bottom:10px;}
+.club-settings-actions{margin-bottom:8px;}
+@media (max-width:740px){
+  .club-settings-wrap{padding:14px;}
+  .club-settings-section{margin-bottom:18px;}
+  .club-settings-hint{display:block;margin-left:0;margin-top:4px;}
+}
 .club-modal-actions{display:flex;gap:8px;justify-content:flex-end;}
 .club-modal-actions .btn-secondary{padding:9px 16px;background:transparent;border:1px solid var(--border2);color:var(--text2);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;cursor:pointer;}
 .club-modal-actions .btn-secondary:hover{border-color:var(--text);color:var(--text);}
@@ -8146,8 +8163,8 @@ function renderClubDetail(){
       <div class="club-detail-actions">
         ${(club.created_by===currentUser.id || club.members_can_post!==false)?`<button class="club-action-btn primary" onclick="openPostFilmDialog('${club.id}')">+ Post a film</button>`:''}
         <button class="club-action-btn" onclick="shareClubLink('${club.id}','${escapeJs(club.name)}',${club.is_public?'true':'false'})">\u{1F517} Share invite</button>
+        ${club.created_by===currentUser.id?`<button class="club-action-btn" onclick="openClubSettings('${club.id}')">\u2699 Settings</button>`:''}
         <button class="club-action-btn danger" onclick="leaveClub('${club.id}','${escapeJs(club.name)}')">Leave club</button>
-        ${club.created_by===currentUser.id?`<button class="club-action-btn danger" onclick="deleteClub('${club.id}','${escapeJs(club.name)}',${members.length},${films.length})">\u{1F5D1} Delete club</button>`:''}
       </div>
     </div>
     ${(club.created_by===currentUser.id && pendingJoinRequests && pendingJoinRequests.length)?`
@@ -8266,6 +8283,192 @@ async function respondToJoinRequest(clubId, userId, decision){
 
 // Which section of the club detail is visible
 let _currentClubSection='rankings';
+
+// =====================================================================
+// CLUB SETTINGS PAGE
+// =====================================================================
+// Full-page settings view inside the Clubs page. Only the creator can
+// reach this — the entry-point button is gated client-side AND the
+// update_club_settings / delete_club RPCs enforce creator-only on the
+// server. Settings replace the club detail in the same `#clubs-body`
+// container; tapping "← Back to club" returns to the detail.
+// =====================================================================
+
+async function openClubSettings(clubId){
+  // Sanity gate before showing anything (the server enforces this too,
+  // but a non-creator should never see the form in the first place).
+  const club = _currentClubData?.club;
+  if(!club || club.id!==clubId){
+    // Re-fetch — this path is hit if the caller navigated directly
+    // without going through openClub first
+    try{
+      const {data,error}=await sb.from('clubs').select('id,name,is_public,members_can_post,members_can_rate,members_can_chat,created_by').eq('id',clubId).single();
+      if(error) throw error;
+      _currentClubData={...(_currentClubData||{}),club:data};
+    }catch(e){
+      toast('Could not load club: '+((e&&e.message)||''));
+      return;
+    }
+  }
+  const c = _currentClubData.club;
+  if(c.created_by !== currentUser.id){
+    toast('Only the creator can edit settings');
+    return;
+  }
+  _currentClubId = clubId;
+  const body = document.getElementById('clubs-body');
+  body.innerHTML = `
+    <div class="club-detail-head">
+      <div class="club-detail-back" onclick="openClub('${c.id}','${escapeJs(c.name)}')">\u2190 Back to club</div>
+      <div class="club-detail-name">Settings \u00b7 ${escapeHtml(c.name)}</div>
+      <div class="club-detail-meta">Only you can see this page.</div>
+    </div>
+    <div class="club-settings-wrap">
+      <!-- NAME -->
+      <div class="club-settings-section">
+        <div class="club-settings-label">Club name</div>
+        <input class="club-input" id="cs-name" type="text" maxlength="60" value="${escapeAttr(c.name||'')}">
+      </div>
+
+      <!-- VISIBILITY -->
+      <div class="club-settings-section">
+        <div class="club-settings-label">Visibility</div>
+        <div class="club-visibility-toggle">
+          <button type="button" class="club-vis-opt ${c.is_public?'':'active'}" id="cs-vis-private" onclick="setCsVisibility('private')">
+            <div class="club-vis-title">Private</div>
+            <div class="club-vis-sub">Password required</div>
+          </button>
+          <button type="button" class="club-vis-opt ${c.is_public?'active':''}" id="cs-vis-public" onclick="setCsVisibility('public')">
+            <div class="club-vis-title">Public</div>
+            <div class="club-vis-sub">Anyone with link can join</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- PASSWORD (hidden when public) -->
+      <div class="club-settings-section" id="cs-password-row" style="${c.is_public?'display:none;':''}">
+        <div class="club-settings-label">Password
+          <span class="club-settings-hint">Leave blank to keep current. Set a new one to rotate.</span>
+        </div>
+        <input class="club-input" id="cs-password" type="password" placeholder="\u2022\u2022\u2022\u2022 unchanged" autocomplete="new-password">
+      </div>
+
+      <!-- MEMBER ABILITIES -->
+      <div class="club-settings-section">
+        <div class="club-settings-label">Member abilities</div>
+        <div class="club-perm-hint">What everyone else can do in this club. You always have full control.</div>
+        <div class="club-perm-list">
+          <label class="club-perm-row">
+            <input type="checkbox" id="cs-perm-post" ${c.members_can_post!==false?'checked':''}>
+            <span class="club-perm-name">Post films</span>
+            <span class="club-perm-desc">Members can add films to the club's ranking list.</span>
+          </label>
+          <label class="club-perm-row">
+            <input type="checkbox" id="cs-perm-rate" ${c.members_can_rate!==false?'checked':''}>
+            <span class="club-perm-name">Influence rankings</span>
+            <span class="club-perm-desc">Members' ratings count toward the club's group average.</span>
+          </label>
+          <label class="club-perm-row">
+            <input type="checkbox" id="cs-perm-chat" ${c.members_can_chat!==false?'checked':''}>
+            <span class="club-perm-name">Discuss &amp; chat</span>
+            <span class="club-perm-desc">Members can post messages and vote in polls.</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="club-settings-error" id="cs-error"></div>
+      <div class="club-settings-actions">
+        <button class="club-modal-submit" id="cs-save" onclick="saveClubSettings('${c.id}')">Save changes</button>
+      </div>
+
+      <!-- DANGER ZONE — delete -->
+      <div class="club-settings-section danger">
+        <div class="club-settings-label danger-label">Danger zone</div>
+        <div class="club-perm-hint">Deleting the club removes all members, films, ratings, and chat history. This cannot be undone.</div>
+        <button class="club-action-btn danger" onclick="deleteClubFromSettings('${c.id}')">\u{1F5D1} Delete this club</button>
+      </div>
+    </div>
+  `;
+  // Local mirror of the toggle state — read by saveClubSettings
+  _csIsPublic = !!c.is_public;
+}
+
+// Local visibility toggle state for the settings page (NOT to be confused
+// with _clubCreateIsPublic which is the create-modal's state)
+let _csIsPublic = false;
+function setCsVisibility(mode){
+  _csIsPublic = (mode==='public');
+  document.getElementById('cs-vis-private').classList.toggle('active', mode==='private');
+  document.getElementById('cs-vis-public').classList.toggle('active', mode==='public');
+  // Hide/show the password row to match
+  const row = document.getElementById('cs-password-row');
+  if(row) row.style.display = _csIsPublic ? 'none' : '';
+}
+
+async function saveClubSettings(clubId){
+  const err = document.getElementById('cs-error');
+  const btn = document.getElementById('cs-save');
+  err.textContent = '';
+  const name = document.getElementById('cs-name').value.trim();
+  const pw = document.getElementById('cs-password').value;
+  const isPublic = _csIsPublic;
+  const canPost = document.getElementById('cs-perm-post').checked;
+  const canRate = document.getElementById('cs-perm-rate').checked;
+  const canChat = document.getElementById('cs-perm-chat').checked;
+
+  if(!name){err.textContent='Club name cannot be empty';return;}
+  if(name.length>60){err.textContent='Club name too long (60 character max)';return;}
+
+  btn.disabled = true;
+  btn.textContent = 'Saving\u2026';
+  try{
+    const {error} = await sb.rpc('update_club_settings', {
+      p_club_id: clubId,
+      p_name: name,
+      p_is_public: isPublic,
+      // Empty password string passes as null (keep existing). Server-side
+      // validates length when it's non-null.
+      p_password: pw && pw.length ? pw : null,
+      p_members_can_post: canPost,
+      p_members_can_rate: canRate,
+      p_members_can_chat: canChat,
+    });
+    if(error){
+      if(isMissingFunctionError(error)){
+        err.textContent = 'Settings require the latest schema. Re-run clubs-schema.sql in Supabase.';
+        return;
+      }
+      throw error;
+    }
+    toast('Settings saved');
+    // Re-open the club detail to reflect the new state (name in header,
+    // visibility badge, permission badges, etc).
+    openClub(clubId, name);
+  }catch(e){
+    err.textContent = (e&&e.message) || 'Could not save settings';
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'Save changes';
+  }
+}
+
+// Delete from inside the settings page — reuse the existing deleteClub
+// confirmation flow. We just need the member/film counts to populate
+// the warning prompt.
+function deleteClubFromSettings(clubId){
+  const d = _currentClubData;
+  if(!d || !d.club) return;
+  const memberCount = (d.members||[]).length;
+  const filmCount = (d.films||[]).length;
+  deleteClub(clubId, d.club.name, memberCount, filmCount);
+}
+
+// Small helper for safely embedding a value into an attribute. escapeHtml
+// covers element text; for attributes we also need to escape quotes.
+function escapeAttr(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 function setClubSection(section){
   _currentClubSection=section;
   document.querySelectorAll('.club-section-tab').forEach(t=>t.classList.remove('active'));
