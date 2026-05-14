@@ -225,7 +225,21 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .section-title strong{color:var(--text);font-weight:600;}
 .section-sub{font-size:11px;color:var(--text3);font-weight:300;margin-top:-6px;margin-bottom:12px;font-style:italic;}
 
-.film-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:24px;}
+/* Film grid — uses a CSS variable so the breakpoint behavior is set in
+   one place (the @media block below). On desktop it's auto-fill at min
+   130px per card; on mobile it locks to exactly 2 columns regardless
+   of intrinsic content width. Both branches use minmax(0,1fr) so a long
+   title or wide poster can never force the column wider than its share. */
+.film-grid{
+  display:grid;
+  grid-template-columns:var(--fg-cols, repeat(auto-fill, minmax(130px, 1fr)));
+  gap:10px;
+  margin-bottom:24px;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+}
+.film-grid > *{min-width:0;}
 .film-card{cursor:pointer;transition:opacity 0.12s;}
 .film-card:hover{opacity:0.82;}
 .film-poster{width:100%;aspect-ratio:2/3;background:var(--panel);border:1px solid var(--border);position:relative;overflow:hidden;}
@@ -1550,6 +1564,15 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 }
 
 @media (max-width:740px){
+  /* Set the grid-column CSS variable that the base .film-grid rule reads.
+     This is the PRIMARY mechanism for forcing 2 columns on mobile — it
+     avoids any specificity/!important battles by changing what the base
+     rule resolves to. The duplicate-specific rules below remain as
+     redundant safety nets in case some override gets added later. */
+  :root{
+    --fg-cols: repeat(2, minmax(0, 1fr));
+  }
+
   /* ============================================================
      UNIFORM CARD SIZING FOR MOBILE
      ============================================================
@@ -9517,6 +9540,16 @@ let _pendingNav=null; // {id, el} — most recent tap during a curtain
 let _navStack = [];
 let _suppressNavTrack = false;
 
+// Re-evaluate back-button visibility on resize / orientation change so
+// rotating from portrait to landscape (which can cross the 740px
+// breakpoint on some devices) updates the button's mobile-vs-desktop
+// behavior correctly.
+if(typeof window!=='undefined'){
+  window.addEventListener('resize', ()=>{
+    if(typeof _updateBackButton==='function') _updateBackButton();
+  });
+}
+
 function navTrack(location){
   if(_suppressNavTrack) return;
   // Don't push if the new location is identical to the current top
@@ -9538,14 +9571,34 @@ function _sameLocation(a, b){
 function _updateBackButton(){
   const btn = document.getElementById('nav-back');
   if(!btn) return;
-  btn.style.display = _navStack.length >= 2 ? '' : 'none';
+  // On mobile (≤740px) the back button stays visible at all times so
+  // users always have a one-tap escape hatch. When the stack is empty
+  // or single-entry, the button acts as "go to Discover" (the home).
+  // On desktop, hide the button when there's no history (the nav tabs
+  // already give clear navigation, so the button is just clutter when
+  // there's nowhere to go back to).
+  const isMobile = window.matchMedia && window.matchMedia('(max-width: 740px)').matches;
+  if(isMobile){
+    btn.style.display = '';
+    // Visual dimming when there's nothing to pop. The click still works
+    // (will route to Discover), but the user sees it's not the typical
+    // back-history flow.
+    btn.style.opacity = _navStack.length >= 2 ? '1' : '0.55';
+  } else {
+    btn.style.display = _navStack.length >= 2 ? '' : 'none';
+    btn.style.opacity = '1';
+  }
 }
 
-// Pop the top entry; route to whatever's now on top. If the stack would
-// underflow to a single entry or less, do nothing (no destination).
+// Pop the top entry; route to whatever's now on top. If there's nothing
+// to pop (we're already at the bottom of the stack), route the user
+// home to Discover — this acts as a friendly "where am I, take me back
+// to the start" affordance, especially helpful on mobile where the
+// back button is always visible.
 function navBack(){
   if(_navStack.length < 2){
-    _updateBackButton();
+    // No history → go home
+    navJumpTo({type:'page',payload:{id:'discover'}});
     return;
   }
   _navStack.pop();                      // discard current location
