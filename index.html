@@ -147,6 +147,8 @@ nav{background:var(--bg2);border-bottom:2px solid var(--accent);display:flex;ali
 .nav-tab{padding:0 16px;height:46px;display:flex;align-items:center;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;}
 .nav-tab:hover{color:var(--text2);}
 .nav-tab.active{color:var(--text);border-bottom:2px solid var(--accent);}
+.nav-tab-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-left:6px;vertical-align:middle;animation:nav-tab-dot-pulse 2s ease-in-out infinite;}
+@keyframes nav-tab-dot-pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 .nav-search{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;padding:5px 10px;outline:none;width:200px;}
 .nav-search:focus{border-color:var(--accent2);}
 .nav-search::placeholder{color:var(--text3);}
@@ -775,6 +777,34 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .clubs-btn-secondary:hover{background:var(--accent);color:var(--bg2);}
 .clubs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;padding:20px;}
 
+/* Sub-tabs at the top of the Clubs page — Your Clubs / Friends.
+   Same horizontal-strip pattern as the in-club Rankings/Discussion tabs. */
+.clubs-subtabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg2);}
+.clubs-subtab{flex:1;padding:11px 14px;background:transparent;border:none;border-bottom:2px solid transparent;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:color 0.12s,border-color 0.12s;}
+.clubs-subtab:hover{color:var(--text2);}
+.clubs-subtab.active{color:var(--text);border-bottom-color:var(--accent);}
+.clubs-subtab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;background:var(--accent);color:var(--bg2);font-family:'Russo One',sans-serif;font-size:10px;border-radius:9px;letter-spacing:0;}
+
+/* Friends tab content — distinct from the embedded strip we used to show. */
+.friends-tab-body{padding:18px 20px 30px;}
+.friends-tab-section{margin-bottom:24px;}
+.friends-tab-section:last-child{margin-bottom:0;}
+.friends-tab-section-head{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;font-weight:600;}
+.friends-tab-empty{padding:30px 0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text3);font-style:italic;}
+.friends-tab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;}
+.friends-tab-card{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);}
+.friends-tab-card.actionable{cursor:pointer;transition:border-color 0.12s;}
+.friends-tab-card.actionable:hover{border-color:var(--accent);}
+.friends-tab-card.pending{border-left:3px solid var(--accent);}
+.friends-tab-card.outgoing{border-left:3px solid var(--border2);opacity:0.85;}
+.friends-tab-actions{display:flex;gap:4px;flex-shrink:0;}
+@media (max-width:740px){
+  .clubs-subtabs{position:sticky;top:84px;z-index:50;}
+  .clubs-subtab{padding:9px 8px;font-size:10px;letter-spacing:0.1em;}
+  .friends-tab-body{padding:14px;}
+  .friends-tab-grid{grid-template-columns:1fr;}
+}
+
 /* FRIENDS STRIP on Clubs home */
 .friends-strip{padding:14px 20px 4px;border-bottom:1px solid var(--border);background:var(--bg2);}
 .friends-section{margin-bottom:12px;}
@@ -811,7 +841,12 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 .user-search-action.accent:hover{opacity:0.88;}
 
 /* USER PROFILE PAGE */
-.profile-head{padding:20px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
+.profile-head{padding:20px 20px 0;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg2),var(--bg3));}
+.profile-subtabs{display:flex;margin-top:14px;border-top:1px solid var(--border);}
+.profile-subtab{flex:1;padding:11px 14px;background:transparent;border:none;border-bottom:2px solid transparent;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;font-weight:600;transition:color 0.12s,border-color 0.12s;}
+.profile-subtab:hover{color:var(--text2);}
+.profile-subtab.active{color:var(--text);border-bottom-color:var(--accent);}
+.profile-subtab-count{display:inline-block;margin-left:4px;color:var(--text3);font-weight:400;}
 .profile-back{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);cursor:pointer;margin-bottom:14px;display:inline-block;}
 .profile-back:hover{color:var(--accent);}
 .profile-hero{display:flex;align-items:center;gap:16px;}
@@ -1897,9 +1932,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 <div class="page active" id="page-discover">
   <div class="hero">
     <div>
-      <div class="hero-eyebrow">Film Rankings · Built On Real Votes · No Algorithm</div>
-      <div class="hero-title">Know Your <em>Taste.</em><br>Built Around Film.</div>
-      <div class="hero-desc">Rate films, build your ranked list, and follow directors down every rabbit hole. Community scores from millions of votes — no algorithm, no nonsense.</div>
+      <div class="hero-eyebrow">The Cinephile's Ledger</div>
+      <div class="hero-title">Films, rated.</div>
+      <div class="hero-desc">Browse new releases and the canon. Rate what you've watched. Build a ranked list of your own. See how your taste compares.</div>
       <div class="hero-cta">
         <button class="hero-cta-btn hero-cta-primary" onclick="showPage('rankings',document.querySelectorAll('.nav-tab')[4])">Rankings →</button>
         <button class="hero-cta-btn hero-cta-secondary" onclick="showPage('history',document.querySelectorAll('.nav-tab')[6])">Film History</button>
@@ -1932,10 +1967,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
     <div class="section-bar"><span class="section-title"><strong>Trending</strong> · This Week</span></div>
     <div class="film-grid" id="grid-trending"><div class="loading-box">Loading</div></div>
     <div class="section-bar"><span class="section-title"><strong>All-Time Classics</strong> · The Canon</span></div>
-    <div class="section-sub">Films cinephiles defend — weighted toward proven classics, not last month's hits.</div>
+    <div class="section-sub">High-vote, high-rated films from across film history.</div>
     <div class="film-grid" id="grid-classics"><div class="loading-box">Loading</div></div>
     <div class="section-bar"><span class="section-title"><strong>Hidden Gems</strong> · High Score, Low Profile</span></div>
-    <div class="section-sub">Rated 7.5+ but flying under the radar — few people have seen them, fewer talk about them.</div>
+    <div class="section-sub">Rated 7.5+ on TMDB with fewer than a thousand votes.</div>
     <div class="film-grid" id="grid-gems"><div class="loading-box">Loading</div></div>
   </div>
 </div>
@@ -1964,9 +1999,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
 <!-- FOR YOU -->
 <div class="page" id="page-foryou">
   <div class="foryou-head">
-    <div class="foryou-eyebrow">Recommendations Built From Your Ratings</div>
+    <div class="foryou-eyebrow">Recommendations</div>
     <div class="foryou-title">For You</div>
-    <div class="foryou-sub">Two ways to find your next watch. Tell us what you love, or tell us what you're in the mood for.</div>
+    <div class="foryou-sub">Pick a mode: recommendations based on everything you've rated, or based on a few films you choose.</div>
   </div>
   <div class="foryou-modes">
     <button class="foryou-mode active" id="fy-mode-taste" onclick="setForYouMode('taste',this)">Based on your taste</button>
@@ -2024,6 +2059,13 @@ footer{background:var(--bg2);border-top:2px solid var(--border);padding:12px 20p
       <button class="clubs-btn-secondary" onclick="openClubModal('join')">Join with password</button>
       <button class="clubs-btn-secondary" onclick="openUserSearch()">Find people</button>
     </div>
+  </div>
+  <div class="clubs-subtabs">
+    <button class="clubs-subtab active" id="clubs-subtab-clubs" onclick="setClubsSubtab('clubs')">Your Clubs</button>
+    <button class="clubs-subtab" id="clubs-subtab-friends" onclick="setClubsSubtab('friends')">
+      Friends
+      <span class="clubs-subtab-badge" id="friends-badge" style="display:none;">0</span>
+    </button>
   </div>
   <div id="clubs-body"><div class="loading-box">Loading your clubs…</div></div>
 </div>
@@ -2861,6 +2903,10 @@ async function doLogout(){
   }
   currentUser=null;
   watchlist=[];seenList=[];myRatings={};myOscars={};
+  // Stop the friend-request poll timer so it doesn't keep firing for a
+  // signed-out user (would just 401 on every tick)
+  if(window._friendsPollTimer){clearInterval(window._friendsPollTimer);window._friendsPollTimer=null;}
+  setClubsNavBadge(0);
   // Clear form fields
   ['login-id','login-pass','create-name','create-email','create-pass','create-pass2','forgot-email','reset-pass','reset-pass2']
     .forEach(id=>{const el=document.getElementById(id);if(el) el.value='';});
@@ -2945,6 +2991,52 @@ async function handleLoggedIn(supabaseUser,opts={}){
     }catch(e){}
     handleInviteLink(clubId);
   }
+
+  // Kick off a one-shot check for pending friend requests so the badge
+  // on the Clubs nav tab shows up immediately on landing, even before
+  // the user navigates into the Clubs section. The badge re-checks every
+  // 60 seconds while the app is open.
+  pollPendingFriendRequests();
+  if(!window._friendsPollTimer){
+    window._friendsPollTimer=setInterval(pollPendingFriendRequests,60000);
+  }
+}
+
+// Lightweight check: count incoming pending friend requests and update
+// the nav-tab badge accordingly. Does NOT fetch friend names or anything
+// else — just the count. Cheap query.
+async function pollPendingFriendRequests(){
+  if(!sb||isOffline||!currentUser) return;
+  try{
+    const {count}=await sb.from('friendships').select('*',{count:'exact',head:true})
+      .eq('recipient',currentUser.id).eq('status','pending');
+    setClubsNavBadge(count||0);
+  }catch(e){
+    // Silent — the badge is an extra. If the query fails (RLS, network),
+    // the user can still see pending requests by opening the Clubs tab.
+  }
+}
+
+// Update the small dot on the Clubs nav tab to indicate pending requests.
+function setClubsNavBadge(count){
+  // Clubs is nav-tab index 2 in the current ordering
+  // (Discover · My Filmography · Clubs · Weekly Debate · Rankings · For You · Film History)
+  const tabs=document.querySelectorAll('.nav-tab');
+  if(tabs.length<3) return;
+  const clubsTab=tabs[2];
+  let dot=clubsTab.querySelector('.nav-tab-dot');
+  if(count>0){
+    if(!dot){
+      dot=document.createElement('span');
+      dot.className='nav-tab-dot';
+      clubsTab.appendChild(dot);
+    }
+    dot.title=`${count} pending request${count===1?'':'s'}`;
+  } else if(dot){
+    dot.remove();
+  }
+  // Also update the in-page sub-tab badge if the Clubs page is open
+  updateFriendsBadge(count);
 }
 
 // Captured at page load. Stays null unless the user landed on ?join=<uuid>.
@@ -6659,6 +6751,30 @@ function setRankMode(m,btn){
 let _myClubs=[];          // list of {club_id, name, joined_at, member_count, film_count}
 let _currentClubId=null;  // when viewing a club detail page
 let _currentClubData=null;// cached {club, members, films, ratings}
+let _clubsSubtab='clubs'; // 'clubs' | 'friends' — top sub-tab on the Clubs page
+let _friendsDataCache=null; // {friends, pendingIn, pendingOut} cached during a render cycle
+
+function setClubsSubtab(name){
+  _clubsSubtab=name;
+  // Update visual state of the two sub-tab buttons
+  document.querySelectorAll('.clubs-subtab').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('clubs-subtab-'+name);
+  if(btn) btn.classList.add('active');
+  // Re-render
+  renderClubsHome();
+}
+
+// Refresh the count badge on the Friends sub-tab whenever data updates.
+function updateFriendsBadge(count){
+  const badge=document.getElementById('friends-badge');
+  if(!badge) return;
+  if(count>0){
+    badge.textContent=String(count);
+    badge.style.display='';
+  } else {
+    badge.style.display='none';
+  }
+}
 
 async function renderClubsHome(){
   _currentClubId=null;
@@ -6671,75 +6787,61 @@ async function renderClubsHome(){
     body.innerHTML='<div class="clubs-empty">Sign in to join a club.</div>';
     return;
   }
-  body.innerHTML='<div class="loading-box">Loading your clubs…</div>';
+
+  // Always fetch friends/pending data alongside clubs so the Friends sub-tab
+  // badge stays accurate even when the user is viewing Your Clubs.
+  body.innerHTML='<div class="loading-box">Loading\u2026</div>';
   try{
-    // Pull clubs I'm a member of AND my friends data in parallel
     const [
       {data:members,error:e1},
       friendsResult,
-      pendingResult,
+      pendingInResult,
+      pendingOutResult,
     ]=await Promise.all([
       sb.from('club_members')
         .select('club_id, joined_at, clubs(id,name,created_at)')
         .eq('user_id',currentUser.id),
-      // Wrap RPC + table queries in async IIFEs so we can catch their errors
-      // independently. PostgrestBuilder doesn't have .catch directly — only
-      // .then — so chaining .catch on the builder throws "catch is not a function".
-      // Awaiting inside the IIFE makes it a real Promise we can recover from.
       (async()=>{try{return await sb.rpc('list_friends',{p_user:null});}catch(e){return {data:null};}})(),
       (async()=>{try{return await sb.from('friendships').select('requester,recipient,status,created_at')
         .eq('recipient',currentUser.id).eq('status','pending');}catch(e){return {data:null};}})(),
+      (async()=>{try{return await sb.from('friendships').select('requester,recipient,status,created_at')
+        .eq('requester',currentUser.id).eq('status','pending');}catch(e){return {data:null};}})(),
     ]);
     if(e1) throw e1;
     const friends=(friendsResult&&friendsResult.data)||[];
-    const pendingReqs=(pendingResult&&pendingResult.data)||[];
+    const pendingIn=(pendingInResult&&pendingInResult.data)||[];
+    const pendingOut=(pendingOutResult&&pendingOutResult.data)||[];
 
-    // Resolve names for pending requesters
-    let pendingWithNames=[];
-    if(pendingReqs.length){
-      const reqIds=pendingReqs.map(r=>r.requester);
-      const {data:names}=await sb.from('user_data')
-        .select('user_id,display_name').in('user_id',reqIds);
-      const nameMap={};
-      (names||[]).forEach(n=>nameMap[n.user_id]=n.display_name);
-      pendingWithNames=pendingReqs.map(r=>({...r,name:nameMap[r.requester]||'Someone'}));
+    // Resolve display names for all the other-party user_ids we need to show
+    const otherIds=[
+      ...pendingIn.map(r=>r.requester),
+      ...pendingOut.map(r=>r.recipient),
+    ];
+    const nameMap={};
+    if(otherIds.length){
+      try{
+        const {data:names}=await sb.from('user_data')
+          .select('user_id,display_name').in('user_id',otherIds);
+        (names||[]).forEach(n=>nameMap[n.user_id]=n.display_name);
+      }catch(e){/* fall back to "Someone" labels */}
+    }
+    const pendingInWithNames=pendingIn.map(r=>({...r,name:nameMap[r.requester]||'Someone'}));
+    const pendingOutWithNames=pendingOut.map(r=>({...r,name:nameMap[r.recipient]||'Someone'}));
+
+    // Stash so other parts of the UI can read these without refetching
+    _friendsDataCache={friends,pendingIn:pendingInWithNames,pendingOut:pendingOutWithNames};
+
+    // Update the badge on the Friends sub-tab. We badge ONLY incoming
+    // pending requests — outgoing are informational, no action needed.
+    updateFriendsBadge(pendingInWithNames.length);
+
+    // ---- Dispatch based on which sub-tab is active ----
+    if(_clubsSubtab==='friends'){
+      body.innerHTML=renderFriendsTabBody(friends,pendingInWithNames,pendingOutWithNames);
+      return;
     }
 
-    const friendsStrip=(friends.length||pendingWithNames.length)?`
-      <div class="friends-strip">
-        ${pendingWithNames.length?`
-          <div class="friends-section">
-            <div class="friends-label">Friend requests \u00b7 ${pendingWithNames.length}</div>
-            <div class="friends-list">
-              ${pendingWithNames.map(p=>`
-                <div class="friend-card pending">
-                  <div class="friend-avatar">${initialsFor(p.name)}</div>
-                  <div class="friend-info">
-                    <div class="friend-name" onclick="openUserProfile('${p.requester}')">${escapeHtml(p.name)}</div>
-                    <div class="friend-meta">wants to be friends</div>
-                  </div>
-                  <div class="friend-actions">
-                    <button class="friend-btn-accept" onclick="respondToFriendRequest('${p.requester}','accepted')">Accept</button>
-                    <button class="friend-btn-reject" onclick="respondToFriendRequest('${p.requester}','rejected')">Decline</button>
-                  </div>
-                </div>`).join('')}
-            </div>
-          </div>`:''}
-        ${friends.length?`
-          <div class="friends-section">
-            <div class="friends-label">Friends \u00b7 ${friends.length}</div>
-            <div class="friends-list">
-              ${friends.map(f=>`
-                <div class="friend-card" onclick="openUserProfile('${f.friend_id}')">
-                  <div class="friend-avatar">${initialsFor(f.display_name||'?')}</div>
-                  <div class="friend-info">
-                    <div class="friend-name">${escapeHtml(f.display_name||'Unnamed user')}</div>
-                  </div>
-                </div>`).join('')}
-            </div>
-          </div>`:''}
-      </div>`:'';
-
+    // Default: "Your Clubs" sub-tab
     // Locally cached create attempts the user can retry
     const pending=loadPendingClubs();
     const pendingStrip=pending.length?`
@@ -6758,7 +6860,6 @@ async function renderClubsHome(){
 
     if(!members||!members.length){
       body.innerHTML=`
-        ${friendsStrip}
         ${pendingStrip}
         <div class="clubs-empty">
           You haven't joined any clubs yet.<br><br>
@@ -6785,14 +6886,91 @@ async function renderClubsHome(){
       film_count:filmCounts[m.club_id]||0,
     })).sort((a,b)=>new Date(b.joined_at)-new Date(a.joined_at));
 
-    body.innerHTML=`${friendsStrip}${pendingStrip}<div class="clubs-grid">${_myClubs.map(clubCard).join('')}</div>`;
+    body.innerHTML=`${pendingStrip}<div class="clubs-grid">${_myClubs.map(clubCard).join('')}</div>`;
   } catch(e){
     console.error('clubs home error',e);
     if(e&&e.message&&/relation .* does not exist/i.test(e.message)){
       body.innerHTML=`<div class="clubs-empty">Clubs feature isn't set up yet.<br><br><span style="text-transform:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text2);letter-spacing:0;">Run <code style="background:var(--bg3);padding:1px 6px;font-family:ui-monospace,monospace;">clubs-schema.sql</code> in your Supabase SQL editor once to enable it.</span></div>`;
     } else {
-      body.innerHTML='<div class="clubs-empty">Could not load clubs. '+escapeHtml((e&&e.message)||'')+'</div>';
+      body.innerHTML='<div class="clubs-empty">Could not load. '+escapeHtml((e&&e.message)||'')+'</div>';
     }
+  }
+}
+
+// Render the Friends sub-tab content. Three sections: incoming requests
+// (need action), outgoing requests (informational), accepted friends.
+function renderFriendsTabBody(friends, pendingIn, pendingOut){
+  const inSection=pendingIn.length?`
+    <div class="friends-tab-section">
+      <div class="friends-tab-section-head">Requests \u00b7 ${pendingIn.length}</div>
+      <div class="friends-tab-grid">
+        ${pendingIn.map(p=>`
+          <div class="friends-tab-card pending">
+            <div class="friend-avatar">${initialsFor(p.name)}</div>
+            <div class="friend-info">
+              <div class="friend-name" onclick="openUserProfile('${p.requester}')">${escapeHtml(p.name)}</div>
+              <div class="friend-meta">sent you a request</div>
+            </div>
+            <div class="friends-tab-actions">
+              <button class="friend-btn-accept" onclick="respondToFriendRequest('${p.requester}','accepted')">Accept</button>
+              <button class="friend-btn-reject" onclick="respondToFriendRequest('${p.requester}','rejected')">Decline</button>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`:'';
+
+  const outSection=pendingOut.length?`
+    <div class="friends-tab-section">
+      <div class="friends-tab-section-head">Sent \u00b7 ${pendingOut.length}</div>
+      <div class="friends-tab-grid">
+        ${pendingOut.map(p=>`
+          <div class="friends-tab-card outgoing">
+            <div class="friend-avatar">${initialsFor(p.name)}</div>
+            <div class="friend-info">
+              <div class="friend-name" onclick="openUserProfile('${p.recipient}')">${escapeHtml(p.name)}</div>
+              <div class="friend-meta">awaiting their response</div>
+            </div>
+            <div class="friends-tab-actions">
+              <button class="friend-btn-reject" onclick="cancelFriendRequest('${p.recipient}')">Cancel</button>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`:'';
+
+  const friendsSection=friends.length?`
+    <div class="friends-tab-section">
+      <div class="friends-tab-section-head">Friends \u00b7 ${friends.length}</div>
+      <div class="friends-tab-grid">
+        ${friends.map(f=>`
+          <div class="friends-tab-card actionable" onclick="openUserProfile('${f.friend_id}')">
+            <div class="friend-avatar">${initialsFor(f.display_name||'?')}</div>
+            <div class="friend-info">
+              <div class="friend-name">${escapeHtml(f.display_name||'Unnamed user')}</div>
+              <div class="friend-meta">tap to view their profile</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`:'';
+
+  const anything=pendingIn.length||pendingOut.length||friends.length;
+  return `<div class="friends-tab-body">
+    ${inSection}${outSection}${friendsSection}
+    ${anything?'':`<div class="friends-tab-empty">No friends or pending requests yet. Tap "Find people" above to search by username.</div>`}
+  </div>`;
+}
+
+// Cancel an outgoing friend request you sent
+async function cancelFriendRequest(targetId){
+  if(!confirm('Cancel this friend request?')) return;
+  try{
+    const {error}=await sb.from('friendships')
+      .delete()
+      .eq('requester',currentUser.id).eq('recipient',targetId);
+    if(error) throw error;
+    toast('Request canceled');
+    renderClubsHome();
+  }catch(e){
+    toast('Could not cancel: '+((e&&e.message)||''));
   }
 }
 
@@ -7017,7 +7195,15 @@ async function respondToFriendRequest(requesterId,decision){
       if(error) throw error;
       toast('Request declined');
     }
-    renderClubsHome();
+    // Refresh the badge + the in-page list
+    pollPendingFriendRequests();
+    if(_currentProfileId===requesterId){
+      // We're looking at this person's profile — re-render so the
+      // friend-state button updates from "Accept request" to "✓ Friends"
+      openUserProfile(requesterId,{subtab:_profileSubtab});
+    } else {
+      renderClubsHome();
+    }
   }catch(e){
     toast('Could not update: '+((e&&e.message)||''));
   }
@@ -7041,8 +7227,12 @@ async function removeFriend(otherId){
 // --- Profile page ---
 let _currentProfileId=null;
 
-async function openUserProfile(userId){
+// Which tab is active inside the profile page — Overview / Filmography / Clubs
+let _profileSubtab='overview';
+
+async function openUserProfile(userId, opts){
   _currentProfileId=userId;
+  if(opts && opts.subtab) _profileSubtab=opts.subtab; else _profileSubtab='overview';
   // Switch to profile page (not tied to a nav tab)
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-profile').classList.add('active');
@@ -7050,19 +7240,22 @@ async function openUserProfile(userId){
   const body=document.getElementById('profile-body');
   body.innerHTML='<div class="loading-box">Loading profile\u2026</div>';
   try{
-    // Pull all the profile data in parallel
-    const [profile,friendship,publicClubs]=await Promise.all([
+    // Pull profile + friendship state + the user's clubs in parallel.
+    // We ask for ALL their club memberships (not just public) — the RLS
+    // policy will filter to (a) public clubs anyone can see, plus (b)
+    // any club where the viewer is an accepted friend. So if Alice is
+    // Bob's friend, this returns ALL Alice's club memberships; if Alice
+    // is a stranger, this returns just her public clubs.
+    const [profile,friendship,allClubs]=await Promise.all([
       sb.from('user_data')
         .select('user_id,display_name,seen,ratings,watchlist,oscars')
         .eq('user_id',userId).maybeSingle(),
-      // Are we already friends / pending?
       userId===currentUser.id?Promise.resolve({data:null}):
         sb.from('friendships').select('requester,recipient,status')
           .or(`and(requester.eq.${currentUser.id},recipient.eq.${userId}),and(requester.eq.${userId},recipient.eq.${currentUser.id})`)
           .maybeSingle(),
-      // Their public clubs
-      sb.from('club_members').select('club_id,clubs!inner(id,name,is_public)')
-        .eq('user_id',userId).eq('clubs.is_public',true),
+      sb.from('club_members').select('club_id,clubs(id,name,is_public)')
+        .eq('user_id',userId),
     ]);
     if(profile.error) throw profile.error;
     if(!profile.data){
@@ -7072,13 +7265,16 @@ async function openUserProfile(userId){
     const p=profile.data;
     const isSelf=p.user_id===currentUser.id;
     const fr=friendship&&friendship.data;
+    const areFriends = fr && fr.status==='accepted';
+
+    // Build the friend-state button
     let friendBtn='';
     if(isSelf){
       friendBtn='';
     } else if(!fr){
       friendBtn=`<button class="profile-friend-btn primary" onclick="addFriend('${p.user_id}','${escapeJs(p.display_name||'')}')">+ Add friend</button>`;
     } else if(fr.status==='pending' && fr.requester===currentUser.id){
-      friendBtn=`<button class="profile-friend-btn" disabled>Request pending</button>`;
+      friendBtn=`<button class="profile-friend-btn" onclick="cancelFriendRequest('${p.user_id}')">Cancel request</button>`;
     } else if(fr.status==='pending' && fr.recipient===currentUser.id){
       friendBtn=`<button class="profile-friend-btn primary" onclick="respondToFriendRequest('${p.user_id}','accepted')">Accept request</button>
         <button class="profile-friend-btn" onclick="respondToFriendRequest('${p.user_id}','rejected')">Decline</button>`;
@@ -7086,7 +7282,7 @@ async function openUserProfile(userId){
       friendBtn=`<button class="profile-friend-btn" onclick="removeFriend('${p.user_id}')">\u2713 Friends \u00b7 Remove</button>`;
     }
 
-    // Render the profile
+    // Profile data
     const profileSeen=Array.isArray(p.seen)?p.seen:[];
     const ratings=p.ratings||{};
     const oscars=p.oscars||{};
@@ -7094,6 +7290,11 @@ async function openUserProfile(userId){
     const ratedVals=Object.values(ratings).filter(v=>v>0);
     const avgRating=ratedVals.length?fmt1(ratedVals.reduce((a,b)=>a+b,0)/ratedVals.length):'—';
     const topRated=Object.entries(ratings).sort((a,b)=>b[1]-a[1]).slice(0,1)[0];
+    const clubs=(allClubs.data||[]).map(m=>m.clubs).filter(Boolean);
+
+    // Privacy framing for the Filmography tab. Friends + self see the
+    // full browsable list. Strangers see a privacy note.
+    const filmographyVisible = isSelf || areFriends;
 
     body.innerHTML=`
       <div class="profile-head">
@@ -7106,65 +7307,206 @@ async function openUserProfile(userId){
             <div class="profile-actions">${friendBtn}</div>
           </div>
         </div>
+        <div class="profile-subtabs">
+          <button class="profile-subtab ${_profileSubtab==='overview'?'active':''}" onclick="setProfileSubtab('overview')">Overview</button>
+          <button class="profile-subtab ${_profileSubtab==='filmography'?'active':''}" onclick="setProfileSubtab('filmography')">Filmography</button>
+          <button class="profile-subtab ${_profileSubtab==='clubs'?'active':''}" onclick="setProfileSubtab('clubs')">Clubs <span class="profile-subtab-count">${clubs.length}</span></button>
+        </div>
       </div>
-      <div id="profile-stats-body"><div class="loading-box">Crunching their taste\u2026</div></div>
-      <div id="profile-clubs-body"></div>
-      <div id="profile-oscars-body"></div>
+      <div id="profile-content"></div>
     `;
 
-    // Render public clubs immediately (they're already loaded)
-    const clubs=(publicClubs.data||[]).map(m=>m.clubs).filter(Boolean);
-    document.getElementById('profile-clubs-body').innerHTML=clubs.length?`
-      <div class="profile-section">
-        <div class="profile-section-title">Public Clubs (${clubs.length})</div>
-        <div class="profile-clubs-grid">
-          ${clubs.map(c=>`<div class="profile-club-card" onclick="openClub('${c.id}','${escapeJs(c.name)}')">
-            <div class="profile-club-name">${escapeHtml(c.name)}</div>
-            <div class="profile-club-meta">Public</div>
-          </div>`).join('')}
-        </div>
-      </div>`:`
-      <div class="profile-section">
-        <div class="profile-section-title">Public Clubs</div>
-        <div class="profile-empty-sub">No public clubs yet.</div>
-      </div>`;
+    // Stash for sub-tab switches without refetching
+    _currentProfileData={p,isSelf,areFriends,profileSeen,ratings,oscars,topRated,clubs,filmographyVisible};
 
-    // Render oscars summary
-    const oscarCats=[
-      {key:'bestFilm',label:'Best Picture'},
-      {key:'bestDirector',label:'Best Director'},
-      {key:'bestActor',label:'Best Actor'},
-      {key:'bestActress',label:'Best Actress'},
-      {key:'bestCinematography',label:'Best Cinematography'},
-      {key:'bestSound',label:'Best Sound'},
-    ];
-    const oscarItems=oscarCats.filter(c=>oscars[c.key]).map(c=>({label:c.label,pick:oscars[c.key]}));
-    if(oscarItems.length){
-      document.getElementById('profile-oscars-body').innerHTML=`
-        <div class="profile-section">
-          <div class="profile-section-title">${isSelf?'Your':escapeHtml((p.display_name||'Their').split(' ')[0]+'\u2019s')} Oscars</div>
-          <div class="profile-oscars-grid">
-            ${oscarItems.map(o=>{
-              const pick=o.pick;
-              const name=pick.name||pick.title||'\u2014';
-              const sub=pick.year||(pick.release_date||'').slice(0,4)||'';
-              return `<div class="profile-oscar-card">
-                <div class="profile-oscar-cat">${o.label}</div>
-                <div class="profile-oscar-pick">${escapeHtml(name)}</div>
-                <div class="profile-oscar-sub">${escapeHtml(sub)}</div>
-              </div>`;
-            }).join('')}
-          </div>
-        </div>`;
-    } else {
-      document.getElementById('profile-oscars-body').innerHTML='';
-    }
-
-    // Crunch their stats — same logic as own filmography
-    crunchProfileStats(p.user_id,profileSeen,ratings,topRated,oscars);
+    renderProfileSubtab();
   }catch(e){
     body.innerHTML='<div class="clubs-empty">Could not load profile: '+escapeHtml((e&&e.message)||'')+'</div>';
   }
+}
+
+let _currentProfileData=null;
+
+function setProfileSubtab(name){
+  _profileSubtab=name;
+  document.querySelectorAll('.profile-subtab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.profile-subtab').forEach(b=>{
+    if(b.textContent.trim().toLowerCase().startsWith(name)) b.classList.add('active');
+  });
+  renderProfileSubtab();
+}
+
+function renderProfileSubtab(){
+  const content=document.getElementById('profile-content');
+  if(!content||!_currentProfileData) return;
+  const d=_currentProfileData;
+  if(_profileSubtab==='overview'){
+    // Two sections: their stats body + their Oscar picks
+    content.innerHTML=`
+      <div id="profile-stats-body"><div class="loading-box">Crunching their taste\u2026</div></div>
+      <div id="profile-oscars-body"></div>`;
+    crunchProfileStats(d.p.user_id, d.profileSeen, d.ratings, d.topRated, d.oscars);
+    renderProfileOscars(d);
+  } else if(_profileSubtab==='filmography'){
+    renderProfileFilmography(d);
+  } else if(_profileSubtab==='clubs'){
+    renderProfileClubs(d);
+  }
+}
+
+function renderProfileOscars(d){
+  const body=document.getElementById('profile-oscars-body');
+  if(!body) return;
+  const oscarCats=[
+    {key:'bestFilm',label:'Best Picture'},
+    {key:'bestDirector',label:'Best Director'},
+    {key:'bestActor',label:'Best Actor'},
+    {key:'bestActress',label:'Best Actress'},
+    {key:'bestCinematography',label:'Best Cinematography'},
+    {key:'bestSound',label:'Best Sound'},
+  ];
+  const oscarItems=oscarCats.filter(c=>d.oscars[c.key]).map(c=>({label:c.label,pick:d.oscars[c.key]}));
+  if(!oscarItems.length){body.innerHTML='';return;}
+  body.innerHTML=`
+    <div class="profile-section">
+      <div class="profile-section-title">${d.isSelf?'Your':escapeHtml((d.p.display_name||'Their').split(' ')[0]+'\u2019s')} Oscars</div>
+      <div class="profile-oscars-grid">
+        ${oscarItems.map(o=>{
+          const pick=o.pick;
+          const name=pick.name||pick.title||'\u2014';
+          const sub=pick.year||(pick.release_date||'').slice(0,4)||'';
+          return `<div class="profile-oscar-card">
+            <div class="profile-oscar-cat">${o.label}</div>
+            <div class="profile-oscar-pick">${escapeHtml(name)}</div>
+            <div class="profile-oscar-sub">${escapeHtml(sub)}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+function renderProfileClubs(d){
+  const content=document.getElementById('profile-content');
+  if(!content) return;
+  if(!d.clubs.length){
+    content.innerHTML=`<div class="profile-section">
+      <div class="profile-empty-sub">${d.isSelf?'You aren\u2019t in any clubs yet.':d.areFriends?'They aren\u2019t in any clubs yet.':'No public clubs to show.'}</div>
+    </div>`;
+    return;
+  }
+  // Friends + self see all clubs (public + private). Strangers see only
+  // the public ones (RLS enforces this; the array is already filtered).
+  const publicClubs=d.clubs.filter(c=>c.is_public);
+  const privateClubs=d.clubs.filter(c=>!c.is_public);
+  const sections=[];
+  if(publicClubs.length){
+    sections.push(`<div class="profile-section">
+      <div class="profile-section-title">Public Clubs (${publicClubs.length})</div>
+      <div class="profile-clubs-grid">
+        ${publicClubs.map(c=>`<div class="profile-club-card" onclick="openClub('${c.id}','${escapeJs(c.name)}')">
+          <div class="profile-club-name">${escapeHtml(c.name)}</div>
+          <div class="profile-club-meta">Public</div>
+        </div>`).join('')}
+      </div>
+    </div>`);
+  }
+  if(privateClubs.length){
+    sections.push(`<div class="profile-section">
+      <div class="profile-section-title">Private Clubs (${privateClubs.length})</div>
+      <div class="profile-clubs-grid">
+        ${privateClubs.map(c=>`<div class="profile-club-card" onclick="openClub('${c.id}','${escapeJs(c.name)}')">
+          <div class="profile-club-name">${escapeHtml(c.name)}</div>
+          <div class="profile-club-meta">Private \u2014 you can see this because you\u2019re friends</div>
+        </div>`).join('')}
+      </div>
+    </div>`);
+  }
+  content.innerHTML=sections.join('');
+}
+
+async function renderProfileFilmography(d){
+  const content=document.getElementById('profile-content');
+  if(!content) return;
+  if(!d.filmographyVisible){
+    content.innerHTML=`<div class="profile-section">
+      <div class="profile-empty-sub">Their filmography is only visible to friends. ${d.isSelf?'':'Send a friend request to see what they\u2019ve watched.'}</div>
+    </div>`;
+    return;
+  }
+  // Build three poster strips: Seen / Rated / Watchlist.
+  // We hydrate film details from cache or TMDB in batches.
+  content.innerHTML=`
+    <div class="profile-section">
+      <div class="profile-section-title">Recently Rated (${Object.keys(d.ratings).length})</div>
+      <div id="profile-rated-grid"><div class="loading-box">Loading\u2026</div></div>
+    </div>
+    <div class="profile-section">
+      <div class="profile-section-title">Seen (${d.profileSeen.length})</div>
+      <div id="profile-seen-grid"><div class="loading-box">Loading\u2026</div></div>
+    </div>
+  `;
+
+  // Show top 24 by rating
+  const ratedSorted=Object.entries(d.ratings).filter(([,r])=>r>0)
+    .sort((a,b)=>b[1]-a[1]).slice(0,24);
+  const ratedIds=ratedSorted.map(([id])=>parseInt(id));
+  // Show last 24 seen (since seenList is appended-in-order, take the tail)
+  const seenTail=d.profileSeen.slice(-24).reverse();
+
+  // Hydrate both lists in parallel
+  const [ratedFilms,seenFilms]=await Promise.all([
+    hydrateFilmList(ratedIds),
+    hydrateFilmList(seenTail),
+  ]);
+
+  // Render rated with score badges
+  const ratedHTML=ratedFilms.map((f,i)=>{
+    if(!f) return '';
+    const r=ratedSorted[i][1];
+    return `<div class="stat-detail-card" onclick="openFilm(${f.id},'movie')">
+      ${f.poster_path?`<img src="${IMG}w185${f.poster_path}" alt="">`:'<div class="stat-detail-ph"></div>'}
+      <div class="stat-detail-rating">${fmt1(r)}</div>
+      <div class="stat-detail-card-info">
+        <div class="stat-detail-card-title">${escapeHtml(f.title||'')}</div>
+        <div class="stat-detail-card-meta">${(f.release_date||'').slice(0,4)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('profile-rated-grid').innerHTML=ratedHTML
+    ? `<div class="stat-detail-grid">${ratedHTML}</div>`
+    : `<div class="profile-empty-sub">Nothing rated yet.</div>`;
+
+  const seenHTML=seenFilms.map(f=>{
+    if(!f) return '';
+    return `<div class="stat-detail-card" onclick="openFilm(${f.id},'movie')">
+      ${f.poster_path?`<img src="${IMG}w185${f.poster_path}" alt="">`:'<div class="stat-detail-ph"></div>'}
+      <div class="stat-detail-card-info">
+        <div class="stat-detail-card-title">${escapeHtml(f.title||'')}</div>
+        <div class="stat-detail-card-meta">${(f.release_date||'').slice(0,4)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('profile-seen-grid').innerHTML=seenHTML
+    ? `<div class="stat-detail-grid">${seenHTML}</div>`
+    : `<div class="profile-empty-sub">Nothing logged yet.</div>`;
+}
+
+// Hydrate a list of film IDs to full TMDB objects. Cached where possible.
+async function hydrateFilmList(ids){
+  if(!ids||!ids.length) return [];
+  const out=[];
+  const BATCH=15;
+  for(let i=0;i<ids.length;i+=BATCH){
+    const chunk=ids.slice(i,i+BATCH);
+    const got=await Promise.all(chunk.map(id=>
+      filmCache[id]&&filmCache[id].genres
+        ?Promise.resolve(filmCache[id])
+        :api(`/movie/${id}`).then(f=>{filmCache[id]=f;return f;}).catch(()=>null)
+    ));
+    for(const f of got) out.push(f);
+    if(i+BATCH<ids.length) await new Promise(r=>setTimeout(r,40));
+  }
+  return out;
 }
 
 // Compute and render genre/decade stats for a profile (own or someone else's)
